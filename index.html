@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E2231">
+<meta name="description" content="Budapest, 28–31 August 2026. Flights, the boat, the picks, and everything else in one place.">
+<meta name="robots" content="noindex, nofollow">
+<title>Budapest · 28–31 Aug 2026</title>
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2231'/><text y='72' x='50' text-anchor='middle' font-size='64' font-family='Georgia,serif' fill='%23C9A227'>B</text></svg>">
+</head>
+<body>
+
+<!-- ============ name gate ============ -->
+<div id="gate" hidden>
+  <div class="inner">
+    <div class="kick">Budapest · 28–31 Aug 2026</div>
+    <h1>Four days. <em>Who's this?</em></h1>
+    <p>Tap your name. It remembers you on this phone — no password, nothing to sign up for.</p>
+    <div class="names" id="names"></div>
+  </div>
+</div>
+
+<!-- ============ top bar ============ -->
+<header class="top">
+  <div class="in">
+    <div class="title">Budapest <span style="color:var(--brass)">·</span> <span id="topDays">28–31 Aug</span></div>
+    <div class="who-am-i">
+      <span>you're <b id="topName">—</b></span>
+      <button class="swap" id="swapBtn" type="button">switch</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ HOME ============ -->
+  <section class="view" id="view-home">
+    <div class="countdown" id="countdown"></div>
+    <div id="homeYou"></div>
+    <div id="homeClash"></div>
+    <div id="homeArrivals"></div>
+    <div id="homeStay"></div>
+    <div id="homeSchedule"></div>
+  </section>
+
+  <!-- ============ PICKS ============ -->
+  <section class="view" id="view-picks">
+    <div class="view-head">
+      <div class="kick">The menu</div>
+      <h2>Tap what you're in for.</h2>
+      <p>Nothing here is booked. Pick everything you'd genuinely do, hit submit, and the tally sorts out the shortlist.</p>
+      <div class="tallybar">
+        <button class="btn ghost" id="toggleResults" type="button">Show who picked what</button>
+        <span class="muted" style="font-size:12px" id="submittedLine"></span>
+      </div>
+    </div>
+    <div id="summary"></div>
+    <div id="cats"></div>
+    <footer>
+      Hours and prices as published mid-2026 — spot-check before booking. Some venue photos are illustrative
+      stand-ins, not the venue itself. Photos: supplied, and Wikipedia / Wikimedia Commons (CC BY-SA / CC BY / CC0).
+    </footer>
+  </section>
+
+  <!-- ============ STAY ============ -->
+  <section class="view" id="view-stay">
+    <div class="view-head">
+      <div class="kick">Where we sleep</div>
+      <h2>The boat, and whatever beats it.</h2>
+      <p id="stayBlurb"></p>
+    </div>
+    <div id="stayVote"></div>
+    <div id="stayCurrent"></div>
+  </section>
+
+  <!-- ============ INFO ============ -->
+  <section class="view" id="view-info">
+    <div class="view-head">
+      <div class="kick">Know-how</div>
+      <h2>Everything you'll want to look up at 1am.</h2>
+    </div>
+    <div id="infoBody"></div>
+    <footer id="infoFoot"></footer>
+  </section>
+</main>
+
+<!-- ============ bars ============ -->
+<div class="submitbar" id="submitbar">
+  <div class="in">
+    <span class="count"><b id="pickCount">0</b> <span id="pickWord">picked</span></span>
+    <button class="btn big" id="sendBtn" type="button">Submit</button>
+  </div>
+</div>
+
+<nav class="tabs" id="tabs">
+  <button type="button" data-view="home" class="on">
+    <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    Home
+  </button>
+  <button type="button" data-view="picks">
+    <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/><circle cx="8" cy="5" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="10" cy="19" r="2"/></svg>
+    Picks
+  </button>
+  <button type="button" data-view="stay">
+    <svg viewBox="0 0 24 24"><path d="M3 17h18l-2 4H5z"/><path d="M5 17V9l7-4 7 4v8"/><path d="M10 17v-4h4v4"/></svg>
+    Stay
+  </button>
+  <button type="button" data-view="info">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+    Info
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

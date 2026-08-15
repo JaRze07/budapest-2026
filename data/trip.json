@@ -1,0 +1,332 @@
+{
+  "trip": {
+    "city": "Budapest",
+    "start": "2026-08-28",
+    "end": "2026-08-31",
+    "label": "Fri 28 – Mon 31 August 2026",
+    "tz": "Europe/Budapest",
+    "tz_offset": "+02:00",
+    "weather": "Late Aug: highs ~27 °C, lows ~17 °C. Sunset 19:40. Roughly 8 rain days in the month — pack one light layer for the boat deck at night.",
+    "currency": "Hungary uses the forint (HUF). ~390–400 HUF to €1. Cards work almost everywhere."
+  },
+
+  "people": [
+    {
+      "name": "Areeb",
+      "short": "Areeb",
+      "initial": "A",
+      "status": "coming",
+      "flight_status": "pending",
+      "note": "Flight booked — details still to come.",
+      "flights": []
+    },
+    {
+      "name": "Nhi",
+      "short": "Nhi",
+      "initial": "N",
+      "status": "coming",
+      "flight_status": "confirmed",
+      "note": "Flies home Sunday evening — one night shorter than the others.",
+      "flights": [
+        {
+          "dir": "out",
+          "date": "2026-08-28",
+          "legs": [
+            {
+              "from": "HEL",
+              "from_city": "Helsinki",
+              "to": "BUD",
+              "to_city": "Budapest",
+              "dep": "16:20",
+              "dep_tz": "+03:00",
+              "arr": "17:40",
+              "arr_tz": "+02:00",
+              "duration": "2 h 20 min",
+              "carrier": "Finnair (operated by Jettime A/S)",
+              "cabin": "Economy Superlight",
+              "direct": true
+            }
+          ]
+        },
+        {
+          "dir": "back",
+          "date": "2026-08-30",
+          "legs": [
+            {
+              "from": "BUD",
+              "from_city": "Budapest",
+              "to": "HEL",
+              "to_city": "Helsinki",
+              "dep": "18:25",
+              "dep_tz": "+02:00",
+              "arr": "21:45",
+              "arr_tz": "+03:00",
+              "duration": "2 h 20 min",
+              "carrier": "Finnair (operated by Jettime A/S)",
+              "cabin": "Economy Superlight",
+              "direct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phuong",
+      "short": "Phuong",
+      "initial": "P",
+      "status": "unconfirmed",
+      "flight_status": "none",
+      "note": "Not confirmed yet — may not make this one.",
+      "flights": []
+    },
+    {
+      "name": "Jacek",
+      "short": "Jacek",
+      "initial": "J",
+      "status": "coming",
+      "flight_status": "confirmed",
+      "note": "First one in, last one out.",
+      "flights": [
+        {
+          "dir": "out",
+          "date": "2026-08-28",
+          "legs": [
+            {
+              "from": "POZ",
+              "from_city": "Poznań",
+              "to": "WAW",
+              "to_city": "Warsaw",
+              "dep": "05:45",
+              "dep_tz": "+02:00",
+              "arr": "06:40",
+              "arr_tz": "+02:00",
+              "duration": "55 min",
+              "carrier": "LOT LO3942",
+              "direct": false
+            },
+            {
+              "from": "WAW",
+              "from_city": "Warsaw",
+              "to": "BUD",
+              "to_city": "Budapest",
+              "dep": "07:50",
+              "dep_tz": "+02:00",
+              "arr": "09:05",
+              "arr_tz": "+02:00",
+              "duration": "1 h 15 min",
+              "carrier": "LOT",
+              "direct": false
+            }
+          ],
+          "connection": "1 h 10 min in Warsaw — same terminal, domestic-to-Schengen, no passport control."
+        },
+        {
+          "dir": "back",
+          "date": "2026-08-31",
+          "legs": [
+            {
+              "from": "BUD",
+              "from_city": "Budapest",
+              "to": "WAW",
+              "to_city": "Warsaw",
+              "dep": "17:35",
+              "dep_tz": "+02:00",
+              "arr": "18:50",
+              "arr_tz": "+02:00",
+              "duration": "1 h 15 min",
+              "carrier": "LOT",
+              "direct": false
+            },
+            {
+              "from": "WAW",
+              "from_city": "Warsaw",
+              "to": "POZ",
+              "to_city": "Poznań",
+              "dep": "20:40",
+              "dep_tz": "+02:00",
+              "arr": "21:35",
+              "arr_tz": "+02:00",
+              "duration": "55 min",
+              "carrier": "LOT",
+              "direct": false
+            }
+          ],
+          "connection": "1 h 50 min in Warsaw."
+        }
+      ]
+    }
+  ],
+
+  "stay": {
+    "current": {
+      "id": "yacht",
+      "name": "Prestige Yacht Resort",
+      "kind": "Private houseboat",
+      "address": "Meder u. 9, District XIII",
+      "metro": "Gyöngyösi utca (M3) — 5 min walk",
+      "sleeps": 6,
+      "checkin": "15:00, Fri 28 Aug",
+      "checkout": "11:00, Mon 31 Aug",
+      "perks": [
+        "Rooftop hot tub",
+        "Sun deck",
+        "Full kitchen",
+        "Free parking",
+        "Breakfast included — Melba Bistro on the dock, 08:00–11:00"
+      ],
+      "link": "https://www.airbnb.com/rooms/1529617600949626894",
+      "map": "https://www.google.com/maps/search/?api=1&query=Meder+utca+9%2C+Budapest",
+      "note": "The working assumption until the vote closes."
+    },
+    "vote": {
+      "open": true,
+      "status": "awaiting-options",
+      "blurb": "Options are being collected. When they land they'll show up here and everyone votes — same as the picks board.",
+      "options": []
+    }
+  },
+
+  "airport": {
+    "code": "BUD",
+    "name": "Liszt Ferenc International",
+    "to": "Meder u. 9, District XIII",
+    "buffer_arrive": 25,
+    "buffer_note": "Schengen-to-Schengen — no passport queue. Allow ~25 min from wheels-down to standing at the bus stop, more if you checked a bag.",
+    "routes": [
+      {
+        "id": "100e",
+        "label": "100E Airport Express + M3",
+        "badge": "Easiest",
+        "cost": "2,500 HUF (~€6.30) + one standard ticket",
+        "total_min": 62,
+        "window": [4, 22.5],
+        "steps": [
+          { "min": 40, "text": "Bus 100E from Terminal 2 straight to Deák Ferenc tér. No transfer, every 6–10 min." },
+          { "min": 14, "text": "M3 metro from Deák Ferenc tér towards Újpest-Központ → Gyöngyösi utca." },
+          { "min": 8, "text": "Walk to Meder u. 9." }
+        ],
+        "warning": "100E needs its own dedicated ticket — a normal single or a travelcard is not valid. Buy it at the purple BKK machine by the exit or in BudapestGO. Not sold on board."
+      },
+      {
+        "id": "200e",
+        "label": "200E + M3 all the way",
+        "badge": "Cheapest",
+        "cost": "2 standard tickets, ~900 HUF (~€2.30)",
+        "total_min": 68,
+        "window": [4, 22.5],
+        "steps": [
+          { "min": 30, "text": "Bus 200E from Terminal 2 to Kőbánya-Kispest (M3 southern terminus)." },
+          { "min": 30, "text": "M3 metro the length of the line towards Újpest-Központ → Gyöngyösi utca." },
+          { "min": 8, "text": "Walk to Meder u. 9." }
+        ],
+        "warning": "Standard BKK tickets — validate the first one on the bus, the second at the metro barrier. Or just buy a 24/72 h travelcard in BudapestGO and forget about it."
+      },
+      {
+        "id": "taxi",
+        "label": "Bolt or Főtaxi",
+        "badge": "Door to door",
+        "cost": "~€25–35 the car, split four ways",
+        "total_min": 40,
+        "window": [0, 24],
+        "steps": [
+          { "min": 40, "text": "Straight to the dock at Meder u. 9. Főtaxi is the official airport rank; Bolt pickup is signposted from the terminal." }
+        ],
+        "warning": "The only sane option late at night, and cheap if you land together and share."
+      }
+    ],
+    "night_note": "Landing after ~22:30, the metro is closing (last M3 ~23:20). 200E runs 24 h but terminates at Határ út overnight and you'd be stitching night buses together at 01:00 with luggage. Take a Bolt."
+  },
+
+  "getting_around": [
+    { "t": "Home stop", "d": "Gyöngyösi utca on the M3 (blue line). ~15 min to Deák Ferenc tér, the middle of everything." },
+    { "t": "Tickets", "d": "Buy in the BudapestGO app. A 72-hour travelcard covers Fri–Mon and removes all thinking. Single tickets need validating; the app's don't." },
+    { "t": "Last metro", "d": "Around 23:20. After that it's night buses (BudapestGO plans them) or Bolt — 15–20 min back to the boat from District VII." },
+    { "t": "Bar district", "d": "District VII. Almost everything on the picks board is within ten minutes of Kazinczy utca on foot." },
+    { "t": "Margaret Island", "d": "The closest green space to the boat — worth knowing on the Friday morning if you land early and can't check in yet." }
+  ],
+
+  "money": [
+    { "t": "Always pay in HUF", "d": "If the card terminal offers to charge you in euros, say no. Dynamic currency conversion costs you 5–10% every time." },
+    { "t": "Cash", "d": "Barely needed. Keep ~10,000 HUF for markets and the odd cloakroom." },
+    { "t": "ATMs", "d": "Use bank ATMs (OTP, K&H, Erste). Avoid the blue Euronet ones — bad rates, big fees." },
+    { "t": "Tipping", "d": "10% is normal. Check the bill first — many District VII places already add a service charge." }
+  ],
+
+  "phrases": [
+    { "hu": "Szia", "say": "SEE-ya", "en": "Hi / bye (informal — use it everywhere)" },
+    { "hu": "Jó napot", "say": "YOH NAH-pot", "en": "Good day (the polite one)" },
+    { "hu": "Köszönöm", "say": "KUH-suh-nuhm", "en": "Thank you" },
+    { "hu": "Kérek szépen…", "say": "KAY-rek SAY-pen", "en": "I'd like…, please" },
+    { "hu": "Egy sört kérek", "say": "edj SHURT KAY-rek", "en": "One beer, please" },
+    { "hu": "Négy sört kérek", "say": "naydj SHURT KAY-rek", "en": "Four beers, please" },
+    { "hu": "Egészségedre!", "say": "EG-aysh-shay-ged-reh", "en": "Cheers! (never clink beer glasses — old habit, still holds)" },
+    { "hu": "Mennyibe kerül?", "say": "MEN-yee-beh KEH-rool", "en": "How much is it?" },
+    { "hu": "A számlát kérem", "say": "ah SAAM-laht KAY-rem", "en": "The bill, please" },
+    { "hu": "Kártyával fizetek", "say": "KAAR-tyaa-val FEE-zeh-tek", "en": "I'll pay by card" },
+    { "hu": "Forintban, kérem", "say": "FO-rint-ban KAY-rem", "en": "In forints, please — the DCC killer" },
+    { "hu": "Nem, köszönöm", "say": "nem KUH-suh-nuhm", "en": "No, thank you — for anyone who approaches you on the street" },
+    { "hu": "Bocsánat", "say": "BO-chaa-nat", "en": "Sorry / excuse me" },
+    { "hu": "Hol van a mosdó?", "say": "hol van a MOSH-doh", "en": "Where's the toilet?" },
+    { "hu": "Viszlát", "say": "VEES-laat", "en": "Goodbye" }
+  ],
+
+  "essentials": [
+    { "t": "Emergency", "d": "112 for everything — police, ambulance, fire. English is answered." },
+    { "t": "Apps to install before you fly", "d": "BudapestGO (tickets + journey planner), Bolt (taxis), and whatever the group chat is." },
+    { "t": "Bring for Sparty", "d": "Swimwear worn underneath, flip-flops, a towel and a waterproof phone pouch. Drinks run on a deposit cup. 18+, bring ID." },
+    { "t": "Plugs", "d": "Type C/F, 230 V — same as the rest of continental Europe." },
+    { "t": "Tap water", "d": "Perfectly drinkable. Ask for csapvíz." }
+  ],
+
+  "schedule": [
+    {
+      "date": "2026-08-28",
+      "day": "Friday",
+      "label": "Arrival day",
+      "slots": [
+        { "time": "09:05", "t": "Jacek lands", "kind": "travel" },
+        { "time": "17:40", "t": "Nhi lands", "kind": "travel" },
+        { "time": "15:00", "t": "Check-in at the boat", "kind": "fixed" },
+        { "time": "Evening", "t": "To be determined", "kind": "tbd" }
+      ]
+    },
+    {
+      "date": "2026-08-29",
+      "day": "Saturday",
+      "label": "The big one",
+      "slots": [
+        { "time": "Day", "t": "Open — baths, action, whatever wins the vote", "kind": "open" },
+        { "time": "Dinner", "t": "Book it. District VII fills up on a Saturday.", "kind": "todo" },
+        { "time": "21:30", "t": "Sparty at Széchenyi — Saturdays only", "kind": "clash" },
+        { "time": "17:00", "t": "Remember Parade at Budapest Park — same night", "kind": "clash" }
+      ]
+    },
+    {
+      "date": "2026-08-30",
+      "day": "Sunday",
+      "label": "Last full day together",
+      "slots": [
+        { "time": "Day", "t": "Open — last thing the four of you do together", "kind": "open" },
+        { "time": "18:25", "t": "Nhi flies home", "kind": "travel" },
+        { "time": "Evening", "t": "Open", "kind": "open" }
+      ]
+    },
+    {
+      "date": "2026-08-31",
+      "day": "Monday",
+      "label": "Out",
+      "slots": [
+        { "time": "11:00", "t": "Checkout", "kind": "fixed" },
+        { "time": "Day", "t": "Bags down, one last thing — Central Market is open till 18:00 on a Monday", "kind": "open" },
+        { "time": "17:35", "t": "Jacek flies home", "kind": "travel" }
+      ]
+    }
+  ],
+
+  "clash": {
+    "date": "2026-08-29",
+    "title": "Saturday night collides",
+    "body": "Sparty runs Saturdays only, so Sat 29 Aug is the only shot at it. The Remember Parade at Budapest Park — ATB, Ferry Corsten, Umek, Da Hool, Brooklyn Bounce — is the same evening. You get one. The picks board is currently split.",
+    "ids": ["sparty", "bppark"]
+  }
+}

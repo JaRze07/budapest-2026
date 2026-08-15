@@ -1,0 +1,91 @@
+name: collect-vote
+
+on:
+  repository_dispatch:
+    types: [vote]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: votes
+  cancel-in-progress: false
+
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate and merge
+        env:
+          PAYLOAD: ${{ toJson(github.event.client_payload) }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, re, pathlib, sys
+
+          p = json.loads(os.environ["PAYLOAD"] or "{}")
+          allowed = {"Areeb", "Nhi", "Phuong", "Jacek"}
+
+          name = str(p.get("name", ""))
+          if name not in allowed:
+              sys.exit("rejected: unknown voter %r" % name)
+
+          kind = str(p.get("kind", "picks"))
+          if kind not in {"picks", "stay", "custom"}:
+              sys.exit("rejected: unknown kind %r" % kind)
+
+          path = pathlib.Path("votes/all.json")
+          data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+          data.setdefault("picks", {})
+          data.setdefault("stay", {})
+          data.setdefault("customs", [])
+
+          def clean_id(v):
+              return re.sub(r"[^A-Za-z0-9_-]", "", str(v))[:24]
+
+          when = str(p.get("when", ""))[:40]
+
+          if kind == "custom":
+              c = p.get("custom") or {}
+              cid = clean_id(c.get("id"))
+              if not cid:
+                  sys.exit("rejected: custom needs an id")
+              if len(data["customs"]) >= 40:
+                  sys.exit("rejected: too many custom options")
+              item = {
+                  "id": cid,
+                  "name": str(c.get("name", ""))[:60],
+                  "note": str(c.get("note", ""))[:90],
+                  "by": name,
+                  "cat": int(c.get("cat", 0)) if str(c.get("cat", "")).isdigit() else 0,
+                  "when": when,
+              }
+              if not item["name"]:
+                  sys.exit("rejected: custom needs a name")
+              data["customs"] = [x for x in data["customs"] if x.get("id") != cid]
+              data["customs"].append(item)
+              print("added custom %r by %s" % (item["name"], name))
+          else:
+              ids = [clean_id(i) for i in (p.get("ids") or [])][:80]
+              ids = [i for i in ids if i]
+              data[kind][name] = {"ids": ids, "when": when}
+              print("saved %s for %s - %d ids" % (kind, name, len(ids)))
+
+          path.parent.mkdir(exist_ok=True)
+          path.write_text(json.dumps(data, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+          EOF
+
+      - name: Commit
+        run: |
+          git config user.name "votes-bot"
+          git config user.email "votes-bot@users.noreply.github.com"
+          git add votes/all.json
+          git diff --staged --quiet && echo "no change" && exit 0
+          git commit -m "${{ github.event.client_payload.kind }}: ${{ github.event.client_payload.name }}"
+          for i in 1 2 3; do
+            git push && exit 0
+            echo "push failed, rebasing (attempt $i)"
+            git pull --rebase
+          done
+          exit 1

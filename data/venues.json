@@ -1,0 +1,459 @@
+{
+ "meta": {
+  "trip": "Budapest, Fri 28 – Mon 31 August 2026",
+  "group_size": 4,
+  "voters": [
+   "Areeb",
+   "Nhi",
+   "Phuong",
+   "Jacek"
+  ],
+  "currency_note": "Hungary uses the forint (HUF). ~390–400 HUF to €1. Cards accepted almost everywhere. Decline euro conversion at card terminals.",
+  "image_credits": "Venue photos in the prototype are embedded base64. Sources: Sparty photo supplied by Jacek; the rest from Wikipedia / Wikimedia Commons (CC BY-SA, CC BY, CC0). Several are illustrative stand-ins, not the venue itself — flagged per item below with illustrative:true."
+ },
+ "categories": [
+  {
+   "id": "bars",
+   "title": "Bars & drinks",
+   "note": "All but two within ten minutes of each other in District VII.",
+   "items": [
+    {
+     "id": "szimpla",
+     "name": "Szimpla Kert",
+     "area": "Kazinczy u. 14",
+     "desc": "The original ruin bar — a derelict block, a gutted Trabant, a bar in every room. Farmers' market Sunday morning.",
+     "meta": "Daily till 04:00 · beer ~€3 · before 21:00 for a table",
+     "tags": [
+      "ruin bar",
+      "open daily",
+      "cheap"
+     ]
+    },
+    {
+     "id": "warmup",
+     "name": "Warm Up",
+     "area": "Nagy Diófa u. 26",
+     "desc": "No menu — describe what you feel like, they build it. Small; split into two rounds.",
+     "meta": "Daily till 02:00 · ~€11 a drink",
+     "tags": [
+      "cocktails",
+      "small venue"
+     ]
+    },
+    {
+     "id": "jardin",
+     "name": "Jardín",
+     "area": "Dob u. 16 · Gozsdu",
+     "desc": "Garden cocktail bar inside the courtyard — the easy pre-anything meeting point.",
+     "meta": "Daily till 01:00–02:00",
+     "tags": [
+      "cocktails",
+      "courtyard"
+     ]
+    },
+    {
+     "id": "eleszto",
+     "name": "Élesztő",
+     "area": "Tűzoltó u. 22 · District IX",
+     "desc": "Craft beer courtyard in an old glassworks — 20+ taps, butcher-counter food. Best value in the city.",
+     "meta": "Daily 15:00 till 01:00–03:00",
+     "tags": [
+      "craft beer",
+      "value"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "hops",
+     "name": "HOPS Beer Bar",
+     "area": "Wesselényi u. 13",
+     "desc": "The serious craft tap list in the bar district. Staging post between dinner and a club.",
+     "meta": "Daily till ~03:00",
+     "tags": [
+      "craft beer"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "bar360",
+     "name": "360 Bar",
+     "area": "Andrássy út 39",
+     "desc": "Rooftop terrace with the whole of Pest below. Queue at sunset.",
+     "meta": "Daily till 00:00–02:00 · ~€12 a drink",
+     "tags": [
+      "rooftop",
+      "view"
+     ],
+     "illustrative": true
+    }
+   ]
+  },
+  {
+   "id": "clubs",
+   "title": "Clubs & parties",
+   "note": "Saturday is the decision night — Sparty, the Parade and the clubs all clash.",
+   "items": [
+    {
+     "id": "sparty",
+     "name": "Sparty",
+     "area": "Széchenyi Baths · Állatkerti krt. 9–11",
+     "desc": "Nightclub inside a 1913 thermal bath palace — DJs, lasers, projections on the facade, a thousand people in 38°C water until 2am.",
+     "meta": "Sat 21:30–02:00, last entry ~01:00 · basic ~€60–65, premium ~€81 (4 drinks + 19:00 Pavilion Garden warm-up) · 18+, bring ID · book official, sells out",
+     "tags": [
+      "headline",
+      "saturday only",
+      "ticketed"
+     ],
+     "key_fact": "Sat 29 Aug 2026 is a confirmed Sparty date. Runs Saturdays only, Feb–Dec.",
+     "requirements": "Swimwear worn underneath, flip-flops, towel. Drinks run on a Recup deposit cup. Waterproof phone pouch recommended."
+    },
+    {
+     "id": "fogas",
+     "name": "Instant-Fogas",
+     "area": "Akácfa u. 51",
+     "desc": "Club complex across seven rooms, a different genre in each. The reliable late-late option every night.",
+     "meta": "Daily 18:00–06:00 · usually free entry",
+     "tags": [
+      "club",
+      "open daily"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "a38",
+     "name": "A38",
+     "area": "Petőfi Bridge, Buda side",
+     "desc": "Club and concert hall inside a converted Ukrainian cargo ship on the Danube.",
+     "meta": "Fri–Sat late · check the programme",
+     "tags": [
+      "club",
+      "boat",
+      "live music"
+     ]
+    },
+    {
+     "id": "boatparty",
+     "name": "Budapest Boat Party",
+     "area": "Akadémia Dock 2",
+     "desc": "Two-hour party cruise past a lit-up Parliament — open-bar option, then most nights roll into a club after.",
+     "meta": "Fri–Sat evenings · from ~€30, open bar extra",
+     "tags": [
+      "boat",
+      "party"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "doboz",
+     "name": "Doboz",
+     "area": "Klauzál u. 10",
+     "desc": "Ruin-bar courtyard turned proper club — two dancefloors around a giant tree sculpture.",
+     "meta": "Wed–Sat 18:00–06:00 · closed Sun–Mon · free entry",
+     "tags": [
+      "club"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "bppark",
+     "name": "Budapest Park",
+     "area": "Fábián Juli tér 1",
+     "desc": "Open-air festival-sized venue on the Pest riverside.",
+     "meta": "Gates ~17:00 · ticketed · outdoor",
+     "tags": [
+      "outdoor",
+      "ticketed"
+     ],
+     "key_fact": "Sat 29 Aug: Remember Parade — ATB, Ferry Corsten, Umek, Da Hool, Brooklyn Bounce. Directly clashes with Sparty.",
+     "illustrative": true
+    },
+    {
+     "id": "akvarium",
+     "name": "Akvárium Klub",
+     "area": "Erzsébet tér 12",
+     "desc": "Two halls and a huge terrace under the pool at Deák tér — concerts early, club late.",
+     "meta": "Thu–Sat late · terrace daily",
+     "tags": [
+      "live music",
+      "terrace"
+     ],
+     "illustrative": true
+    }
+   ]
+  },
+  {
+   "id": "baths",
+   "title": "Baths & water",
+   "note": "The boat's hot tub is free — cap the paid soaks at one or two.",
+   "items": [
+    {
+     "id": "szechenyi",
+     "name": "Széchenyi by day",
+     "area": "Állatkerti krt. 9–11",
+     "desc": "The big one sober: 15 indoor pools, 3 outdoor, chess boards floating in the hot crescent pool.",
+     "meta": "Daily 07:00–20:00 · ~€30–40 · take a cabin, not a locker",
+     "tags": [
+      "thermal bath",
+      "landmark"
+     ]
+    },
+    {
+     "id": "rudas",
+     "name": "Rudas Baths",
+     "area": "Döbrentei tér 9 · Buda",
+     "desc": "Ottoman dome from 1566 plus a modern wing and a rooftop tub facing Elizabeth Bridge.",
+     "meta": "Daily 06:00–20:00 · ~€30 · night session Fri 22:00–03:00 (online tickets only)",
+     "tags": [
+      "thermal bath",
+      "rooftop",
+      "historic"
+     ],
+     "key_fact": "Co-ed Sat–Sun. On weekdays the Turkish section splits by gender: men Mon/Wed/Thu/Fri, women Tue."
+    },
+    {
+     "id": "beerspa",
+     "name": "Thermal Beer Spa",
+     "area": "Széchenyi, Gate 1",
+     "desc": "45 minutes in a wooden tub of warm hops with an unlimited beer tap at arm's reach.",
+     "meta": "Daily 10:00–19:00 · ~€45–60 pp · book a private tub room",
+     "tags": [
+      "novelty",
+      "booking required"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "lukacs",
+     "name": "Lukács Baths",
+     "area": "Frankel Leó út 25–29 · Buda",
+     "desc": "The locals' bath — faintly 1960s, half the price, no queue.",
+     "meta": "Daily 07:00–19:00 · ~7,000 HUF · swim cap mandatory for outdoor lap pools",
+     "tags": [
+      "thermal bath",
+      "value",
+      "local"
+     ]
+    },
+    {
+     "id": "palatinus",
+     "name": "Palatinus Strand",
+     "area": "Margaret Island",
+     "desc": "Open-air lido: thermal pools, wave pool, slides, lawns.",
+     "meta": "Daily ~09:00–19:00 in season · ~€15",
+     "tags": [
+      "outdoor",
+      "summer only"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "food",
+   "title": "Food worth planning around",
+   "note": "Book the Saturday dinner wherever you land — District VII fills up.",
+   "items": [
+    {
+     "id": "getto",
+     "name": "Gettó Gulyás",
+     "area": "Wesselényi u. 18",
+     "desc": "Hungarian stews done properly — goulash, veal paprikash, stuffed cabbage. The one to book.",
+     "meta": "Daily till 23:00 · ~€20 a head · booking essential",
+     "tags": [
+      "hungarian",
+      "booking required"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "fatmama",
+     "name": "Fat Mama",
+     "area": "Kazinczy u. 24",
+     "desc": "Ribs, BBQ and paprikash mid-bar-strip, live music most nights. Seats six without drama.",
+     "meta": "Daily 09:00–24:00 · book weekends",
+     "tags": [
+      "group friendly",
+      "live music"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "vakvarju",
+     "name": "VakVarjú",
+     "area": "Paulay Ede u. 7",
+     "desc": "Big portions, Hungarian classics, live pianist. The easy big-table option.",
+     "meta": "Daily till 23:30",
+     "tags": [
+      "hungarian",
+      "group friendly"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "aranybastya",
+     "name": "Aranybástya",
+     "area": "Buda Castle bastion",
+     "desc": "Terrace on the castle wall with the whole city below — the one fancy dinner.",
+     "meta": "Daily 12:00–22:00 · mains ~€30+ · sunset 19:40, book a sunset table",
+     "tags": [
+      "fine dining",
+      "view",
+      "booking required"
+     ]
+    },
+    {
+     "id": "market",
+     "name": "Central Market Hall",
+     "area": "Vámház krt. 1–3",
+     "desc": "1897 iron-and-tile hall — paprika downstairs, lángos with sour cream and cheese upstairs.",
+     "meta": "Sat till 16:00 · Mon till 18:00 · closed Sunday",
+     "tags": [
+      "market",
+      "daytime"
+     ],
+     "key_fact": "Avoid the lángos stall at the Vámház körút entrance — poorly rated, hidden topping charges. Best Langos at Hunyadi tér market is the better call (closed Mondays)."
+    }
+   ]
+  },
+  {
+   "id": "action",
+   "title": "Daytime action",
+   "note": "For whichever afternoon needs a plan.",
+   "items": [
+    {
+     "id": "shooting",
+     "name": "Shooting range",
+     "area": "Churchill · Holló u. 6",
+     "desc": "Pistols to AK-47s with range masters walking you through it. District VII.",
+     "meta": "Daily 10:00–19:00 · packages ~€80 · book a group slot",
+     "tags": [
+      "booking required",
+      "group"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "karting",
+     "name": "FlashKart",
+     "area": "Blaha Lujza tér, level −5",
+     "desc": "Indoor electric karts under a downtown square — race heats, live timing, a podium to argue about.",
+     "meta": "Fri 15–22 · Sat 10–22 · Sun 10–21 · ~€15 for 3 heats · book",
+     "tags": [
+      "booking required",
+      "group",
+      "indoor"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "escape",
+     "name": "Escape room",
+     "area": "Mystique Room · Szent István krt. 9",
+     "desc": "Top-rated rooms in the city, built for teams up to six. One hour, one locked door.",
+     "meta": "Daily 09:00–21:00 · ~€15 pp · book a slot",
+     "tags": [
+      "booking required",
+      "group",
+      "indoor"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "bastion",
+     "name": "Fisherman's Bastion",
+     "area": "Buda Castle hill",
+     "desc": "White turrets facing Parliament. Up for sunset at 19:40, watch the lights come on.",
+     "meta": "Terraces free · upper towers ~€3 · funicular or bus 16",
+     "tags": [
+      "landmark",
+      "free",
+      "sunset"
+     ]
+    },
+    {
+     "id": "margaret",
+     "name": "Margaret Island",
+     "area": "Middle of the Danube",
+     "desc": "2.5 km park island — running track, rose garden, ruined convent, musical fountain on the hour.",
+     "meta": "Free · tram 4/6 · allow 1–2 h",
+     "tags": [
+      "free",
+      "outdoor",
+      "near accommodation"
+     ]
+    },
+    {
+     "id": "heroes",
+     "name": "Heroes' Sq & Vajdahunyad",
+     "area": "Hősök tere · City Park",
+     "desc": "Colonnade of Hungarian kings, mock Transylvanian castle behind. Ten minutes' walk from Széchenyi.",
+     "meta": "Outdoors, free · M1 line · allow 1–2 h",
+     "tags": [
+      "landmark",
+      "free"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "late",
+   "title": "Late & private",
+   "note": "All in or next to Gozsdu Court.",
+   "items": [
+    {
+     "id": "nana",
+     "name": "NANA for Gents",
+     "area": "Dob u. 16 · Gozsdu",
+     "desc": "The strip club that keeps its rating: free entry, no compulsory drink, no minimum spend.",
+     "meta": "Nightly 22:00–04:00 · private dance ~€50 · beer at normal price",
+     "tags": [
+      "adult",
+      "free entry"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "mynt",
+     "name": "Club Mynt",
+     "area": "Király u. 13",
+     "desc": "Same block, smaller. The backup if NANA is full.",
+     "meta": "Nightly 22:00–04:00 · 10% service charge on the bill",
+     "tags": [
+      "adult",
+      "free entry"
+     ],
+     "illustrative": true
+    },
+    {
+     "id": "bluebird",
+     "name": "Blue Bird Karaoke",
+     "area": "Dob u. 16 · Gozsdu",
+     "desc": "Private KTV boxes — your own room, your own screen, nobody else listening.",
+     "meta": "Thu–Sun 18:00–04:00 · book the room · overrun bills as a full hour",
+     "tags": [
+      "karaoke",
+      "private room",
+      "booking required"
+     ],
+     "key_fact": "This is the private-rooms venue, distinct from Blue Bird Karaoke Club nearby, which is open-mic.",
+     "illustrative": true
+    },
+    {
+     "id": "lasiesta",
+     "name": "La Siesta",
+     "area": "Kazinczy u. 52/b",
+     "desc": "Party bar — table dancing, fire shows behind the bar, free shots. The loud alternative.",
+     "meta": "Nightly ~20:00–05:00",
+     "tags": [
+      "party bar"
+     ],
+     "illustrative": true
+    }
+   ]
+  }
+ ],
+ "safety_notes": [
+  "Street-invitation scam: never follow anyone who approaches the group and invites you to a bar. Standard Budapest consumption-trap routine; bills land in the hundreds with security on the door.",
+  "Strip clubs are the biggest rip-off risk in the city. Ask for a printed price list, pay each round rather than running a tab, agree private-dance prices out loud beforehand. NANA and Mynt were selected specifically because entry is free with no minimum spend.",
+  "Decline dynamic currency conversion — always pay in HUF, not euros."
+ ]
+}

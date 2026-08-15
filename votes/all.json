@@ -1,0 +1,61 @@
+{
+ "picks": {
+  "Areeb": {
+   "ids": [
+    "szimpla",
+    "warmup",
+    "sparty",
+    "szechenyi",
+    "rudas",
+    "beerspa",
+    "fatmama",
+    "shooting",
+    "karting",
+    "margaret",
+    "nana",
+    "bluebird",
+    "lasiesta"
+   ],
+   "when": "2026-08-10T11:38:55.304Z"
+  },
+  "Nhi": {
+   "ids": [
+    "warmup",
+    "jardin",
+    "bar360",
+    "boatparty",
+    "rudas",
+    "getto",
+    "vakvarju",
+    "aranybastya",
+    "margaret",
+    "nana"
+   ],
+   "when": "2026-08-10T13:02:43.700Z"
+  },
+  "Jacek": {
+   "ids": [
+    "szimpla",
+    "warmup",
+    "bar360",
+    "sparty",
+    "a38",
+    "boatparty",
+    "akvarium",
+    "rudas",
+    "palatinus",
+    "fatmama",
+    "aranybastya",
+    "shooting",
+    "karting",
+    "nana",
+    "mynt",
+    "bluebird",
+    "lasiesta"
+   ],
+   "when": "2026-08-10T13:11:32.706Z"
+  }
+ },
+ "stay": {},
+ "customs": []
+}
