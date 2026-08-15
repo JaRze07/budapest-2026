@@ -16,6 +16,9 @@
   --warn: #E0663A;
 
   --tabh: 58px;
+  --topbar: 51px;   /* measured at runtime — sticky category headers dock under it */
+  --pad: 14px;
+  --maxw: 840px;
   --serif: Georgia, "Times New Roman", serif;
   --sans: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
 }
@@ -493,15 +496,36 @@ main {
   border-radius: 999px;
 }
 
+/* ---------- ride hailing ---------- */
+
+.rides { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.route .rides { padding: 0 14px; }
+.ride {
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.ride.go { background: var(--ink); color: var(--paper); }
+.ride:hover { border-color: var(--brass); }
+.ridenote { flex: 1 1 100%; font-size: 11.5px; color: var(--slate); line-height: 1.45; }
+
 /* ---------- picks board ---------- */
 
 .cathead {
   position: sticky;
-  top: 51px;
+  top: var(--topbar);
   z-index: 20;
   background: var(--ink);
   color: var(--paper);
-  margin: 24px -14px 0;
+  margin: 24px calc(var(--pad) * -1) 0;
   padding: 11px 18px 10px;
   display: flex;
   align-items: baseline;
@@ -776,6 +800,85 @@ footer {
   #gate h1 { font-size: 40px; }
   .view-head h2 { font-size: 32px; }
   .countdown .u b { font-size: 44px; }
+}
+
+/* ---------- desktop ----------
+   The tab bar leaves the bottom of the screen and becomes a row of tabs in the
+   header; the home view splits into two columns; cards go four across. */
+
+@media (min-width: 900px) {
+  :root { --pad: 30px; --maxw: 1180px; }
+
+  header.top { padding: 16px var(--pad) 0; }
+  header.top .in { max-width: var(--maxw); }
+  header.top .title { font-size: 21px; }
+  header.top .who-am-i { font-size: 13px; }
+
+  nav.tabs {
+    position: static;
+    height: auto;
+    padding: 0;
+    background: none;
+    border-top: none;
+    max-width: var(--maxw);
+    margin: 14px auto 0;
+    gap: 2px;
+  }
+  nav.tabs button {
+    flex: 0 0 auto;
+    flex-direction: row;
+    gap: 9px;
+    padding: 11px 22px;
+    font-size: 11px;
+    letter-spacing: .14em;
+  }
+  nav.tabs button:hover { color: var(--paper); }
+  nav.tabs button svg { width: 16px; height: 16px; }
+  nav.tabs button.on { color: var(--brass); background: rgba(201, 162, 39, .08); }
+  nav.tabs button.on::before { top: auto; bottom: 0; left: 0; right: 0; height: 3px; }
+  nav.tabs button .dot { top: 6px; margin-left: 46px; }
+
+  main { max-width: var(--maxw); padding: 0 var(--pad) 110px; }
+  .wrap { max-width: var(--maxw); }
+
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1.12fr 1fr;
+    column-gap: 32px;
+    align-items: start;
+  }
+  .col-b > div:first-child > * { margin-top: 12px; }
+
+  .countdown { padding: 30px 20px 26px; }
+  .countdown .units { gap: 20px; }
+  .countdown .u { max-width: 120px; }
+  .countdown .u b { font-size: 52px; }
+
+  .view-head { padding: 30px 2px 4px; }
+  .view-head h2 { font-size: 37px; }
+  .view-head p { max-width: 660px; }
+  .sec-title { font-size: 22px; }
+
+  .grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .card h4 { font-size: 18px; }
+  .cathead { padding-left: calc(var(--pad) + 4px); padding-right: calc(var(--pad) + 4px); }
+
+  .submitbar { bottom: 0; padding: 12px var(--pad); }
+  .submitbar .in { max-width: var(--maxw); }
+
+  /* Prose stays readable instead of running the full width. */
+  #view-info .acc, #view-info footer { max-width: 860px; }
+  #view-stay .stay-hero { max-width: 860px; }
+
+  #gate .inner { max-width: 540px; }
+  #gate h1 { font-size: 46px; }
+  .names button { padding: 22px 10px; font-size: 21px; }
+
+  .toast { font-size: 14px; padding: 14px 24px; }
+}
+
+@media (min-width: 1240px) {
+  .home-grid { column-gap: 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -31,17 +31,43 @@
       <button class="swap" id="swapBtn" type="button">switch</button>
     </div>
   </div>
+
+  <!-- Bottom tab bar on a phone; a row inside this header on a desktop. -->
+  <nav class="tabs" id="tabs">
+    <button type="button" data-view="home" class="on">
+      <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      Home
+    </button>
+    <button type="button" data-view="picks">
+      <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/><circle cx="8" cy="5" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="10" cy="19" r="2"/></svg>
+      Picks
+    </button>
+    <button type="button" data-view="stay">
+      <svg viewBox="0 0 24 24"><path d="M3 17h18l-2 4H5z"/><path d="M5 17V9l7-4 7 4v8"/><path d="M10 17v-4h4v4"/></svg>
+      Stay
+    </button>
+    <button type="button" data-view="info">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+      Info
+    </button>
+  </nav>
 </header>
 
 <main>
   <!-- ============ HOME ============ -->
   <section class="view" id="view-home">
     <div class="countdown" id="countdown"></div>
-    <div id="homeYou"></div>
-    <div id="homeClash"></div>
-    <div id="homeArrivals"></div>
-    <div id="homeStay"></div>
-    <div id="homeSchedule"></div>
+    <div class="home-grid">
+      <div class="col-a">
+        <div id="homeYou"></div>
+      </div>
+      <div class="col-b">
+        <div id="homeClash"></div>
+        <div id="homeArrivals"></div>
+        <div id="homeStay"></div>
+        <div id="homeSchedule"></div>
+      </div>
+    </div>
   </section>
 
   <!-- ============ PICKS ============ -->
@@ -92,25 +118,6 @@
     <button class="btn big" id="sendBtn" type="button">Submit</button>
   </div>
 </div>
-
-<nav class="tabs" id="tabs">
-  <button type="button" data-view="home" class="on">
-    <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-    Home
-  </button>
-  <button type="button" data-view="picks">
-    <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/><circle cx="8" cy="5" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="10" cy="19" r="2"/></svg>
-    Picks
-  </button>
-  <button type="button" data-view="stay">
-    <svg viewBox="0 0 24 24"><path d="M3 17h18l-2 4H5z"/><path d="M5 17V9l7-4 7 4v8"/><path d="M10 17v-4h4v4"/></svg>
-    Stay
-  </button>
-  <button type="button" data-view="info">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
-    Info
-  </button>
-</nav>
 
 <div class="toast" id="toast"></div>
 

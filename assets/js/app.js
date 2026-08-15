@@ -1,5 +1,18 @@
 /* Budapest 2026 — views and interaction. */
 
+/* Venues without a photo fall back to a lettered tile. Global because it's an
+   inline onerror — the image can fail before any listener is attached. */
+window.BPnoPhoto = function (img, letter) {
+  var tile = document.createElement("div");
+  tile.className = "ctile";
+  tile.textContent = letter || "?";
+  var card = img.closest(".card");
+  img.replaceWith(tile);
+  // The "photo illustrative" note is meaningless when there's no photo at all.
+  var area = card && card.querySelector(".area");
+  if (area) area.textContent = area.textContent.replace(" · photo illustrative", "");
+};
+
 (function () {
   "use strict";
 
@@ -31,6 +44,34 @@
   }
   function person(name) {
     return (TRIP.people || []).filter(function (p) { return p.name === name; })[0] || null;
+  }
+
+  /* The header is a compact bar on a phone and a taller bar with tabs on a
+     desktop. Measure it rather than guess, so sticky category headers always
+     dock right underneath. */
+  function syncTopbar() {
+    var h = document.querySelector("header.top");
+    if (h) document.documentElement.style.setProperty("--topbar", h.offsetHeight + "px");
+  }
+
+  /** Ride-hailing and directions, pre-filled with the boat's coordinates. */
+  function rideLinks(compact) {
+    var s = TRIP.stay.current;
+    if (!s.lat || !s.lng) return "";
+    var addr = s.full_address || s.address;
+    var uber = "https://m.uber.com/ul/?action=setPickup&pickup=my_location" +
+      "&dropoff%5Blatitude%5D=" + s.lat +
+      "&dropoff%5Blongitude%5D=" + s.lng +
+      "&dropoff%5Bnickname%5D=" + encodeURIComponent(s.name) +
+      "&dropoff%5Bformatted_address%5D=" + encodeURIComponent(addr);
+    var maps = "https://www.google.com/maps/dir/?api=1&destination=" + s.lat + "," + s.lng;
+    return '<div class="rides">' +
+      '<a class="ride go" href="' + uber + '" target="_blank" rel="noopener">Ride with Uber</a>' +
+      '<a class="ride" href="' + maps + '" target="_blank" rel="noopener">Directions</a>' +
+      '<button type="button" class="ride" data-copy="' + esc(addr) + '">Copy address</button>' +
+      (compact ? "" : '<span class="ridenote">Uber drops you at the door. Bolt has no link like this — ' +
+        "copy the address and paste it in.</span>") +
+      "</div>";
   }
 
   /* --- clock maths, all in Budapest local time --- */
@@ -148,10 +189,22 @@
       if (c) toggle("stay", c.getAttribute("data-stay"));
     });
 
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-copy]");
+      if (!b) return;
+      var text = b.getAttribute("data-copy");
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+        .then(function () { toast("Copied — paste it into Bolt."); })
+        .catch(function () { toast(text); });
+    });
+
     window.addEventListener("hashchange", function () {
       var v = (location.hash || "").replace("#/", "");
       if (v && v !== view) go(v, true);
     });
+
+    syncTopbar();
+    window.addEventListener("resize", syncTopbar);
   }
 
   function openGate() {
@@ -349,6 +402,7 @@
       return '<div class="route' + (i === 0 ? "" : " alt") + '">' +
         '<div class="rhead"><b>' + esc(r.label) + '</b><span class="badge">' + esc(r.badge) + "</span></div>" +
         '<ul class="steps">' + steps + lands + "</ul>" +
+        (r.ride ? rideLinks(false) : "") +
         '<div class="rcost">' + esc(r.cost) + "</div>" +
         (!running
           ? '<div class="rwarn"><b>Not running at that hour.</b> ' + esc(A.night_note) + "</div>"
@@ -434,8 +488,9 @@
         '<div class="row"><div class="av">↓</div><div class="nm"><b>Check in</b><small>' + esc(s.checkin) + "</small></div></div>" +
         '<div class="row"><div class="av">↑</div><div class="nm"><b>Check out</b><small>' + esc(s.checkout) + "</small></div></div>" +
       "</div>" +
-      '<div class="links"><a href="' + esc(s.map) + '" target="_blank" rel="noopener">Open in Maps</a>' +
-      '<a href="#/stay">Details &amp; vote</a></div>';
+      rideLinks(true) +
+      '<div class="links"><a href="#/stay">Details &amp; vote</a>' +
+      '<a href="' + esc(s.link) + '" target="_blank" rel="noopener">Listing</a></div>';
   }
 
   function renderSchedule() {
@@ -481,7 +536,8 @@
   function venueCard(it) {
     var on = sel.picks[it.id] ? " on" : "";
     return '<div class="card' + on + '" id="c-' + esc(it.id) + '" data-pick="' + esc(it.id) + '">' +
-      '<img src="images/' + esc(it.id) + '.jpg" alt="" loading="lazy">' +
+      '<img src="images/' + esc(it.id) + '.jpg" alt="" loading="lazy" ' +
+        'onerror="BPnoPhoto(this,\'' + esc((it.name || "?").slice(0, 1).toUpperCase()) + '\')">' +
       '<div class="pad">' +
         "<h4>" + esc(it.name) + "</h4>" +
         '<div class="area">' + esc(it.area) + (it.illustrative ? " · photo illustrative" : "") + "</div>" +
@@ -653,6 +709,7 @@
           '<div class="kv"><span class="k">Metro</span><span>' + esc(s.metro) + "</span></div>" +
           '<div class="kv"><span class="k">In / out</span><span>' + esc(s.checkin) + " → " + esc(s.checkout) + "</span></div>" +
           "<ul class=\"perks\">" + s.perks.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>" +
+          rideLinks(false) +
           '<div class="links">' +
             '<a href="' + esc(s.link) + '" target="_blank" rel="noopener">Listing</a>' +
             '<a href="' + esc(s.map) + '" target="_blank" rel="noopener">Maps</a>' +

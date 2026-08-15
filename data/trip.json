@@ -74,9 +74,9 @@
       "name": "Phuong",
       "short": "Phuong",
       "initial": "P",
-      "status": "unconfirmed",
-      "flight_status": "none",
-      "note": "Not confirmed yet — may not make this one.",
+      "status": "coming",
+      "flight_status": "pending",
+      "note": "Flight still to come.",
       "flights": []
     },
     {
@@ -176,6 +176,9 @@
       ],
       "link": "https://www.airbnb.com/rooms/1529617600949626894",
       "map": "https://www.google.com/maps/search/?api=1&query=Meder+utca+9%2C+Budapest",
+      "lat": 47.5496678,
+      "lng": 19.0680519,
+      "full_address": "Meder u. 9, 1138 Budapest, Hungary",
       "note": "The working assumption until the vote closes."
     },
     "vote": {
@@ -223,15 +226,16 @@
       },
       {
         "id": "taxi",
-        "label": "Bolt or Főtaxi",
+        "label": "Uber, Bolt or Főtaxi",
         "badge": "Door to door",
         "cost": "~€25–35 the car, split four ways",
         "total_min": 40,
         "window": [0, 24],
+        "ride": true,
         "steps": [
-          { "min": 40, "text": "Straight to the dock at Meder u. 9. Főtaxi is the official airport rank; Bolt pickup is signposted from the terminal." }
+          { "min": 40, "text": "Straight to the dock at Meder u. 9. Főtaxi is the official airport rank, right outside arrivals; Uber and Bolt pickup are signposted from the terminal." }
         ],
-        "warning": "The only sane option late at night, and cheap if you land together and share."
+        "warning": "The only sane option late at night, and cheap if you land together and share. Uber runs in Budapest through Főtaxi, so the car is a regulated yellow taxi at the regulated fare — same price as everyone else, just a nicer app."
       }
     ],
     "night_note": "Landing after ~22:30, the metro is closing (last M3 ~23:20). 200E runs 24 h but terminates at Határ út overnight and you'd be stitching night buses together at 01:00 with luggage. Take a Bolt."
