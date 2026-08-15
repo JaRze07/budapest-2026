@@ -139,6 +139,8 @@ window.BPnoPhoto = function (img, letter) {
 
     wireChrome();
     await store.load();
+    store.listen();
+    store.onChange(onRemoteChange);
 
     me = store.me();
     if (me && CFG.names.indexOf(me) === -1) me = null;
@@ -252,6 +254,25 @@ window.BPnoPhoto = function (img, letter) {
     renderInfo();
     paintWho();
     renderSummary();
+    updateBar();
+    customCount = store.state.customs.length;
+  }
+
+  /* Somebody else voted. Repaint the shared parts without disturbing whatever
+     this person is in the middle of selecting. */
+  var customCount = 0;
+  function onRemoteChange() {
+    if (!me) return;
+    if (store.state.customs.length !== customCount) {
+      customCount = store.state.customs.length;
+      renderPicks();
+    }
+    paintWho();
+    renderSummary();
+    renderClash();
+    renderArrivals();
+    renderStay();
+    el("submittedLine").textContent = submittedLine();
     updateBar();
   }
 
@@ -608,8 +629,8 @@ window.BPnoPhoto = function (img, letter) {
     paintWho();
     updateBar();
     toast(r.synced
-      ? "Added — everyone sees it once the sync lands. It's already ticked for you."
-      : "Added on your phone and ticked. Tell the group so it gets on their board too.", 4500);
+      ? "Added — it's on everyone's board now, and already ticked for you."
+      : "Added on your phone and ticked. It'll go up for the others next time you're online.", 4500);
   }
 
   function votersFor(id, kind) {
@@ -646,7 +667,7 @@ window.BPnoPhoto = function (img, letter) {
     var missing = CFG.names.filter(function (n) { return !store.state.picks[n]; });
     return voted.length + " of " + CFG.names.length + " in" +
       (missing.length ? " — waiting on " + missing.join(", ") : " — everyone's voted") +
-      (store.live ? "" : " · offline mode");
+      (store.live ? " · live" : " · offline, saved on this phone");
   }
 
   function renderSummary() {
@@ -816,8 +837,7 @@ window.BPnoPhoto = function (img, letter) {
     btn.textContent = "Sending…";
     var labels = labelsFor(kind);
 
-    var res = await store.saveVote(kind, me, ids, labels);
-    var when = store.state[kind][me].when;
+    var res = await store.saveVote(kind, me, ids);
 
     paintWho();
     renderSummary();
@@ -825,17 +845,10 @@ window.BPnoPhoto = function (img, letter) {
     el("submittedLine").textContent = submittedLine();
 
     if (res.synced) {
-      btn.textContent = "Syncing…";
-      toast("Sent — " + me + "'s " + (kind === "stay" ? "accommodation vote" : "picks") +
-            " are in. Takes about half a minute to show up for everyone.", 4500);
-      store.watchFor(kind, me, when, function () {
-        paintWho();
-        renderSummary();
-        renderClash();
-        el("submittedLine").textContent = submittedLine();
-        toast("Landed — everyone can see them now.", 2500);
-      });
-      setTimeout(function () { btn.disabled = false; updateBar(); }, 3000);
+      btn.textContent = "Sent ✓";
+      toast(me + "'s " + (kind === "stay" ? "accommodation vote" : "picks") +
+            " are in — everyone can see them now. Submitting again just replaces them.", 4000);
+      setTimeout(function () { btn.disabled = false; updateBar(); }, 1800);
     } else {
       btn.disabled = false;
       updateBar();

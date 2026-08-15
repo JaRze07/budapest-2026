@@ -20,13 +20,13 @@ python -m http.server 8000
 | Path | What it is |
 | --- | --- |
 | `index.html` | The whole app shell — four views, one page |
-| `assets/js/config.js` | Repo, names, and the sync token |
+| `assets/js/config.js` | Database URL and the four names |
 | `assets/js/store.js` | Reads/writes votes; falls back to local storage |
 | `assets/js/app.js` | Rendering and interaction |
 | `data/venues.json` | 33 venues, 6 categories. **Keep the `id` values** — votes reference them |
 | `data/trip.json` | People, flights, accommodation, airport routes, phrases, schedule |
-| `votes/all.json` | The shared result file. Written by the Action, read by the page |
-| `.github/workflows/collect.yml` | Vote collector |
+| `votes/all.json` | Offline fallback snapshot, used only if the database is unreachable |
+| `database.rules.json` | Server-side write rules for the database |
 
 ## Editing content
 
@@ -52,27 +52,40 @@ array is non-empty the Stay tab turns into a voting board with a submit bar.
 
 ## Vote syncing
 
-The page reads `votes/all.json` straight from GitHub. Writing needs a token, because a static page
-can't keep a secret and GitHub won't take an anonymous write.
+Votes live in a Firebase Realtime Database (GCP project `budapest-2026-trip`, region
+`europe-west1`), read and written over plain REST — no SDK, no key, no build step. A Server-Sent
+Events stream keeps open pages in sync, so a vote cast on a phone appears on everyone else's screen
+immediately.
 
-**Without a token** (how it ships): everyone sees the seeded votes, their own picks are saved on
-their phone and copied to the clipboard on submit so they can paste them into the chat. Nothing
-breaks, it just doesn't sync.
+There is no secret in the page and none is needed. The database is public-read, and
+`database.rules.json` constrains writes server-side:
 
-**With a token**: submitting fires a `repository_dispatch`; the Action checks the name against the
-four-person whitelist, merges into `votes/all.json` and commits. Takes about 30 seconds; the page
-polls and tells you when it lands.
+- only the four names may be written to
+- records must be exactly `{ids, when}` — any extra field is rejected
+- custom options are create-only
+- nothing can be deleted, including the root
 
-To turn it on, make a token at **github.com/settings/personal-access-tokens/new**:
+The worst anyone who finds the URL can do is cast a vote, which is what the name gate lets them do
+anyway. Verified by testing: writes as an unknown name, deletes, extra fields and a root wipe are
+all refused.
 
-- Fine-grained, *Only select repositories* → this repo
-- Repository permissions → **Contents: Read and write**
-- Expiration 30 days
+If the database is unreachable the page falls back to `votes/all.json` plus anything saved on the
+phone, and replays pending writes once it's back.
 
-Paste it into `token` in `assets/js/config.js`, commit, done.
+### Changing the rules
 
-The trade-off: that token sits in a public file. Anyone who finds it can write to this repo and
-nothing else. That's fine for a throwaway trip repo — **revoke it when you get home.**
+```
+gcloud auth print-access-token --impersonate-service-account=bp-admin@budapest-2026-trip.iam.gserviceaccount.com
+curl -X PUT "$DB/.settings/rules.json" -H "Authorization: Bearer $TOKEN" --data-binary @database.rules.json
+```
+
+### Tearing it down after the trip
+
+```
+gcloud projects delete budapest-2026-trip
+```
+
+That removes the database, the service account and everything else in one go.
 
 ## Credits
 

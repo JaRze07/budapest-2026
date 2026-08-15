@@ -1,0 +1,44 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+
+    "picks": {
+      "$name": {
+        ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
+        ".validate": "newData.hasChildren(['ids','when'])",
+        "ids": {
+          "$i": { ".validate": "newData.isString() && newData.val().length <= 24" }
+        },
+        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "stay": {
+      "$name": {
+        ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
+        ".validate": "newData.hasChildren(['ids','when'])",
+        "ids": {
+          "$i": { ".validate": "newData.isString() && newData.val().length <= 32" }
+        },
+        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "customs": {
+      "$id": {
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['id','name','by','cat'])",
+        "id": { ".validate": "newData.isString() && newData.val().length <= 24" },
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60" },
+        "note": { ".validate": "newData.isString() && newData.val().length <= 90" },
+        "by": { ".validate": "newData.val().matches(/^(Areeb|Nhi|Phuong|Jacek)$/)" },
+        "cat": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 20" },
+        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

@@ -1,8 +1,12 @@
 /* Budapest 2026 — storage layer.
 
-   Reads the shared vote file straight from GitHub. Writes go through a
-   repository_dispatch when a token is configured, and fall back to
-   this-phone-only storage plus a clipboard copy when it isn't. */
+   Votes live in a Firebase Realtime Database, read and written over plain
+   REST. No SDK, no key, no build step. A Server-Sent Events stream keeps
+   every open page in sync, so a vote cast on someone's phone shows up on
+   everyone else's screen straight away.
+
+   If the network is down, writes are kept on the phone and replayed on the
+   next successful load, and the bundled snapshot stands in for the read. */
 
 window.BP = window.BP || {};
 
@@ -12,46 +16,34 @@ BP.store = (function () {
   var LS_PENDING = "bp26.pending";
 
   var state = { picks: {}, stay: {}, customs: [] };
-  var synced = false;
+  var online = false;
+  var listeners = [];
+  var es = null;
 
-  /* ---------- local helpers ---------- */
+  /* ---------- local storage ---------- */
 
   function lsGet(k, fallback) {
-    try {
-      var v = localStorage.getItem(k);
-      return v ? JSON.parse(v) : fallback;
-    } catch (e) { return fallback; }
+    try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; }
+    catch (e) { return fallback; }
   }
-  function lsSet(k, v) {
-    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
-  }
+  function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 
-  function b64utf8(b64) {
-    var bin = atob(String(b64).replace(/\s/g, ""));
-    var bytes = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    return new TextDecoder("utf-8").decode(bytes);
-  }
-
-  function emptyState() { return { picks: {}, stay: {}, customs: [] }; }
+  /* ---------- shape ---------- */
 
   function normalise(raw) {
-    var s = emptyState();
+    var s = { picks: {}, stay: {}, customs: [] };
     if (!raw || typeof raw !== "object") return s;
-    // Tolerate the old flat shape ({ "Jacek": {ids:[]}, ... }) from the prototype.
-    if (!raw.picks && !raw.stay && !raw.customs) {
-      Object.keys(raw).forEach(function (n) {
-        if (raw[n] && raw[n].ids) s.picks[n] = raw[n];
-      });
-      return s;
-    }
     s.picks = raw.picks || {};
     s.stay = raw.stay || {};
-    s.customs = Array.isArray(raw.customs) ? raw.customs : [];
+    // Customs are an object keyed by id in the database, an array in the file.
+    var c = raw.customs;
+    s.customs = Array.isArray(c) ? c.slice()
+      : (c && typeof c === "object") ? Object.keys(c).map(function (k) { return c[k]; })
+      : [];
     return s;
   }
 
-  /* ---------- pending (this phone, not yet confirmed on GitHub) ---------- */
+  /* ---------- pending writes (this phone, not yet accepted by the server) ---------- */
 
   function pending() { return lsGet(LS_PENDING, {}); }
 
@@ -61,27 +53,20 @@ BP.store = (function () {
     p[kind][name] = record;
     lsSet(LS_PENDING, p);
   }
-
-  function clearPending(kind, name, when) {
+  function clearPending(kind, name) {
     var p = pending();
-    if (p[kind] && p[kind][name] && p[kind][name].when === when) {
-      delete p[kind][name];
-      lsSet(LS_PENDING, p);
-    }
+    if (p[kind]) { delete p[kind][name]; lsSet(LS_PENDING, p); }
   }
 
-  /** Local records win over the fetched file — they're either newer or identical. */
+  /** Anything still pending locally wins over what came back from the server. */
   function overlay(s) {
     var p = pending();
     ["picks", "stay"].forEach(function (kind) {
       var group = p[kind] || {};
       Object.keys(group).forEach(function (name) {
         var mine = group[name], theirs = s[kind][name];
-        if (!theirs || String(theirs.when || "") <= String(mine.when || "")) {
-          s[kind][name] = mine;
-        } else {
-          clearPending(kind, name, mine.when);
-        }
+        if (theirs && String(theirs.when || "") >= String(mine.when || "")) clearPending(kind, name);
+        else s[kind][name] = mine;
       });
     });
     (p.customs || []).forEach(function (c) {
@@ -90,131 +75,133 @@ BP.store = (function () {
     return s;
   }
 
+  function emit() { listeners.forEach(function (fn) { try { fn(state); } catch (e) {} }); }
+
   /* ---------- reading ---------- */
 
-  function apiUrl() {
-    return "https://api.github.com/repos/" + CFG.repo + "/contents/" +
-           CFG.votesPath + "?ref=" + encodeURIComponent(CFG.branch);
-  }
-  function rawUrl() {
-    return "https://raw.githubusercontent.com/" + CFG.repo + "/" + CFG.branch + "/" +
-           CFG.votesPath + "?t=" + Date.now();
-  }
-
-  async function fetchRemote() {
-    // 1. Authenticated Contents API — always fresh, no CDN lag.
-    if (CFG.token) {
-      try {
-        var r = await fetch(apiUrl(), {
-          headers: {
-            Authorization: "Bearer " + CFG.token,
-            Accept: "application/vnd.github+json"
-          },
-          cache: "no-store"
-        });
-        if (r.ok) {
-          var j = await r.json();
-          return JSON.parse(b64utf8(j.content));
-        }
-      } catch (e) { /* fall through */ }
-    }
-    // 2. raw.githubusercontent — public, cache-busted.
-    try {
-      var r2 = await fetch(rawUrl(), { cache: "no-store" });
-      if (r2.ok) return await r2.json();
-    } catch (e) { /* fall through */ }
-    // 3. The copy shipped with the page — works offline and on localhost.
-    try {
-      var r3 = await fetch(CFG.votesPath + "?t=" + Date.now(), { cache: "no-store" });
-      if (r3.ok) return await r3.json();
-    } catch (e) { /* fall through */ }
-    return null;
-  }
-
   async function load() {
-    var raw = await fetchRemote();
-    synced = raw !== null;
+    var raw = null;
+    try {
+      var r = await fetch(CFG.db + "/.json", { cache: "no-store" });
+      if (r.ok) { raw = await r.json(); online = true; }
+    } catch (e) { /* offline */ }
+
+    if (!online) {
+      try {
+        var f = await fetch(CFG.fallbackVotes + "?t=" + Date.now(), { cache: "no-store" });
+        if (f.ok) raw = await f.json();
+      } catch (e) { /* nothing to show but local */ }
+    }
+
     state = overlay(normalise(raw));
+    if (online) replayPending();
     return state;
+  }
+
+  /** Push anything that failed to send last time. */
+  function replayPending() {
+    var p = pending();
+    ["picks", "stay"].forEach(function (kind) {
+      Object.keys(p[kind] || {}).forEach(function (name) {
+        put(kind + "/" + name, p[kind][name]).then(function (ok) {
+          if (ok) { clearPending(kind, name); }
+        });
+      });
+    });
+    (p.customs || []).forEach(function (c) {
+      put("customs/" + c.id, c).then(function (ok) {
+        if (!ok) return;
+        var q = pending();
+        q.customs = (q.customs || []).filter(function (x) { return x.id !== c.id; });
+        lsSet(LS_PENDING, q);
+      });
+    });
+  }
+
+  /* ---------- live updates ---------- */
+
+  function setPath(path, data) {
+    var parts = path.split("/").filter(Boolean);
+    if (!parts.length) { state = overlay(normalise(data)); return; }
+    var raw = { picks: state.picks, stay: state.stay, customs: {} };
+    state.customs.forEach(function (c) { raw.customs[c.id] = c; });
+    var node = raw;
+    for (var i = 0; i < parts.length - 1; i++) {
+      if (typeof node[parts[i]] !== "object" || node[parts[i]] === null) node[parts[i]] = {};
+      node = node[parts[i]];
+    }
+    var last = parts[parts.length - 1];
+    if (data === null) delete node[last]; else node[last] = data;
+    state = overlay(normalise(raw));
+  }
+
+  function listen() {
+    if (!window.EventSource || !online) return;
+    try {
+      es = new EventSource(CFG.db + "/.json");
+      var handle = function (e) {
+        try {
+          var msg = JSON.parse(e.data);
+          setPath(msg.path || "/", msg.data);
+          emit();
+        } catch (err) { /* keepalives and nulls */ }
+      };
+      es.addEventListener("put", handle);
+      es.addEventListener("patch", handle);
+      es.onerror = function () { /* EventSource reconnects on its own */ };
+    } catch (e) { /* streaming unavailable; the page still works */ }
   }
 
   /* ---------- writing ---------- */
 
-  async function dispatch(payload) {
-    if (!CFG.token) return false;
-    var r = await fetch("https://api.github.com/repos/" + CFG.repo + "/dispatches", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + CFG.token,
-        Accept: "application/vnd.github+json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ event_type: "vote", client_payload: payload })
-    });
-    if (!r.ok) throw new Error("dispatch " + r.status);
-    return true;
+  async function put(path, body) {
+    try {
+      var r = await fetch(CFG.db + "/" + path + ".json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      return r.ok;
+    } catch (e) { return false; }
   }
 
   /**
-   * Save a vote. Always lands locally first so the UI never lies about
-   * what you picked; then tries to sync.
-   * kind: "picks" | "stay"
-   * Resolves { synced: bool, reason?: string }
+   * kind: "picks" | "stay". Lands locally first so the UI never lies about
+   * what you picked, then goes to the server.
    */
-  async function saveVote(kind, name, ids, labels) {
+  async function saveVote(kind, name, ids) {
     var record = { ids: ids.slice(), when: new Date().toISOString() };
-    setPending(kind, name, record);
     state[kind][name] = record;
+    setPending(kind, name, record);
 
-    try {
-      var ok = await dispatch({ kind: kind, name: name, ids: ids, picks: labels || [], when: record.when });
-      return { synced: ok, reason: ok ? null : "no-token" };
-    } catch (e) {
-      return { synced: false, reason: "failed" };
-    }
+    var ok = await put(kind + "/" + name, record);
+    if (ok) clearPending(kind, name);
+    return { synced: ok };
   }
 
   async function addCustom(item) {
-    var p = pending();
-    p.customs = p.customs || [];
-    p.customs.push(item);
-    lsSet(LS_PENDING, p);
     state.customs.push(item);
-    try {
-      var ok = await dispatch({ kind: "custom", name: item.by, custom: item, when: item.when });
-      return { synced: ok };
-    } catch (e) {
-      return { synced: false };
-    }
-  }
+    var p = pending();
+    p.customs = (p.customs || []).concat([item]);
+    lsSet(LS_PENDING, p);
 
-  /** After a dispatch the Action needs ~30 s. Poll until the file catches up. */
-  function watchFor(kind, name, when, onLanded) {
-    var tries = 0;
-    var t = setInterval(async function () {
-      tries++;
-      if (tries > 14) { clearInterval(t); return; }
-      var raw = await fetchRemote();
-      var s = normalise(raw);
-      var rec = s[kind] && s[kind][name];
-      if (rec && String(rec.when) === String(when)) {
-        clearInterval(t);
-        clearPending(kind, name, when);
-        state = overlay(s);
-        if (onLanded) onLanded(state);
-      }
-    }, 5000);
-    return function () { clearInterval(t); };
+    var ok = await put("customs/" + item.id, item);
+    if (ok) {
+      var q = pending();
+      q.customs = (q.customs || []).filter(function (x) { return x.id !== item.id; });
+      lsSet(LS_PENDING, q);
+    }
+    return { synced: ok };
   }
 
   return {
     get state() { return state; },
-    get synced() { return synced; },
-    get live() { return !!CFG.token; },
+    get live() { return online; },
     load: load,
+    listen: listen,
+    onChange: function (fn) { listeners.push(fn); },
     saveVote: saveVote,
     addCustom: addCustom,
-    watchFor: watchFor,
     me: function () { return lsGet(LS_ME, null); },
     setMe: function (n) { lsSet(LS_ME, n); },
     clearMe: function () { try { localStorage.removeItem(LS_ME); } catch (e) {} }
