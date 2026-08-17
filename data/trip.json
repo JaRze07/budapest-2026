@@ -183,9 +183,72 @@
     },
     "vote": {
       "open": true,
-      "status": "awaiting-options",
-      "blurb": "Options are being collected. When they land they'll show up here and everyone votes — same as the picks board.",
-      "options": []
+      "status": "open",
+      "blurb": "Five options, all real places, all a short walk from the bar strip except the boat. Tick everything you'd be happy with — not just your favourite. Prices move daily, so every card has a live price check for our exact dates.",
+      "note": "Researched, not booked. Airbnb has no public API and Booking's needs an affiliate account, so nothing here can confirm live availability — the price buttons open our exact dates so you can see for yourself in one tap.",
+      "options": [
+        {
+          "id": "yacht",
+          "name": "Prestige Yacht Resort",
+          "area": "Meder u. 9 · District XIII",
+          "desc": "The current plan. A private houseboat with a rooftop hot tub, sun deck and full kitchen, breakfast on the dock.",
+          "meta": "Sleeps 6 · hot tub · 25–30 min to the bars · last metro 23:20, so taxis home",
+          "walk": null,
+          "transit": "25–30 min by M3",
+          "lat": 47.5496678,
+          "lng": 19.0680519,
+          "link": "https://www.airbnb.com/rooms/1529617600949626894",
+          "why": "Nothing else on this list is a boat with a hot tub. The cost is that every night out ends in a car."
+        },
+        {
+          "id": "continental",
+          "name": "Continental Hotel Budapest",
+          "area": "Dohány u. 42–44 · District VII",
+          "desc": "Four-star on the edge of the Jewish Quarter with a rooftop pool, sauna and spa. The one that keeps the water and drops the commute.",
+          "meta": "4★ · rooftop pool + spa · 4 min walk to Szimpla",
+          "walk": 4,
+          "lat": 47.497116,
+          "lng": 19.066986,
+          "link": "https://www.booking.com/searchresults.html?ss=Continental+Hotel+Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=2&group_children=0",
+          "why": "The direct answer to the boat: you still get water and a deck, and you can walk home from Szimpla in four minutes."
+        },
+        {
+          "id": "bo33",
+          "name": "Bo33 Hotel Family & Suites",
+          "area": "Szövetség u. 33 · District VII",
+          "desc": "Quiet end of District VII. Family suites built to sleep four in one unit, with a small wellness area and a kitchenette.",
+          "meta": "Suites for 4 in one room · sauna · 12 min walk",
+          "walk": 12,
+          "lat": 47.501574,
+          "lng": 19.073196,
+          "link": "https://www.booking.com/searchresults.html?ss=Bo33+Hotel+Family+and+Suites+Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
+          "why": "Usually the best price per head here, and one suite for all of us beats two separate rooms."
+        },
+        {
+          "id": "rum",
+          "name": "Hotel Rum Budapest",
+          "area": "Királyi Pál u. 4 · District V",
+          "desc": "Design hotel a street back from the river with a well-known rooftop bar. Calmer than District VII without being far from it.",
+          "meta": "Rooftop bar · 10 min walk · near the Market Hall",
+          "walk": 10,
+          "lat": 47.490414,
+          "lng": 19.059137,
+          "link": "https://www.booking.com/searchresults.html?ss=Hotel+Rum+Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=2&group_children=0",
+          "why": "If you want to sleep somewhere that isn't directly above a bar but still walk everywhere."
+        },
+        {
+          "id": "flat",
+          "name": "A flat in District VII",
+          "area": "Jewish Quarter",
+          "desc": "One apartment, four beds, a kitchen and a living room instead of separate hotel rooms. Cheapest per head, and there's somewhere to sit that isn't a bed.",
+          "meta": "Usually the cheapest · pick one together from the search",
+          "walk": 5,
+          "lat": 47.4970,
+          "lng": 19.0630,
+          "link": "https://www.airbnb.com/s/Budapest--Hungary/homes?checkin=2026-08-28&checkout=2026-08-31&adults=4&room_types%5B%5D=Entire%20home%2Fapt",
+          "why": "Not one specific place — individual flats get booked and delisted constantly. Vote for the route, then we pick the actual flat together."
+        }
+      ]
     }
   },
 

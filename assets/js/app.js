@@ -54,24 +54,48 @@ window.BPnoPhoto = function (img, letter) {
     if (h) document.documentElement.style.setProperty("--topbar", h.offsetHeight + "px");
   }
 
-  /** Ride-hailing and directions, pre-filled with the boat's coordinates. */
+  /* Uber publishes a universal link that takes a destination; Bolt publishes
+     nothing equivalent and says so outright, so Bolt gets the address on the
+     clipboard instead — one paste into its destination box. */
+  function rideTo(lat, lng, name, addr) {
+    return {
+      uber: "https://m.uber.com/ul/?action=setPickup&pickup=my_location" +
+        "&dropoff%5Blatitude%5D=" + lat +
+        "&dropoff%5Blongitude%5D=" + lng +
+        "&dropoff%5Bnickname%5D=" + encodeURIComponent(name) +
+        (addr ? "&dropoff%5Bformatted_address%5D=" + encodeURIComponent(addr) : ""),
+      maps: "https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + lng
+    };
+  }
+
+  /** Full-width ride row — used for the accommodation. */
   function rideLinks(compact) {
     var s = TRIP.stay.current;
     if (!s.lat || !s.lng) return "";
     var addr = s.full_address || s.address;
-    var uber = "https://m.uber.com/ul/?action=setPickup&pickup=my_location" +
-      "&dropoff%5Blatitude%5D=" + s.lat +
-      "&dropoff%5Blongitude%5D=" + s.lng +
-      "&dropoff%5Bnickname%5D=" + encodeURIComponent(s.name) +
-      "&dropoff%5Bformatted_address%5D=" + encodeURIComponent(addr);
-    var maps = "https://www.google.com/maps/dir/?api=1&destination=" + s.lat + "," + s.lng;
+    var r = rideTo(s.lat, s.lng, s.name, addr);
     return '<div class="rides">' +
-      '<a class="ride go" href="' + uber + '" target="_blank" rel="noopener">Ride with Uber</a>' +
-      '<a class="ride" href="' + maps + '" target="_blank" rel="noopener">Directions</a>' +
-      '<button type="button" class="ride" data-copy="' + esc(addr) + '">Copy address</button>' +
-      (compact ? "" : '<span class="ridenote">Uber drops you at the door. Bolt has no link like this — ' +
-        "copy the address and paste it in.</span>") +
+      '<a class="ride go" href="' + r.uber + '" target="_blank" rel="noopener">Ride with Uber</a>' +
+      '<a class="ride" href="' + r.maps + '" target="_blank" rel="noopener">Directions</a>' +
+      '<button type="button" class="ride" data-copy="' + esc(addr) + '">Copy for Bolt</button>' +
+      (compact ? "" : '<span class="ridenote">Uber drops you at the door. Bolt publishes no link that ' +
+        "carries a destination, so copy the address and paste it into Bolt's box.</span>") +
       "</div>";
+  }
+
+  /** Compact ride row for a venue card. */
+  function venueRide(it) {
+    if (!it.lat || !it.lng) return "";
+    var addr = it.area + ", Budapest";
+    var r = rideTo(it.lat, it.lng, it.name, addr);
+    return '<span class="goto">' +
+      '<a class="mini" href="' + r.uber + '" target="_blank" rel="noopener" ' +
+        'title="Ride to ' + esc(it.name) + ' with Uber">Uber</a>' +
+      '<a class="mini" href="' + r.maps + '" target="_blank" rel="noopener" ' +
+        'title="Directions to ' + esc(it.name) + '">Map</a>' +
+      '<button type="button" class="mini" data-copy="' + esc(addr) + '" ' +
+        'title="Copy the address to paste into Bolt">Bolt</button>' +
+      "</span>";
   }
 
   /* --- clock maths, all in Budapest local time --- */
@@ -187,6 +211,7 @@ window.BPnoPhoto = function (img, letter) {
     // Delegated once — the containers persist, only their innerHTML changes.
     el("cats").addEventListener("click", onBoardClick);
     el("stayVote").addEventListener("click", function (e) {
+      if (e.target.closest("a, .mini")) return;
       var c = e.target.closest("[data-stay]");
       if (c) toggle("stay", c.getAttribute("data-stay"));
     });
@@ -565,7 +590,10 @@ window.BPnoPhoto = function (img, letter) {
         '<p class="desc">' + esc(it.desc) + "</p>" +
         '<p class="meta">' + esc(it.meta) + "</p>" +
         (it.key_fact ? '<p class="keyfact">' + esc(it.key_fact) + "</p>" : "") +
-        '<span class="pick" id="p-' + esc(it.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
+        '<div class="cardfoot">' +
+          '<span class="pick" id="p-' + esc(it.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
+          venueRide(it) +
+        "</div>" +
         '<div class="who" id="w-' + esc(it.id) + '"></div>' +
       "</div></div>";
   }
@@ -582,6 +610,8 @@ window.BPnoPhoto = function (img, letter) {
   }
 
   function onBoardClick(e) {
+    // The ride links sit inside a card that toggles on click — don't also vote.
+    if (e.target.closest("a, .mini")) return;
     var card = e.target.closest("[data-pick]");
     if (card) { toggle("picks", card.getAttribute("data-pick")); return; }
     var add = e.target.closest("[data-add]");
@@ -716,13 +746,14 @@ window.BPnoPhoto = function (img, letter) {
         "<p>Nothing to vote on yet. As soon as the shortlist is in, this turns into a board just like the picks page.</p></div>";
     } else {
       vbox.innerHTML = '<div class="sec-title">Vote</div>' +
+        (S.vote.note ? '<p class="sec-note">' + esc(S.vote.note) + "</p>" : "") +
         '<div class="grid">' + S.vote.options.map(stayCard).join("") + "</div>";
     }
 
     var s = S.current;
     el("stayCurrent").innerHTML =
       '<div class="stay-hero">' +
-        '<div class="sh"><span>' + esc(S.vote.options.length ? "Currently booked" : "The plan right now") + "</span><b>" +
+        '<div class="sh"><span>' + esc(S.vote.options.length ? "The incumbent, in detail" : "The plan right now") + "</span><b>" +
           esc(s.name) + "</b></div>" +
         '<div class="body">' +
           '<div class="kv"><span class="k">What</span><span>' + esc(s.kind) + ", sleeps " + s.sleeps + "</span></div>" +
@@ -740,14 +771,28 @@ window.BPnoPhoto = function (img, letter) {
 
   function stayCard(o) {
     var on = sel.stay[o.id] ? " on" : "";
+    var reach = o.walk ? o.walk + " min walk to the bars"
+              : o.transit ? o.transit + " to the bars" : "";
+    var r = (o.lat && o.lng) ? rideTo(o.lat, o.lng, o.name, o.area) : null;
+
     return '<div class="card' + on + '" id="c-' + esc(o.id) + '" data-stay="' + esc(o.id) + '">' +
       (o.image ? '<img src="' + esc(o.image) + '" alt="" loading="lazy">'
                : '<div class="ctile">' + esc((o.name || "?").slice(0, 1).toUpperCase()) + "</div>") +
       '<div class="pad"><h4>' + esc(o.name) + "</h4>" +
       '<div class="area">' + esc(o.area || "") + "</div>" +
+      (reach ? '<div class="dist' + (o.walk ? "" : " far") + '">' + esc(reach) + "</div>" : "") +
       (o.desc ? '<p class="desc">' + esc(o.desc) + "</p>" : "") +
       (o.meta ? '<p class="meta">' + esc(o.meta) + "</p>" : "") +
-      '<span class="pick" id="p-' + esc(o.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
+      (o.why ? '<p class="keyfact">' + esc(o.why) + "</p>" : "") +
+      (o.link ? '<a class="ride go pricebtn" href="' + esc(o.link) + '" target="_blank" rel="noopener">' +
+        (o.id === "flat" ? "Browse flats · our dates" : "Check price · our dates") + "</a>" : "") +
+      '<div class="cardfoot">' +
+        '<span class="pick" id="p-' + esc(o.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
+        (r ? '<span class="goto">' +
+          '<a class="mini" href="' + r.uber + '" target="_blank" rel="noopener">Uber</a>' +
+          '<a class="mini" href="' + r.maps + '" target="_blank" rel="noopener">Map</a>' +
+          "</span>" : "") +
+      "</div>" +
       '<div class="who" id="w-' + esc(o.id) + '"></div></div></div>';
   }
 

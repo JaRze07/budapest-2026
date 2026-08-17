@@ -27,7 +27,9 @@
       "ruin bar",
       "open daily",
       "cheap"
-     ]
+     ],
+     "lat": 47.496878,
+     "lng": 19.063217
     },
     {
      "id": "warmup",
@@ -38,7 +40,9 @@
      "tags": [
       "cocktails",
       "small venue"
-     ]
+     ],
+     "lat": 47.498387,
+     "lng": 19.064003
     },
     {
      "id": "jardin",
@@ -49,7 +53,9 @@
      "tags": [
       "cocktails",
       "courtyard"
-     ]
+     ],
+     "lat": 47.498088,
+     "lng": 19.059967
     },
     {
      "id": "eleszto",
@@ -61,7 +67,9 @@
       "craft beer",
       "value"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.48361,
+     "lng": 19.072567
     },
     {
      "id": "hops",
@@ -72,7 +80,9 @@
      "tags": [
       "craft beer"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.497239,
+     "lng": 19.062778
     },
     {
      "id": "bar360",
@@ -84,7 +94,9 @@
       "rooftop",
       "view"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.503737,
+     "lng": 19.061436
     }
    ]
   },
@@ -105,7 +117,9 @@
       "ticketed"
      ],
      "key_fact": "Sat 29 Aug 2026 is a confirmed Sparty date. Runs Saturdays only, Feb–Dec.",
-     "requirements": "Swimwear worn underneath, flip-flops, towel. Drinks run on a Recup deposit cup. Waterproof phone pouch recommended."
+     "requirements": "Swimwear worn underneath, flip-flops, towel. Drinks run on a Recup deposit cup. Waterproof phone pouch recommended.",
+     "lat": 47.518435,
+     "lng": 19.082522
     },
     {
      "id": "fogas",
@@ -117,7 +131,9 @@
       "club",
       "open daily"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.500648,
+     "lng": 19.065417
     },
     {
      "id": "a38",
@@ -129,7 +145,9 @@
       "club",
       "boat",
       "live music"
-     ]
+     ],
+     "lat": 47.476531,
+     "lng": 19.062938
     },
     {
      "id": "boatparty",
@@ -141,7 +159,9 @@
       "boat",
       "party"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.500536,
+     "lng": 19.046842
     },
     {
      "id": "doboz",
@@ -152,7 +172,9 @@
      "tags": [
       "club"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.497795,
+     "lng": 19.06675
     },
     {
      "id": "bppark",
@@ -165,7 +187,9 @@
       "ticketed"
      ],
      "key_fact": "Sat 29 Aug: Remember Parade — ATB, Ferry Corsten, Umek, Da Hool, Brooklyn Bounce. Directly clashes with Sparty.",
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.466753,
+     "lng": 19.077579
     },
     {
      "id": "akvarium",
@@ -177,7 +201,9 @@
       "live music",
       "terrace"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.498484,
+     "lng": 19.054203
     }
    ]
   },
@@ -195,7 +221,9 @@
      "tags": [
       "thermal bath",
       "landmark"
-     ]
+     ],
+     "lat": 47.518435,
+     "lng": 19.082522
     },
     {
      "id": "rudas",
@@ -208,7 +236,9 @@
       "rooftop",
       "historic"
      ],
-     "key_fact": "Co-ed Sat–Sun. On weekdays the Turkish section splits by gender: men Mon/Wed/Thu/Fri, women Tue."
+     "key_fact": "Co-ed Sat–Sun. On weekdays the Turkish section splits by gender: men Mon/Wed/Thu/Fri, women Tue.",
+     "lat": 47.489066,
+     "lng": 19.0478
     },
     {
      "id": "beerspa",
@@ -220,7 +250,9 @@
       "novelty",
       "booking required"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.518435,
+     "lng": 19.082522
     },
     {
      "id": "lukacs",
@@ -232,7 +264,9 @@
       "thermal bath",
       "value",
       "local"
-     ]
+     ],
+     "lat": 47.516702,
+     "lng": 19.036836
     },
     {
      "id": "palatinus",
@@ -243,7 +277,9 @@
      "tags": [
       "outdoor",
       "summer only"
-     ]
+     ],
+     "lat": 47.527643,
+     "lng": 19.045805
     }
    ]
   },
@@ -262,7 +298,9 @@
       "hungarian",
       "booking required"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.497509,
+     "lng": 19.062699
     },
     {
      "id": "fatmama",
@@ -274,7 +312,9 @@
       "group friendly",
       "live music"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.497759,
+     "lng": 19.062846
     },
     {
      "id": "vakvarju",
@@ -286,7 +326,9 @@
       "hungarian",
       "group friendly"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.49954,
+     "lng": 19.056161
     },
     {
      "id": "aranybastya",
@@ -298,7 +340,9 @@
       "fine dining",
       "view",
       "booking required"
-     ]
+     ],
+     "lat": 47.502012,
+     "lng": 19.034211
     },
     {
      "id": "market",
@@ -310,7 +354,9 @@
       "market",
       "daytime"
      ],
-     "key_fact": "Avoid the lángos stall at the Vámház körút entrance — poorly rated, hidden topping charges. Best Langos at Hunyadi tér market is the better call (closed Mondays)."
+     "key_fact": "Avoid the lángos stall at the Vámház körút entrance — poorly rated, hidden topping charges. Best Langos at Hunyadi tér market is the better call (closed Mondays).",
+     "lat": 47.486575,
+     "lng": 19.058994
     }
    ]
   },
@@ -329,7 +375,9 @@
       "booking required",
       "group"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.498409,
+     "lng": 19.059985
     },
     {
      "id": "karting",
@@ -342,7 +390,9 @@
       "group",
       "indoor"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.496827,
+     "lng": 19.069753
     },
     {
      "id": "escape",
@@ -355,7 +405,9 @@
       "group",
       "indoor"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.512023,
+     "lng": 19.049756
     },
     {
      "id": "bastion",
@@ -367,7 +419,9 @@
       "landmark",
       "free",
       "sunset"
-     ]
+     ],
+     "lat": 47.502305,
+     "lng": 19.0347
     },
     {
      "id": "margaret",
@@ -379,7 +433,9 @@
       "free",
       "outdoor",
       "near accommodation"
-     ]
+     ],
+     "lat": 47.527293,
+     "lng": 19.047867
     },
     {
      "id": "heroes",
@@ -390,7 +446,9 @@
      "tags": [
       "landmark",
       "free"
-     ]
+     ],
+     "lat": 47.514747,
+     "lng": 19.078718
     }
    ]
   },
@@ -409,7 +467,9 @@
       "adult",
       "free entry"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.498088,
+     "lng": 19.059967
     },
     {
      "id": "mynt",
@@ -421,7 +481,9 @@
       "adult",
       "free entry"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.498333,
+     "lng": 19.059658
     },
     {
      "id": "bluebird",
@@ -435,7 +497,9 @@
       "booking required"
      ],
      "key_fact": "This is the private-rooms venue, distinct from Blue Bird Karaoke Club nearby, which is open-mic.",
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.498088,
+     "lng": 19.059967
     },
     {
      "id": "lasiesta",
@@ -446,7 +510,9 @@
      "tags": [
       "party bar"
      ],
-     "illustrative": true
+     "illustrative": true,
+     "lat": 47.499508,
+     "lng": 19.060473
     }
    ]
   }
