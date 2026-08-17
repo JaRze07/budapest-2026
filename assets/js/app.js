@@ -383,8 +383,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=msxe136g").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=msxe136g").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=msxp3d7k").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=msxp3d7k").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -451,7 +451,10 @@ window.BPmissing = function (img, label) {
 
 
     // Delegated once — the containers persist, only their innerHTML changes.
+    // Both boards, not just the categories — proposals live in their own
+    // section, and without this nobody but the proposer could tick one.
     el("cats").addEventListener("click", onBoardClick);
+    el("proposed").addEventListener("click", onBoardClick);
     // Accommodation cards aren't click-to-toggle any more — the three rating
     // buttons are handled by the document-level delegate.
 
