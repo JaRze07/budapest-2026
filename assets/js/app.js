@@ -363,8 +363,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mswl114s").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mswl114s").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mswl9i3c").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mswl9i3c").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -483,7 +483,7 @@ window.BPmissing = function (img, label) {
       var del = e.target.closest("[data-del]");
       if (del) { removeFile(del.getAttribute("data-del")); return; }
 
-      if (e.target.id === "proposeBtn") { toggleProposeForm(true); return; }
+      if (e.target.id === "addTile") { toggleProposeForm(true); return; }
       if (e.target.id === "pCancel") { toggleProposeForm(false); return; }
       if (e.target.id === "pSave") { saveCustom(); return; }
 
@@ -1047,27 +1047,29 @@ window.BPmissing = function (img, label) {
     var list = store.state.customs.slice()
       .sort(function (a, b) { return String(a.when).localeCompare(String(b.when)); });
 
-    box.innerHTML =
-      '<div class="sec-title">Proposed activities</div>' +
-      '<p class="sec-note">' + (list.length
-        ? "Added by us rather than off the list below. Whoever proposes something counts as in on it automatically."
-        : "Nothing yet — anything any of us adds shows up here for everyone.") + "</p>" +
-      proposeForm() +
-      (list.length ? '<div class="grid">' + list.map(customCard).join("") + "</div>" : "");
+    // Built exactly like a category section — same sticky header, same grid.
+    // The only difference is that its last tile adds rather than votes.
+    box.innerHTML = "<section>" +
+      '<div class="cathead"><h3>Proposed activities</h3><span>' +
+        (list.length ? list.length + " added by us" : "add your own") + "</span></div>" +
+      '<p class="catnote">Anything we put forward ourselves rather than off the lists below. ' +
+      "Whoever proposes something counts as in on it.</p>" +
+      '<div class="grid">' + list.map(customCard).join("") + addTile() + "</div>" +
+    "</section>";
   }
 
-  /* The only place anything can be added. It used to sit at the end of every
-     category, which put six identical buttons on the page. */
+  /* The one place anything can be added. It used to sit at the end of every
+     category, which put six identical tiles on the page. */
   var proposeOpen = false;
 
-  function proposeForm() {
+  function addTile() {
     if (!proposeOpen) {
-      return '<button type="button" class="btn big proposebtn" id="proposeBtn">+ Propose something</button>';
+      return '<button type="button" class="addcard" id="addTile">+ Propose something</button>';
     }
     var cats = (VENUES.categories || []).map(function (c, i) {
       return '<option value="' + i + '">' + esc(c.title) + "</option>";
     }).join("");
-    return '<div class="proposeform">' +
+    return '<div class="addcard open">' +
       '<input id="pName" maxlength="60" placeholder="What are you suggesting?">' +
       '<input id="pNote" maxlength="90" placeholder="Where, price, why — optional">' +
       '<select id="pCat">' + cats + "</select>" +
