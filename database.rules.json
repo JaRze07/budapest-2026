@@ -108,6 +108,21 @@
           ".validate": false
         }
       }
+    },
+    "final": {
+      "$name": {
+        ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
+        ".validate": "newData.hasChildren(['when'])",
+        "id": {
+          ".validate": "newData.isString() && newData.val().length <= 32"
+        },
+        "when": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
     }
   }
 }

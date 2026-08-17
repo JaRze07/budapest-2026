@@ -383,8 +383,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mswm9g2c").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mswm9g2c").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=msx4pnlj").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=msx4pnlj").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -507,6 +507,9 @@ window.BPmissing = function (img, label) {
 
       var hy = e.target.closest("[data-hype]");
       if (hy) { setHype(+hy.getAttribute("data-hype")); return; }
+
+      var fin = e.target.closest("[data-final]");
+      if (fin) { setFinal(fin.getAttribute("data-final")); return; }
 
       var sr = e.target.closest("[data-rate]");
       if (sr) { setStay(sr.getAttribute("data-opt"), sr.getAttribute("data-rate")); return; }
@@ -1230,6 +1233,7 @@ window.BPmissing = function (img, label) {
       });
     }
     updateBar();
+    renderShortlist();
     queueSave("stay");
   }
 
@@ -1369,7 +1373,97 @@ window.BPmissing = function (img, label) {
 
   /* ================= STAY ================= */
 
+  /* Anything one person has vetoed is out, however much everyone else likes it.
+     What's left gets one final choice each. Recomputed from whatever is in the
+     store, so it follows every rating change without being told. */
+  function shortlist() {
+    var stay = store.state.stay || {};
+    // Your own verdicts come from what's on screen, not from what's saved —
+    // otherwise the shortlist lags your taps by the length of the save debounce.
+    var verdict = function (id, n) {
+      if (n === me) return sel.stay[id] || null;
+      return (stay[n] && stay[n].r && stay[n].r[id]) || null;
+    };
+    var raters = CFG.names.filter(function (n) {
+      return n === me ? Object.keys(sel.stay).length : (stay[n] && stay[n].r);
+    });
+
+    var alive = (TRIP.stay.vote.options || [])
+      .filter(function (o) {
+        return !raters.some(function (n) { return verdict(o.id, n) === "no"; });
+      })
+      .map(function (o) {
+        return {
+          o: o,
+          yes: raters.filter(function (n) { return verdict(o.id, n) === "yes"; }),
+          ok: raters.filter(function (n) { return verdict(o.id, n) === "ok"; })
+        };
+      })
+      .sort(function (a, b) { return (b.yes.length - a.yes.length) || (b.ok.length - a.ok.length); });
+
+    return { alive: alive, raters: raters, out: (TRIP.stay.vote.options || []).length - alive.length };
+  }
+
+  function renderShortlist() {
+    var box = el("stayTop");
+    if (!box) return;
+    var s = shortlist();
+    var finals = store.state.final || {};
+
+    if (!s.raters.length) {
+      box.innerHTML = "<section>" +
+        '<div class="cathead"><h3>The shortlist</h3><span>waiting on votes</span></div>' +
+        '<p class="catnote">Once anyone rates the places below, everything with a ' +
+        "<b>No</b> against it drops out and the survivors appear here to choose between.</p></section>";
+      return;
+    }
+
+    var rows = s.alive.map(function (x) {
+      var pickedBy = CFG.names.filter(function (n) { return finals[n] && finals[n].id === x.o.id; });
+      var mine = finals[me] && finals[me].id === x.o.id;
+      return '<div class="srow' + (mine ? " mine" : "") + '">' +
+        '<div class="sname">' +
+          "<b>" + esc(x.o.name) + "</b>" +
+          "<small>" + esc(x.o.area) + " · " + esc(x.o.est || "") +
+            (x.o.suits ? " · for " + x.o.suits : "") + "</small>" +
+          '<div class="verdicts">' +
+            x.yes.map(function (n) { return '<span class="v yes">' + esc(n) + "</span>"; }).join("") +
+            x.ok.map(function (n) { return '<span class="v ok">' + esc(n) + "</span>"; }).join("") +
+          "</div>" +
+          (pickedBy.length
+            ? '<div class="pickedby">Picked by <b>' + esc(pickedBy.join(", ")) + "</b></div>"
+            : "") +
+        "</div>" +
+        '<button type="button" class="pickone' + (mine ? " on" : "") +
+          '" data-final="' + esc(x.o.id) + '" title="Make this my one pick">' +
+          (mine ? "★" : "☆") + "</button>" +
+      "</div>";
+    }).join("");
+
+    var undecided = CFG.names.filter(function (n) { return !(finals[n] && finals[n].id); });
+
+    box.innerHTML = "<section>" +
+      '<div class="cathead"><h3>The shortlist</h3><span>' +
+        s.alive.length + " left · " + s.out + " vetoed</span></div>" +
+      '<p class="catnote">Nobody has said <b>No</b> to these. ' +
+        '<span class="v yes">green</span> likes it, <span class="v ok">amber</span> can do. ' +
+        "Tap a star to make one of them your single pick" +
+        (undecided.length ? " — still to choose: " + esc(undecided.join(", ")) : " — everyone has chosen") +
+      ".</p>" +
+      (s.alive.length ? '<div class="short">' + rows + "</div>"
+        : '<p class="sec-note">Everything has a No against it. Somebody needs to soften.</p>') +
+    "</section>";
+  }
+
+  async function setFinal(id) {
+    if (!me) return;
+    var cur = store.state.final[me] && store.state.final[me].id;
+    await store.saveFinal(me, cur === id ? "" : id);
+    renderShortlist();
+  }
+
   function renderStay() {
+    renderShortlist();
     var S = TRIP.stay;
     el("stayBlurb").textContent = S.vote.blurb;
 

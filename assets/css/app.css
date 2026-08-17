@@ -1067,6 +1067,48 @@ nav.tabs button .dot {
   padding: 3px 9px;
   border-radius: 999px;
 }
+/* ---------- shortlist ---------- */
+
+.short { margin-top: 12px; border: 1px solid var(--line); background: var(--white); }
+.srow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+.srow + .srow { border-top: 1px solid var(--line); }
+.srow.mine { background: #F2FBF5; }
+.sname { flex: 1; min-width: 0; }
+.sname b { font-family: var(--serif); font-weight: 400; font-size: 17px; display: block; line-height: 1.2; }
+.sname small { display: block; color: var(--slate); font-size: 11.5px; margin-top: 2px; }
+.verdicts { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+.v {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+.v.yes { background: var(--laser); color: var(--ink); }
+.v.ok { background: #E8C25A; color: var(--ink); }
+.pickedby { font-size: 11.5px; color: var(--brass-dim); margin-top: 6px; }
+.pickedby b { color: var(--ink); }
+.pickone {
+  flex: 0 0 auto;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: var(--slate);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  font-family: inherit;
+}
+.pickone:hover { border-color: var(--brass); color: var(--brass); }
+.pickone.on { background: var(--brass); border-color: var(--brass); color: var(--ink); }
+.catnote .v { margin: 0 1px; }
+
 /* ---------- three-way accommodation rating ---------- */
 
 .rate { display: flex; gap: 5px; margin-top: 10px; }

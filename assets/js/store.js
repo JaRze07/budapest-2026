@@ -15,7 +15,7 @@ BP.store = (function () {
   var LS_ME = "bp26.me";
   var LS_PENDING = "bp26.pending";
 
-  var state = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, customs: [] };
+  var state = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, customs: [] };
   var online = false;
   var listeners = [];
   var es = null;
@@ -31,13 +31,14 @@ BP.store = (function () {
   /* ---------- shape ---------- */
 
   function normalise(raw) {
-    var s = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, customs: [] };
+    var s = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, customs: [] };
     if (!raw || typeof raw !== "object") return s;
     s.picks = raw.picks || {};
     s.stay = raw.stay || {};
     s.hype = raw.hype || {};
     s.files = raw.files || {};
     s.assign = raw.assign || {};
+    s.final = raw.final || {};
     // Customs are an object keyed by id in the database, an array in the file.
     var c = raw.customs;
     s.customs = Array.isArray(c) ? c.slice()
@@ -64,7 +65,7 @@ BP.store = (function () {
   /** Anything still pending locally wins over what came back from the server. */
   function overlay(s) {
     var p = pending();
-    ["picks", "stay", "hype"].forEach(function (kind) {
+    ["picks", "stay", "hype", "final"].forEach(function (kind) {
       var group = p[kind] || {};
       Object.keys(group).forEach(function (name) {
         var mine = group[name], theirs = s[kind][name];
@@ -104,7 +105,7 @@ BP.store = (function () {
   /** Push anything that failed to send last time. */
   function replayPending() {
     var p = pending();
-    ["picks", "stay", "hype"].forEach(function (kind) {
+    ["picks", "stay", "hype", "final"].forEach(function (kind) {
       Object.keys(p[kind] || {}).forEach(function (name) {
         put(kind + "/" + name, p[kind][name]).then(function (ok) {
           if (ok) { clearPending(kind, name); }
@@ -126,7 +127,7 @@ BP.store = (function () {
   function setPath(path, data) {
     var parts = path.split("/").filter(Boolean);
     if (!parts.length) { state = overlay(normalise(data)); return; }
-    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, files: state.files, assign: state.assign, customs: {} };
+    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, files: state.files, assign: state.assign, final: state.final, customs: {} };
     state.customs.forEach(function (c) { raw.customs[c.id] = c; });
     var node = raw;
     for (var i = 0; i < parts.length - 1; i++) {
@@ -215,6 +216,10 @@ BP.store = (function () {
   function saveStay(name, r) {
     return saveRecord("stay", name, { r: r });
   }
+  /** One final choice each. An empty id means they have unpicked. */
+  function saveFinal(name, id) {
+    return saveRecord("final", name, { id: id || "" });
+  }
   /** level: index into TRIP.hype.levels */
   function saveHype(name, level) {
     return saveRecord("hype", name, { level: level });
@@ -247,6 +252,7 @@ BP.store = (function () {
     deleteFile: deleteFile,
     assignSlot: assignSlot,
     saveHype: saveHype,
+    saveFinal: saveFinal,
     addCustom: addCustom,
     me: function () { return lsGet(LS_ME, null); },
     setMe: function (n) { lsSet(LS_ME, n); },
