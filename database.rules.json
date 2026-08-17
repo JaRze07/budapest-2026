@@ -2,76 +2,111 @@
   "rules": {
     ".read": true,
     ".write": false,
-
     "test": {
       ".read": true,
       ".write": true
     },
-
     "picks": {
       "$name": {
         ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
-        ".validate": "newData.hasChildren(['ids','when'])",
+        ".validate": "newData.hasChildren(['when'])",
         "ids": {
-          "$i": { ".validate": "newData.isString() && newData.val().length <= 24" }
+          "$i": {
+            ".validate": "newData.isString() && newData.val().length <= 24"
+          }
         },
-        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
-        "$other": { ".validate": false }
+        "when": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     },
-
     "stay": {
       "$name": {
         ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
-        ".validate": "newData.hasChildren(['r','when'])",
+        ".validate": "newData.hasChildren(['when'])",
         "r": {
-          "$opt": { ".validate": "newData.isString() && newData.val().matches(/^(yes|ok|no)$/)" }
+          "$opt": {
+            ".validate": "newData.isString() && newData.val().matches(/^(yes|ok|no)$/)"
+          }
         },
-        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
-        "$other": { ".validate": false }
+        "when": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     },
-
     "hype": {
       "$name": {
         ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
         ".validate": "newData.hasChildren(['level','when'])",
-        "level": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 5" },
-        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
-        "$other": { ".validate": false }
+        "level": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 5"
+        },
+        "when": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     },
-
     "files": {
       "$id": {
         ".write": true,
         ".validate": "newData.hasChildren(['data','by','when'])",
-        "data": { ".validate": "newData.isString() && newData.val().beginsWith('data:image/') && newData.val().length <= 700000" },
-        "name": { ".validate": "newData.isString() && newData.val().length <= 80" },
-        "by": { ".validate": "newData.val().matches(/^(Areeb|Nhi|Phuong|Jacek)$/)" },
-        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
-        "$other": { ".validate": false }
+        "data": {
+          ".validate": "newData.isString() && newData.val().beginsWith('data:image/') && newData.val().length <= 700000"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 80"
+        },
+        "by": {
+          ".validate": "newData.val().matches(/^(Areeb|Nhi|Phuong|Jacek)$/)"
+        },
+        "when": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     },
-
     "assign": {
       "$slot": {
         ".write": "$slot.matches(/^(nhiBefore|nhiAfter)$/)",
         ".validate": "newData.isString() && newData.val().length <= 24"
       }
     },
-
     "customs": {
       "$id": {
         ".write": "!data.exists() && newData.exists()",
         ".validate": "newData.hasChildren(['id','name','by','cat'])",
-        "id": { ".validate": "newData.isString() && newData.val().length <= 24" },
-        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60" },
-        "note": { ".validate": "newData.isString() && newData.val().length <= 90" },
-        "by": { ".validate": "newData.val().matches(/^(Areeb|Nhi|Phuong|Jacek)$/)" },
-        "cat": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 20" },
-        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
-        "$other": { ".validate": false }
+        "id": {
+          ".validate": "newData.isString() && newData.val().length <= 24"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60"
+        },
+        "note": {
+          ".validate": "newData.isString() && newData.val().length <= 90"
+        },
+        "by": {
+          ".validate": "newData.val().matches(/^(Areeb|Nhi|Phuong|Jacek)$/)"
+        },
+        "cat": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 20"
+        },
+        "when": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     }
   }

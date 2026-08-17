@@ -924,6 +924,25 @@ main {
 }
 .submitbar .count { color: var(--paper); font-size: 13px; }
 .submitbar .count b { color: var(--laser); font-size: 16px; }
+.savestate {
+  font-size: 12px;
+  color: var(--mist);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.savestate::before {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  flex: 0 0 auto;
+}
+.savestate.pending::before, .savestate.saving::before { background: var(--brass); }
+.savestate.saved { color: var(--laser); }
+.savestate.saved::before { background: var(--laser); }
+.savestate.failed { color: #F0806A; }
+.savestate.failed::before { background: #F0806A; }
 
 nav.tabs {
   position: fixed;

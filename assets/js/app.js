@@ -383,8 +383,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mswliqpv").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mswliqpv").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mswltzf3").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mswltzf3").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -449,7 +449,6 @@ window.BPmissing = function (img, label) {
       renderSummary();
     });
 
-    el("sendBtn").addEventListener("click", submit);
 
     // Delegated once — the containers persist, only their innerHTML changes.
     el("cats").addEventListener("click", onBoardClick);
@@ -1156,6 +1155,64 @@ window.BPmissing = function (img, label) {
     if (c) c.classList.toggle("on", !!sel[kind][id]);
     if (p) p.textContent = sel[kind][id] ? "✓ In" : "+ I'm in";
     updateBar();
+    queueSave(kind);
+  }
+
+  /* Every tap writes. Debounced, because tapping through a category fires a
+     dozen changes a second and each one would otherwise be its own request —
+     and out-of-order replies could land an older selection last. */
+  var saveTimer = null, savingKind = null, saveInFlight = false, dirty = false;
+
+  function queueSave(kind) {
+    savingKind = kind;
+    dirty = true;
+    setSaveState("pending");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(flushSave, 700);
+  }
+
+  async function flushSave() {
+    if (!me || !savingKind) return;
+    if (saveInFlight) return;          // the running loop will pick the change up
+    saveInFlight = true;
+
+    // Loop rather than return: a tap during the request sets `dirty` again,
+    // and the last state on screen has to be the last state written.
+    while (dirty) {
+      dirty = false;
+      setSaveState("saving");
+      var res = savingKind === "stay"
+        ? await store.saveStay(me, sel.stay)
+        : await store.saveVote("picks", me, Object.keys(sel.picks));
+      if (!res.synced) {
+        saveInFlight = false;
+        setSaveState("failed");
+        return;
+      }
+    }
+    saveInFlight = false;
+    setSaveState("saved");
+
+    paintWho();
+    renderSummary();
+    renderClash();
+    el("submittedLine").textContent = submittedLine();
+  }
+
+  function setSaveState(s) {
+    var e = el("saveState");
+    if (!e) return;
+    e.className = "savestate " + s;
+    e.textContent = s === "pending" ? "…"
+      : s === "saving" ? "Saving…"
+      : s === "failed" ? "Not saved — offline?"
+      : "Saved";
+    if (s === "saved") {
+      clearTimeout(e._h);
+      e._h = setTimeout(function () {
+        if (e.textContent === "Saved") { e.className = "savestate"; e.textContent = "Saved as you go"; }
+      }, 2200);
+    }
   }
 
   /** Accommodation is a three-way call, not a tick: No / Can do / I like this. */
@@ -1173,6 +1230,7 @@ window.BPmissing = function (img, label) {
       });
     }
     updateBar();
+    queueSave("stay");
   }
 
   async function saveCustom() {
@@ -1469,8 +1527,6 @@ window.BPmissing = function (img, label) {
     var total = kind === "stay" ? TRIP.stay.vote.options.length : 0;
     el("pickCount").textContent = kind === "stay" ? n + " / " + total : n;
     el("pickWord").textContent = kind === "stay" ? "rated" : "picked";
-    el("sendBtn").textContent = store.state[kind][me] ? "Update" : "Submit";
-    el("sendBtn").disabled = false;
   }
 
   function labelsFor(kind) {
@@ -1491,43 +1547,7 @@ window.BPmissing = function (img, label) {
     });
   }
 
-  async function submit() {
-    var kind = activeKind();
-    if (!kind || !me) return;
-    var ids = Object.keys(sel[kind]);
-    if (!ids.length) { toast(kind === "stay" ? "Rate at least one place first" : "Nothing picked yet"); return; }
 
-    var btn = el("sendBtn");
-    btn.disabled = true;
-    btn.textContent = "Sending…";
-    var labels = labelsFor(kind);
-
-    var res = kind === "stay"
-      ? await store.saveStay(me, sel.stay)
-      : await store.saveVote(kind, me, ids);
-
-    paintWho();
-    renderSummary();
-    renderClash();
-    el("submittedLine").textContent = submittedLine();
-
-    if (res.synced) {
-      btn.textContent = "Sent ✓";
-      toast(me + "'s " + (kind === "stay" ? "accommodation vote" : "picks") +
-            " are in — everyone can see them now. Submitting again just replaces them.", 4000);
-      setTimeout(function () { btn.disabled = false; updateBar(); }, 1800);
-    } else {
-      btn.disabled = false;
-      updateBar();
-      var text = "Budapest " + (kind === "stay" ? "accommodation" : "picks") + " — " + me + ": " + labels.join(", ");
-      try {
-        await navigator.clipboard.writeText(text);
-        toast("Saved on your phone and copied to the clipboard — paste it in the group chat.", 5500);
-      } catch (e) {
-        toast("Saved on your phone. Screenshot the green cards and send them to the chat.", 5000);
-      }
-    }
-  }
 
   boot();
 })();
