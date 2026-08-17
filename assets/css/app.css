@@ -707,6 +707,16 @@ main {
   padding: 8px 12px;
   font-size: 12px;
 }
+.card .proposer {
+  font-size: 9.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--brass-dim);
+  margin-bottom: 4px;
+}
+.card .proposer b { color: var(--ink); }
+
 .card .keyfact {
   font-size: 11px;
   line-height: 1.45;

@@ -363,8 +363,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mswkj63h").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mswkj63h").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mswkohat").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mswkohat").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -641,6 +641,7 @@ window.BPmissing = function (img, label) {
     renderHypeOthers();
     renderTransformation();
     renderUpload();
+    renderProposed();
     // After renderStay — it rebuilds the cards, which would wipe the chips.
     paintWho();
     renderSummary();
@@ -1021,21 +1022,41 @@ window.BPmissing = function (img, label) {
   /* ================= PICKS ================= */
 
   function renderPicks() {
+    // Proposals live in their own section up top, not buried in a category.
     el("cats").innerHTML = (VENUES.categories || []).map(function (c, ci) {
       var cards = (c.items || []).map(function (it) { return venueCard(it); }).join("");
-      var customs = store.state.customs
-        .filter(function (x) { return x.cat === ci; })
-        .map(customCard).join("");
       return "<section>" +
         '<div class="cathead"><h3>' + esc(c.title) + "</h3><span>" +
           (c.items || []).length + " options</span></div>" +
         (c.note ? '<p class="catnote">' + esc(c.note) + "</p>" : "") +
-        '<div class="grid" id="g-' + ci + '">' + cards + customs +
+        '<div class="grid" id="g-' + ci + '">' + cards +
           '<button type="button" class="addcard" id="add-' + ci + '" data-add="' + ci + '">+ Add your own</button>' +
         "</div></section>";
     }).join("");
 
+    renderProposed();
     el("submittedLine").textContent = submittedLine();
+  }
+
+  /** Everything any of us added ourselves, with whoever put it forward. */
+  function renderProposed() {
+    var box = el("proposed");
+    if (!box) return;
+    var list = store.state.customs.slice()
+      .sort(function (a, b) { return String(a.when).localeCompare(String(b.when)); });
+
+    if (!list.length) {
+      box.innerHTML =
+        '<div class="sec-title">Proposed activities</div>' +
+        '<p class="sec-note">Nothing yet. Use <b>+ Add your own</b> at the end of any category ' +
+        "below and it shows up here for everyone.</p>";
+      return;
+    }
+    box.innerHTML =
+      '<div class="sec-title">Proposed activities</div>' +
+      '<p class="sec-note">Added by us rather than off the original list. Whoever proposes ' +
+      "something counts as in on it automatically.</p>" +
+      '<div class="grid">' + list.map(customCard).join("") + "</div>";
   }
 
   function venueCard(it) {
@@ -1059,12 +1080,17 @@ window.BPmissing = function (img, label) {
 
   function customCard(c) {
     var on = sel.picks[c.id] ? " on" : "";
+    var cat = (VENUES.categories || [])[c.cat];
     return '<div class="card' + on + '" id="c-' + esc(c.id) + '" data-pick="' + esc(c.id) + '">' +
       '<div class="ctile">' + esc((c.name || "?").slice(0, 1).toUpperCase()) + "</div>" +
-      '<div class="pad"><h4>' + esc(c.name) + "</h4>" +
-      '<div class="area">suggested by ' + esc(c.by) + "</div>" +
+      '<div class="pad">' +
+      '<div class="proposer">Proposed by <b>' + esc(c.by) + "</b></div>" +
+      "<h4>" + esc(c.name) + "</h4>" +
+      (cat ? '<div class="area">' + esc(cat.title) + "</div>" : "") +
       (c.note ? '<p class="desc">' + esc(c.note) + "</p>" : "") +
-      '<span class="pick" id="p-' + esc(c.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
+      '<div class="cardfoot">' +
+        '<span class="pick" id="p-' + esc(c.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
+      "</div>" +
       '<div class="who" id="w-' + esc(c.id) + '"></div></div></div>';
   }
 
@@ -1131,12 +1157,22 @@ window.BPmissing = function (img, label) {
     };
     var r = await store.addCustom(item);
     sel.picks[item.id] = true;
+
+    /* Proposing it counts as being in on it. Merge into what's already been
+       submitted rather than the in-progress selection, so this doesn't publish
+       edits they haven't committed yet. */
+    var stored = (store.state.picks[me] && store.state.picks[me].ids) || [];
+    if (stored.indexOf(item.id) === -1) {
+      await store.saveVote("picks", me, stored.concat([item.id]));
+    }
+
     renderPicks();
     paintWho();
+    renderSummary();
     updateBar();
     toast(r.synced
-      ? "Added — it's on everyone's board now, and already ticked for you."
-      : "Added on your phone and ticked. It'll go up for the others next time you're online.", 4500);
+      ? "Added — it's on everyone's board, and you're counted in on it."
+      : "Added on your phone. It'll go up for the others next time you're online.", 4500);
   }
 
   function votersFor(id, kind) {
