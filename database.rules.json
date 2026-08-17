@@ -37,10 +37,22 @@
       }
     },
 
-    "photos": {
+    "files": {
+      "$id": {
+        ".write": true,
+        ".validate": "newData.hasChildren(['data','by','when'])",
+        "data": { ".validate": "newData.isString() && newData.val().beginsWith('data:image/') && newData.val().length <= 700000" },
+        "name": { ".validate": "newData.isString() && newData.val().length <= 80" },
+        "by": { ".validate": "newData.val().matches(/^(Areeb|Nhi|Phuong|Jacek)$/)" },
+        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "assign": {
       "$slot": {
-        ".write": "newData.exists() && $slot.matches(/^(nhiBefore|nhiAfter)$/)",
-        ".validate": "newData.isString() && newData.val().beginsWith('data:image/') && newData.val().length <= 700000"
+        ".write": "$slot.matches(/^(nhiBefore|nhiAfter)$/)",
+        ".validate": "newData.isString() && newData.val().length <= 24"
       }
     },
 

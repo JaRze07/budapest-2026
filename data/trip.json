@@ -161,265 +161,353 @@
    "open": true,
    "status": "open",
    "blurb": "Give each place a No, a Can do or an I like this — everyone's answers appear under the cards as they come in.",
-   "groups": [
-    {
-     "id": "four",
-     "title": "If all four of us go",
-     "note": "One apartment or suite for four. Two hotel rooms for three nights breaks the budget on its own, so these are all single units."
-    },
-    {
-     "id": "three",
-     "title": "If it's three of us",
-     "note": "Three-person flats and triple rooms — cheaper per night, and it opens up proper hotels at the same money."
-    }
-   ],
    "options": [
     {
-     "id": "wlbudapestcenter",
-     "group": "four",
-     "source": "wishlist",
-     "name": "Budapest Center",
-     "area": "District VII · 0.8 km from centre",
-     "score": 9.7,
-     "reviews": 92,
-     "est": "€246 for 3 nights",
-     "price_note": "Live Booking quote for 4, our dates",
-     "lat": 47.49991,
-     "lng": 19.065668,
-     "full_address": "47.49991, 19.065668",
-     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/642893735.webp?k=c0a4d30710fe6a7bb3db4f2ad11118cee91201a4afe7869e5040955c9bec6d27&o=",
-     "link": "https://www.booking.com/hotel/hu/budapest-center-budapest1.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
-     "why": "Best-rated of these. Cheapest of these.",
-     "walk": 5
-    },
-    {
-     "id": "wlcentralbudapestbouti",
-     "group": "four",
-     "source": "wishlist",
-     "name": "Central Budapest Boutique Blue Gem",
-     "area": "District VII · 0.8 km from centre",
-     "score": 9.5,
-     "reviews": 6,
-     "est": "€356 for 3 nights",
-     "price_note": "Live Booking quote for 4, our dates",
-     "lat": 47.501576,
-     "lng": 19.06461,
-     "full_address": "47.501576, 19.06461",
-     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/691559695.webp?k=a8ce0eaa563090e5a3838e5649d8f38a1f26bed7497f6f2be076167c976fcca9&o=",
-     "link": "https://www.booking.com/hotel/hu/bluebird-studio-near-opera.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
-     "why": "Only 6 reviews so far — the score is high but unproven.",
-     "walk": 6
-    },
-    {
-     "id": "wldowntownloftapartmen",
-     "group": "four",
-     "source": "wishlist",
-     "name": "Downtown Loft Apartment",
-     "area": "District IX · 1.9 km from centre",
-     "score": 9.5,
-     "reviews": 32,
-     "est": "€300 for 3 nights",
-     "price_note": "Live Booking quote for 4, our dates",
-     "lat": 47.48194,
-     "lng": 19.065428,
-     "full_address": "47.48194, 19.065428",
-     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/686666294.webp?k=51c91b6fd1d6dd84af0e471eb4e5361d37f95dea9585e61d297d836f2d81f9cc&o=",
-     "link": "https://www.booking.com/hotel/hu/lonyay-home.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "nearby": "South Pest, near the Great Market Hall and the river. Quieter, and cheaper for it.",
-     "why": "Well out of the centre — you'd be commuting to the bars.",
-     "transit": "1.7 km out — metro or a car"
-    },
-    {
-     "id": "wlgoldcentralapartment",
-     "group": "four",
-     "source": "wishlist",
-     "name": "Goldcentral Apartment Danube-Private Terrace-Convenient Location",
-     "area": "District VII · 1.3 km from centre",
-     "score": 9.4,
-     "reviews": 158,
-     "est": "€344 for 3 nights",
-     "price_note": "Live Booking quote for 4, our dates",
-     "lat": 47.502225,
-     "lng": 19.071278,
-     "full_address": "47.502225, 19.071278",
-     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/678543709.webp?k=bc42bd3e5828db6c1087b9a53eb7a3a02684098919b071637248ded585b2abe0&o=",
-     "link": "https://www.booking.com/hotel/hu/goldcentral-apartment-danube.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
-     "why": "",
-     "walk": 10
-    },
-    {
-     "id": "wlbudapestcentralartpa",
-     "group": "four",
-     "source": "wishlist",
-     "name": "Budapest Central Artpark Suites",
-     "area": "District VII · 0.6 km from centre",
-     "score": 9.1,
-     "reviews": 120,
-     "est": "€345 for 3 nights",
-     "price_note": "Live Booking quote for 4, our dates",
-     "lat": 47.50004,
-     "lng": 19.063022,
-     "full_address": "47.50004, 19.063022",
-     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/695346986.webp?k=2e6d57b594de60648da336d510acf403093d89b984b2d528e1f41850a1fe88fa&o=",
-     "link": "https://www.booking.com/hotel/hu/budapest-central-artpark-suites.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
-     "why": "",
-     "walk": 4
-    },
-    {
-     "id": "wltwobedroomsapartment",
-     "group": "four",
-     "source": "wishlist",
-     "name": "Two-bedrooms apartment CBD BP",
-     "area": "District VIII · 1.5 km from centre",
-     "score": 9.1,
-     "reviews": 104,
-     "est": "€404 for 3 nights",
-     "price_note": "Live Booking quote for 4, our dates",
-     "lat": 47.488921,
-     "lng": 19.071953,
-     "full_address": "47.488921, 19.071953",
-     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/560486333.webp?k=5f2f05b8e72f4c74550bdf6d1c6c3ebf0d0195f51dbba04de14e4e753c63e0cf&o=",
-     "link": "https://www.booking.com/hotel/hu/two-bedrooms-apartment-cbd-bp.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "nearby": "The Palace Quarter — nineteenth-century streets behind the National Museum.",
-     "why": "",
-     "walk": 13
-    },
-    {
-     "id": "wld78dohnyapartment",
-     "group": "four",
-     "source": "wishlist",
-     "name": "D78 Dohány Apartment",
-     "area": "District VII · 1.2 km from centre",
-     "score": 8.4,
-     "reviews": 90,
-     "est": "€362 for 3 nights",
-     "price_note": "Live Booking quote for 4, our dates",
-     "lat": 47.499478,
-     "lng": 19.071337,
-     "full_address": "47.499478, 19.071337",
-     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/364922996.webp?k=ae8786d9bc403051d1e2c8bb49047ce9af2d660ec876b4a8c6f3f485d966ed94&o=",
-     "link": "https://www.booking.com/hotel/hu/brunhuber-grand-apartment.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
-     "why": "",
-     "walk": 8
-    },
-    {
      "id": "wlflatmargaret",
-     "group": "three",
      "source": "wishlist",
      "name": "Flat Margaret",
      "area": "District II · 2.3 km from centre",
      "score": 9.8,
      "reviews": 40,
      "est": "€283 for 3 nights",
-     "price_note": "Live Booking quote for 3, our dates",
+     "price_note": "Booking quote for 3 people, our dates",
      "lat": 47.510727,
      "lng": 19.032029,
      "full_address": "47.510727, 19.032029",
      "image": "https://cf.bstatic.com/xdata/images/hotel/square600/882389348.webp?k=60418b23d15d921309f98a8eb0810fb050ccf3974dcedad3f93f3585b2076a3b&o=",
      "link": "https://www.booking.com/hotel/hu/flat-margaret.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
      "nearby": "Up in the Buda hills across the river — leafy, quiet, residential. Lovely, but you commute to everything.",
-     "why": "Best-rated of these. Cheapest of these. Well out of the centre — you'd be commuting to the bars.",
-     "transit": "2.8 km out — metro or a car"
+     "transit": "2.8 km out — metro or a car",
+     "pros": [
+      "Best-rated on the list at 9.8",
+      "Below the average here at €283",
+      "Green, calm and residential — properly nice streets"
+     ],
+     "cons": [
+      "2.8 km out from the bars. Last metro is 23:20, so nights end in a car",
+      "Across the river in the Buda hills — you commute to everything"
+     ],
+     "suits": 3
+    },
+    {
+     "id": "wlbudapestcenter",
+     "source": "wishlist",
+     "name": "Budapest Center",
+     "area": "District VII · 0.8 km from centre",
+     "score": 9.7,
+     "reviews": 92,
+     "est": "€246 for 3 nights",
+     "price_note": "Booking quote for 4 people, our dates",
+     "lat": 47.49991,
+     "lng": 19.065668,
+     "full_address": "47.49991, 19.065668",
+     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/642893735.webp?k=c0a4d30710fe6a7bb3db4f2ad11118cee91201a4afe7869e5040955c9bec6d27&o=",
+     "link": "https://www.booking.com/hotel/hu/budapest-center-budapest1.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
+     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
+     "walk": 5,
+     "pros": [
+      "5 minutes from Szimpla — you can walk home from anything",
+      "Rated 9.7 — very high for this money",
+      "Cheapest on the list",
+      "Everything on the picks board is walking distance"
+     ],
+     "cons": [
+      "You're sleeping over the bar strip — it's loud at 2am"
+     ],
+     "suits": 4
+    },
+    {
+     "id": "wldowntownloftapartmen",
+     "source": "wishlist",
+     "name": "Downtown Loft Apartment",
+     "area": "District IX · 1.9 km from centre",
+     "score": 9.5,
+     "reviews": 32,
+     "est": "€300 for 3 nights",
+     "price_note": "Booking quote for 4 people, our dates",
+     "lat": 47.48194,
+     "lng": 19.065428,
+     "full_address": "47.48194, 19.065428",
+     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/686666294.webp?k=51c91b6fd1d6dd84af0e471eb4e5361d37f95dea9585e61d297d836f2d81f9cc&o=",
+     "link": "https://www.booking.com/hotel/hu/lonyay-home.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
+     "nearby": "South Pest, near the Great Market Hall and the river. Quieter, and cheaper for it.",
+     "transit": "1.7 km out — metro or a car",
+     "pros": [
+      "Rated 9.5 — very high for this money",
+      "Below the average here at €300",
+      "Near the Great Market Hall and the river"
+     ],
+     "cons": [
+      "1.7 km out from the bars. Last metro is 23:20, so nights end in a car",
+      "South of everything — fine by day, a trek at night"
+     ],
+     "suits": 4
+    },
+    {
+     "id": "wlcentralbudapestbouti",
+     "source": "wishlist",
+     "name": "Central Budapest Boutique Blue Gem",
+     "area": "District VII · 0.8 km from centre",
+     "score": 9.5,
+     "reviews": 6,
+     "est": "€356 for 3 nights",
+     "price_note": "Booking quote for 4 people, our dates",
+     "lat": 47.501576,
+     "lng": 19.06461,
+     "full_address": "47.501576, 19.06461",
+     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/691559695.webp?k=a8ce0eaa563090e5a3838e5649d8f38a1f26bed7497f6f2be076167c976fcca9&o=",
+     "link": "https://www.booking.com/hotel/hu/bluebird-studio-near-opera.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
+     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
+     "walk": 6,
+     "pros": [
+      "Walkable to the bars, 6 minutes",
+      "Rated 9.5 — very high for this money",
+      "Everything on the picks board is walking distance"
+     ],
+     "cons": [
+      "Only 6 reviews, so the score is barely tested",
+      "Towards the top of the budget",
+      "You're sleeping over the bar strip — it's loud at 2am"
+     ],
+     "suits": 4
     },
     {
      "id": "wlvictorhugo",
-     "group": "three",
      "source": "wishlist",
      "name": "Victor Hugo",
      "area": "District XIII · 2.2 km from centre",
      "score": 9.5,
      "reviews": 101,
      "est": "€398 for 3 nights",
-     "price_note": "Live Booking quote for 3, our dates",
+     "price_note": "Booking quote for 3 people, our dates",
      "lat": 47.517172,
      "lng": 19.059447,
      "full_address": "47.517172, 19.059447",
      "image": "https://cf.bstatic.com/xdata/images/hotel/square600/187594658.webp?k=7d76b0ecbc2ee8ba439faf90d50e00795a5f7d1ca2ac5783c4229504def353e0&o=",
      "link": "https://www.booking.com/hotel/hu/victor-hugo.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
      "nearby": "Újlipótváros, a genuinely local corner of north Pest: cafés, the embankment, and Margaret Island a few minutes away.",
-     "why": "Well out of the centre — you'd be commuting to the bars.",
-     "transit": "2.3 km out — metro or a car"
+     "transit": "2.3 km out — metro or a car",
+     "pros": [
+      "Rated 9.5 — very high for this money",
+      "Quiet, local, and Margaret Island is close"
+     ],
+     "cons": [
+      "2.3 km out from the bars. Last metro is 23:20, so nights end in a car",
+      "Towards the top of the budget",
+      "Residential, so nothing much on the doorstep itself"
+     ],
+     "suits": 3
     },
     {
      "id": "wlinnercityapartments",
-     "group": "three",
      "source": "wishlist",
      "name": "InnerCity Apartments",
      "area": "District VII · 400 m from centre",
      "score": 9.4,
      "reviews": 436,
      "est": "€316 for 3 nights",
-     "price_note": "Live Booking quote for 3, our dates",
+     "price_note": "Booking quote for 3 people, our dates",
      "lat": 47.498328,
      "lng": 19.060701,
      "full_address": "47.498328, 19.060701",
      "image": "https://cf.bstatic.com/xdata/images/hotel/square600/808609413.webp?k=ac00f6e2860892203999b5d5e02c1e3894cf961440ea1d3ba5a7597d8db94888&o=",
      "link": "https://www.booking.com/hotel/hu/innercity-apartments.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
      "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
-     "why": "436 reviews behind that score.",
-     "walk": 3
+     "walk": 3,
+     "pros": [
+      "3 minutes from Szimpla — you can walk home from anything",
+      "Rated 9.4 — very high for this money",
+      "436 reviews standing behind that score",
+      "Below the average here at €316",
+      "Everything on the picks board is walking distance"
+     ],
+     "cons": [
+      "You're sleeping over the bar strip — it's loud at 2am"
+     ],
+     "suits": 3
     },
     {
-     "id": "wlorangepearlapartment",
-     "group": "three",
+     "id": "wlgoldcentralapartment",
      "source": "wishlist",
-     "name": "ORANGE Pearl Apartment 3 rooms next to Danube",
-     "area": "District V · 1 km from centre",
-     "score": 9.3,
-     "reviews": 67,
-     "est": "€334 for 3 nights",
-     "price_note": "Live Booking quote for 3, our dates",
-     "lat": 47.488598,
-     "lng": 19.05471,
-     "full_address": "47.488598, 19.05471",
-     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/556225119.webp?k=cce6df710f1c090b6f4a2f811eed77a477aa2d4c75465199f4cc6e5a9a9e002a&o=",
-     "link": "https://www.booking.com/hotel/hu/orange-pearl-apartments.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
-     "nearby": "The Inner City — Danube promenade, Parliament and the Váci utca end of town. Grand, and quiet at night.",
-     "why": "",
-     "walk": 13
-    },
-    {
-     "id": "wldowntowncomfort",
-     "group": "three",
-     "source": "wishlist",
-     "name": "Downtown Comfort",
-     "area": "District VII · 0.9 km from centre",
-     "score": 9.3,
-     "reviews": 97,
-     "est": "€388 for 3 nights",
-     "price_note": "Live Booking quote for 3, our dates",
-     "lat": 47.497571,
-     "lng": 19.068255,
-     "full_address": "47.497571, 19.068255",
-     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/585384776.webp?k=39104a198667790aadea35a730087952d21a3749e99f223489eaad00228750b7&o=",
-     "link": "https://www.booking.com/hotel/hu/dowtown-comfort.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
+     "name": "Goldcentral Apartment Danube-Private Terrace-Convenient Location",
+     "area": "District VII · 1.3 km from centre",
+     "score": 9.4,
+     "reviews": 158,
+     "est": "€344 for 3 nights",
+     "price_note": "Booking quote for 4 people, our dates",
+     "lat": 47.502225,
+     "lng": 19.071278,
+     "full_address": "47.502225, 19.071278",
+     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/678543709.webp?k=bc42bd3e5828db6c1087b9a53eb7a3a02684098919b071637248ded585b2abe0&o=",
+     "link": "https://www.booking.com/hotel/hu/goldcentral-apartment-danube.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
      "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
-     "why": "",
-     "walk": 5
+     "walk": 10,
+     "pros": [
+      "Walkable to the bars, 10 minutes",
+      "Rated 9.4 — very high for this money",
+      "158 reviews standing behind that score",
+      "Everything on the picks board is walking distance"
+     ],
+     "cons": [
+      "You're sleeping over the bar strip — it's loud at 2am"
+     ],
+     "suits": 4
     },
     {
      "id": "wlacmeapartments",
-     "group": "three",
      "source": "wishlist",
      "name": "ACME Apartments",
      "area": "District XIII · 1.8 km from centre",
      "score": 9.3,
      "reviews": 352,
      "est": "€312 for 3 nights",
-     "price_note": "Live Booking quote for 3, our dates",
+     "price_note": "Booking quote for 3 people, our dates",
      "lat": 47.513495,
      "lng": 19.049804,
      "full_address": "47.513495, 19.049804",
      "image": "https://cf.bstatic.com/xdata/images/hotel/square600/572198204.webp?k=22f282221f6b5f6e6bdc12accca3ed06f5870184b22e3ebf91777dfa560ba4f2&o=",
      "link": "https://www.booking.com/hotel/hu/acme-apartments.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
      "nearby": "Újlipótváros, a genuinely local corner of north Pest: cafés, the embankment, and Margaret Island a few minutes away.",
-     "why": "352 reviews behind that score. Well out of the centre — you'd be commuting to the bars.",
-     "transit": "2.1 km out — metro or a car"
+     "transit": "2.1 km out — metro or a car",
+     "pros": [
+      "352 reviews standing behind that score",
+      "Below the average here at €312",
+      "Quiet, local, and Margaret Island is close"
+     ],
+     "cons": [
+      "2.1 km out from the bars. Last metro is 23:20, so nights end in a car",
+      "Residential, so nothing much on the doorstep itself"
+     ],
+     "suits": 3
+    },
+    {
+     "id": "wlorangepearlapartment",
+     "source": "wishlist",
+     "name": "ORANGE Pearl Apartment 3 rooms next to Danube",
+     "area": "District V · 1 km from centre",
+     "score": 9.3,
+     "reviews": 67,
+     "est": "€334 for 3 nights",
+     "price_note": "Booking quote for 3 people, our dates",
+     "lat": 47.488598,
+     "lng": 19.05471,
+     "full_address": "47.488598, 19.05471",
+     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/556225119.webp?k=cce6df710f1c090b6f4a2f811eed77a477aa2d4c75465199f4cc6e5a9a9e002a&o=",
+     "link": "https://www.booking.com/hotel/hu/orange-pearl-apartments.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
+     "nearby": "The Inner City — Danube promenade, Parliament and the Váci utca end of town. Grand, and quiet at night.",
+     "walk": 13,
+     "pros": [
+      "Below the average here at €334",
+      "Riverside and the Market Hall on the doorstep, calm after dark"
+     ],
+     "cons": [
+      "Restaurants round here are priced for tourists"
+     ],
+     "suits": 3
+    },
+    {
+     "id": "wldowntowncomfort",
+     "source": "wishlist",
+     "name": "Downtown Comfort",
+     "area": "District VII · 0.9 km from centre",
+     "score": 9.3,
+     "reviews": 97,
+     "est": "€388 for 3 nights",
+     "price_note": "Booking quote for 3 people, our dates",
+     "lat": 47.497571,
+     "lng": 19.068255,
+     "full_address": "47.497571, 19.068255",
+     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/585384776.webp?k=39104a198667790aadea35a730087952d21a3749e99f223489eaad00228750b7&o=",
+     "link": "https://www.booking.com/hotel/hu/dowtown-comfort.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
+     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
+     "walk": 5,
+     "pros": [
+      "5 minutes from Szimpla — you can walk home from anything",
+      "Everything on the picks board is walking distance"
+     ],
+     "cons": [
+      "Towards the top of the budget",
+      "You're sleeping over the bar strip — it's loud at 2am"
+     ],
+     "suits": 3
+    },
+    {
+     "id": "wlbudapestcentralartpa",
+     "source": "wishlist",
+     "name": "Budapest Central Artpark Suites",
+     "area": "District VII · 0.6 km from centre",
+     "score": 9.1,
+     "reviews": 120,
+     "est": "€345 for 3 nights",
+     "price_note": "Booking quote for 4 people, our dates",
+     "lat": 47.50004,
+     "lng": 19.063022,
+     "full_address": "47.50004, 19.063022",
+     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/695346986.webp?k=2e6d57b594de60648da336d510acf403093d89b984b2d528e1f41850a1fe88fa&o=",
+     "link": "https://www.booking.com/hotel/hu/budapest-central-artpark-suites.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
+     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
+     "walk": 4,
+     "pros": [
+      "4 minutes from Szimpla — you can walk home from anything",
+      "Everything on the picks board is walking distance"
+     ],
+     "cons": [
+      "Towards the top of the budget",
+      "You're sleeping over the bar strip — it's loud at 2am"
+     ],
+     "suits": 4
+    },
+    {
+     "id": "wltwobedroomsapartment",
+     "source": "wishlist",
+     "name": "Two-bedrooms apartment CBD BP",
+     "area": "District VIII · 1.5 km from centre",
+     "score": 9.1,
+     "reviews": 104,
+     "est": "€404 for 3 nights",
+     "price_note": "Booking quote for 4 people, our dates",
+     "lat": 47.488921,
+     "lng": 19.071953,
+     "full_address": "47.488921, 19.071953",
+     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/560486333.webp?k=5f2f05b8e72f4c74550bdf6d1c6c3ebf0d0195f51dbba04de14e4e753c63e0cf&o=",
+     "link": "https://www.booking.com/hotel/hu/two-bedrooms-apartment-cbd-bp.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
+     "nearby": "The Palace Quarter — nineteenth-century streets behind the National Museum.",
+     "walk": 13,
+     "pros": [
+      "Handsome Palace Quarter streets, quiet at night"
+     ],
+     "cons": [
+      "Most expensive on the list at €404",
+      "Gets scruffier a few streets further east"
+     ],
+     "suits": 4
+    },
+    {
+     "id": "wld78dohnyapartment",
+     "source": "wishlist",
+     "name": "D78 Dohány Apartment",
+     "area": "District VII · 1.2 km from centre",
+     "score": 8.4,
+     "reviews": 90,
+     "est": "€362 for 3 nights",
+     "price_note": "Booking quote for 4 people, our dates",
+     "lat": 47.499478,
+     "lng": 19.071337,
+     "full_address": "47.499478, 19.071337",
+     "image": "https://cf.bstatic.com/xdata/images/hotel/square600/364922996.webp?k=ae8786d9bc403051d1e2c8bb49047ce9af2d660ec876b4a8c6f3f485d966ed94&o=",
+     "link": "https://www.booking.com/hotel/hu/brunhuber-grand-apartment.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
+     "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
+     "walk": 8,
+     "pros": [
+      "Walkable to the bars, 8 minutes",
+      "Everything on the picks board is walking distance"
+     ],
+     "cons": [
+      "Lowest-rated here at 8.4",
+      "Towards the top of the budget",
+      "You're sleeping over the bar strip — it's loud at 2am"
+     ],
+     "suits": 4
     }
    ],
    "scale": [

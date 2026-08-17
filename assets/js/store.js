@@ -15,7 +15,7 @@ BP.store = (function () {
   var LS_ME = "bp26.me";
   var LS_PENDING = "bp26.pending";
 
-  var state = { picks: {}, stay: {}, hype: {}, photos: {}, customs: [] };
+  var state = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, customs: [] };
   var online = false;
   var listeners = [];
   var es = null;
@@ -31,12 +31,13 @@ BP.store = (function () {
   /* ---------- shape ---------- */
 
   function normalise(raw) {
-    var s = { picks: {}, stay: {}, hype: {}, photos: {}, customs: [] };
+    var s = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, customs: [] };
     if (!raw || typeof raw !== "object") return s;
     s.picks = raw.picks || {};
     s.stay = raw.stay || {};
     s.hype = raw.hype || {};
-    s.photos = raw.photos || {};
+    s.files = raw.files || {};
+    s.assign = raw.assign || {};
     // Customs are an object keyed by id in the database, an array in the file.
     var c = raw.customs;
     s.customs = Array.isArray(c) ? c.slice()
@@ -125,7 +126,7 @@ BP.store = (function () {
   function setPath(path, data) {
     var parts = path.split("/").filter(Boolean);
     if (!parts.length) { state = overlay(normalise(data)); return; }
-    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, photos: state.photos, customs: {} };
+    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, files: state.files, assign: state.assign, customs: {} };
     state.customs.forEach(function (c) { raw.customs[c.id] = c; });
     var node = raw;
     for (var i = 0; i < parts.length - 1; i++) {
@@ -182,10 +183,28 @@ BP.store = (function () {
     return { synced: ok };
   }
 
-  /** Photos are stored as data URLs so no file hosting is involved. */
-  async function savePhoto(slot, dataUrl) {
-    state.photos[slot] = dataUrl;
-    var ok = await put("photos/" + slot, dataUrl);
+  /* Shared files are data URLs in the database — no file hosting, no build
+     step, and they reach everyone the moment they land. */
+  async function saveFile(rec) {
+    state.files[rec.id] = rec;
+    var ok = await put("files/" + rec.id, {
+      data: rec.data, name: rec.name, by: rec.by, when: rec.when
+    });
+    return { synced: ok };
+  }
+
+  async function deleteFile(id) {
+    delete state.files[id];
+    try {
+      var r = await fetch(CFG.db + "/files/" + id + ".json", { method: "DELETE" });
+      return { synced: r.ok };
+    } catch (e) { return { synced: false }; }
+  }
+
+  /** Point one of the before/after slots at an uploaded file. */
+  async function assignSlot(slot, fileId) {
+    state.assign[slot] = fileId;
+    var ok = await put("assign/" + slot, fileId);
     return { synced: ok };
   }
 
@@ -224,7 +243,9 @@ BP.store = (function () {
     onChange: function (fn) { listeners.push(fn); },
     saveVote: saveVote,
     saveStay: saveStay,
-    savePhoto: savePhoto,
+    saveFile: saveFile,
+    deleteFile: deleteFile,
+    assignSlot: assignSlot,
     saveHype: saveHype,
     addCustom: addCustom,
     me: function () { return lsGet(LS_ME, null); },

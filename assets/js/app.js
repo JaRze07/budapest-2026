@@ -154,29 +154,66 @@ window.BPmissing = function (img, label) {
       "</div></div>";
   }
 
-  /* ================= photo uploads ================= */
+  /* ================= shared files ================= */
 
-  /* Two slots, Jacek only. Files are shrunk in a canvas and stored as data
-     URLs in the database, so there's no file hosting and no build step —
-     and they appear on Nhi's home screen the moment they land. */
+  /* A plain dropbox. Jacek drops anything in — flight screenshots, photos —
+     and it lands in the database as a data URL, so there's no file hosting
+     and everyone sees it immediately. Two of them can be tagged as Nhi's
+     before and after. */
   function renderUpload() {
-    var T = TRIP.transformation, box = el("infoUpload");
+    var box = el("infoUpload");
     if (!box) return;
-    if (!T || !T.slots || me !== CFG.uploader) { box.innerHTML = ""; return; }
+    var mine = me === CFG.uploader;
+    // The id is the database key, not a field on the record — carry it across
+    // or every button loses its target the moment the data comes back synced.
+    var files = Object.keys(store.state.files || {})
+      .filter(function (k) { return store.state.files[k]; })
+      .map(function (k) { return Object.assign({}, store.state.files[k], { id: k }); })
+      .sort(function (a, b) { return String(b.when).localeCompare(String(a.when)); });
 
-    box.innerHTML =
-      '<div class="sec-title">Nhi\'s before and after</div>' +
-      '<p class="sec-note">Only you can see this. Drop a photo into each slot — it goes ' +
-      "straight onto her home screen. Re-drop to replace.</p>" +
-      '<div class="drops">' + T.slots.map(function (s) {
-        var has = store.state.photos[s.key];
-        return '<label class="drop" data-slot="' + esc(s.key) + '">' +
-          '<input type="file" accept="image/*" data-slotinput="' + esc(s.key) + '" hidden>' +
-          (has ? '<img src="' + esc(has) + '" alt="">' : '<span class="dropicon">+</span>') +
-          '<span class="droplabel">' + esc(s.label) + "</span>" +
-          '<span class="dropstate">' + (has ? "Tap to replace" : "Tap or drop a photo") + "</span>" +
-        "</label>";
+    var slots = (TRIP.transformation && TRIP.transformation.slots) || [];
+    var assigned = store.state.assign || {};
+
+    var html = '<div class="sec-title">Shared files</div>' +
+      '<p class="sec-note">' + (mine
+        ? "Drop anything in — flight screenshots, photos. Everyone can see what lands here."
+        : "Anything Jacek has shared. Screenshots, photos, whatever's useful.") + "</p>";
+
+    if (mine) {
+      html += '<label class="dropzone" id="dropzone">' +
+        '<input type="file" accept="image/*" multiple hidden id="fileInput">' +
+        '<span class="dzicon">+</span>' +
+        "<b>Drop images here</b>" +
+        "<span>or tap to choose — several at once is fine</span>" +
+      "</label>";
+    }
+
+    if (!files.length) {
+      html += '<p class="sec-note" style="margin-top:14px">Nothing shared yet.</p>';
+    } else {
+      html += '<div class="filegrid">' + files.map(function (f) {
+        var tags = slots.filter(function (s) { return assigned[s.key] === f.id; })
+          .map(function (s) { return '<span class="ftag">' + esc(s.label.split(" —")[0]) + "</span>"; }).join("");
+        return '<figure class="fileitem">' +
+          '<img src="' + esc(f.data) + '" alt="' + esc(f.name || "") + '" data-lightbox="' + esc(f.id) + '">' +
+          (tags ? '<div class="ftags">' + tags + "</div>" : "") +
+          '<figcaption>' + esc(f.name || "image") + '<small>' + esc(f.by || "") + "</small></figcaption>" +
+          (mine
+            ? '<div class="fileacts">' +
+                slots.map(function (s) {
+                  var on = assigned[s.key] === f.id;
+                  return '<button type="button" class="mini' + (on ? " onmini" : "") +
+                    '" data-assign="' + esc(s.key) + '" data-file="' + esc(f.id) + '">' +
+                    esc(s.label.split(" —")[0]) + "</button>";
+                }).join("") +
+                '<button type="button" class="mini del" data-del="' + esc(f.id) + '">Delete</button>' +
+              "</div>"
+            : "") +
+        "</figure>";
       }).join("") + "</div>";
+    }
+
+    box.innerHTML = html;
   }
 
   /** Shrink to something a database row can hold without complaint. */
@@ -202,24 +239,64 @@ window.BPmissing = function (img, label) {
     });
   }
 
-  async function acceptPhoto(slot, file) {
-    if (!file || !/^image\//.test(file.type)) { toast("That's not an image."); return; }
-    toast("Processing…", 8000);
-    var url;
-    try {
-      url = await shrink(file, 900, 0.82);
-      // The database caps the row; drop quality until it fits rather than failing.
-      var q = 0.82;
-      while (url.length > 650000 && q > 0.4) { q -= 0.12; url = await shrink(file, 900, q); }
-      if (url.length > 650000) url = await shrink(file, 640, 0.6);
-    } catch (e) { toast("Couldn't read that file."); return; }
+  async function acceptFiles(list) {
+    var files = Array.prototype.slice.call(list || []).filter(function (f) {
+      return f && /^image\//.test(f.type);
+    });
+    if (!files.length) { toast("Images only, for now."); return; }
 
-    var res = await store.savePhoto(slot, url);
+    var done = 0;
+    for (var i = 0; i < files.length; i++) {
+      var f = files[i];
+      toast("Processing " + (i + 1) + " of " + files.length + "…", 15000);
+      var url;
+      try {
+        url = await shrink(f, 1100, 0.82);
+        var q = 0.82;
+        // The row has a hard cap — step quality down rather than fail.
+        while (url.length > 650000 && q > 0.4) { q -= 0.12; url = await shrink(f, 1100, q); }
+        if (url.length > 650000) url = await shrink(f, 700, 0.6);
+      } catch (e) { continue; }
+
+      var res = await store.saveFile({
+        id: "f" + Date.now().toString(36) + i,
+        data: url,
+        name: String(f.name || "image").slice(0, 80),
+        by: me,
+        when: new Date().toISOString()
+      });
+      if (res.synced) done++;
+      renderUpload();
+    }
+    renderTransformation();
+    toast(done ? done + " uploaded — everyone can see " + (done === 1 ? "it" : "them") + " now."
+               : "Upload failed. Check you're online.", 4000);
+  }
+
+  async function assignFile(slot, fileId) {
+    var cur = store.state.assign[slot];
+    await store.assignSlot(slot, cur === fileId ? "" : fileId);
     renderUpload();
     renderTransformation();
-    toast(res.synced
-      ? "Uploaded — it's on her home screen now."
-      : "Couldn't upload. Check you're online and try again.", 4000);
+  }
+
+  async function removeFile(id) {
+    await store.deleteFile(id);
+    renderUpload();
+    renderTransformation();
+    toast("Deleted.", 2000);
+  }
+
+  function lightbox(id) {
+    var f = store.state.files[id];
+    if (!f) return;
+    el("sheetBody").innerHTML =
+      '<div class="kick">Shared file</div>' +
+      "<h3>" + esc(f.name || "image") + "</h3>" +
+      '<div class="sheetarea">Shared by ' + esc(f.by || "") + "</div>" +
+      '<img class="lightimg" src="' + esc(f.data) + '" alt="">';
+    el("sheet").hidden = false;
+    document.body.style.overflow = "hidden";
   }
 
   /* ================= the apps you need ================= */
@@ -286,8 +363,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=2").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=2").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mswk72pl").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mswk72pl").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -369,36 +446,43 @@ window.BPmissing = function (img, label) {
       });
     }, true);
 
-    // File picker, plus real drag-and-drop onto either slot.
+    // File picker, plus drag-and-drop anywhere on the dropzone.
     document.addEventListener("change", function (e) {
-      var inp = e.target.closest("[data-slotinput]");
-      if (inp && inp.files && inp.files[0]) {
-        acceptPhoto(inp.getAttribute("data-slotinput"), inp.files[0]);
-        inp.value = "";
+      if (e.target.id === "fileInput" && e.target.files && e.target.files.length) {
+        acceptFiles(e.target.files);
+        e.target.value = "";
       }
     });
     ["dragenter", "dragover"].forEach(function (ev) {
       document.addEventListener(ev, function (e) {
-        var d = e.target.closest && e.target.closest(".drop");
+        var d = e.target.closest && e.target.closest("#dropzone");
         if (!d) return;
         e.preventDefault();
         d.classList.add("over");
       });
     });
     document.addEventListener("dragleave", function (e) {
-      var d = e.target.closest && e.target.closest(".drop");
+      var d = e.target.closest && e.target.closest("#dropzone");
       if (d) d.classList.remove("over");
     });
     document.addEventListener("drop", function (e) {
-      var d = e.target.closest && e.target.closest(".drop");
+      var d = e.target.closest && e.target.closest("#dropzone");
       if (!d) return;
       e.preventDefault();
       d.classList.remove("over");
-      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-      if (f) acceptPhoto(d.getAttribute("data-slot"), f);
+      if (e.dataTransfer && e.dataTransfer.files) acceptFiles(e.dataTransfer.files);
     });
 
     document.addEventListener("click", function (e) {
+      var lb = e.target.closest("[data-lightbox]");
+      if (lb) { lightbox(lb.getAttribute("data-lightbox")); return; }
+
+      var asg = e.target.closest("[data-assign]");
+      if (asg) { assignFile(asg.getAttribute("data-assign"), asg.getAttribute("data-file")); return; }
+
+      var del = e.target.closest("[data-del]");
+      if (del) { removeFile(del.getAttribute("data-del")); return; }
+
       var hy = e.target.closest("[data-hype]");
       if (hy) { setHype(+hy.getAttribute("data-hype")); return; }
 
@@ -663,9 +747,10 @@ window.BPmissing = function (img, label) {
     if (!T || me !== T.for) { box.innerHTML = ""; return; }
 
     var pics = (T.slots || []).map(function (s) {
-      var url = store.state.photos[s.key] || null;
-      return url
-        ? '<img src="' + esc(url) + '" alt="' + esc(s.label) + '">'
+      var fid = (store.state.assign || {})[s.key];
+      var f = fid && store.state.files[fid];
+      return f
+        ? '<img src="' + esc(f.data) + '" alt="' + esc(s.label) + '">'
         : '<div class="tmissing">' + esc(s.label) + " — not uploaded yet</div>";
     });
     if (!pics.length) { box.innerHTML = ""; return; }
@@ -1162,13 +1247,14 @@ window.BPmissing = function (img, label) {
         '<div class="pending"><b>Options land here</b>' +
         "<p>Nothing to vote on yet.</p></div>";
     } else {
-      var groups = S.vote.groups || [{ id: null, title: "Vote", note: "" }];
+      // One merged list unless the data explicitly groups them.
+      var groups = S.vote.groups || [{ id: null, title: "", note: "" }];
       vbox.innerHTML =
         (S.vote.note ? '<p class="sec-note" style="margin-top:14px">' + esc(S.vote.note) + "</p>" : "") +
         groups.map(function (g) {
           var opts = S.vote.options.filter(function (o) { return !g.id || o.group === g.id; });
           if (!opts.length) return "";
-          return '<div class="sec-title">' + esc(g.title) + "</div>" +
+          return (g.title ? '<div class="sec-title">' + esc(g.title) + "</div>" : "") +
             (g.note ? '<p class="sec-note">' + esc(g.note) + "</p>" : "") +
             '<div class="grid">' + opts.map(stayCard).join("") + "</div>";
         }).join("");
@@ -1219,6 +1305,7 @@ window.BPmissing = function (img, label) {
       '<div class="staytags">' +
         (reach ? '<span class="dist' + (o.walk ? "" : " far") + '">' + esc(reach) + "</span>" : "") +
         (o.est ? '<span class="price">' + esc(o.est) + "</span>" : "") +
+        (o.suits ? '<span class="suits">priced for ' + o.suits + "</span>" : "") +
       "</div>" +
       '<div class="pricenote' + (o.price_note ? " live" : "") + '">' +
         esc(o.price_note || "Estimate, not a quote — tap through for the real number") + "</div>" +
