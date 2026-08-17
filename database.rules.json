@@ -3,6 +3,11 @@
     ".read": true,
     ".write": false,
 
+    "test": {
+      ".read": true,
+      ".write": true
+    },
+
     "picks": {
       "$name": {
         ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
