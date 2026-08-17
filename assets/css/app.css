@@ -891,6 +891,25 @@ nav.tabs button .dot {
   padding: 3px 9px;
   border-radius: 999px;
 }
+.card .score {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 5px;
+}
+.card .score b {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+.card .score span { color: var(--slate); font-size: 10.5px; }
+.pricenote { font-size: 10.5px; color: var(--slate); margin-top: 6px; line-height: 1.4; }
+.pricenote.live { color: var(--brass-dim); font-weight: 700; }
+
 .pc { list-style: none; margin: 8px 0 0; padding: 0; }
 .pc li { position: relative; padding: 3px 0 3px 17px; font-size: 12px; line-height: 1.45; }
 .pc.pros li::before { content: "+"; position: absolute; left: 2px; color: #2E8B57; font-weight: 700; }

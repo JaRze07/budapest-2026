@@ -1030,18 +1030,25 @@ window.BPnoPhoto = function (img, letter) {
 
   function stayCard(o) {
     var on = sel.stay[o.id] ? " on" : "";
-    var reach = o.walk ? o.walk + " min walk to the bars"
-              : o.transit ? o.transit + " to the bars" : "";
+    var reach = o.walk ? o.walk + " min walk to the bars" : (o.transit || "");
+    var letter = esc((o.name || "?").slice(0, 1).toUpperCase());
 
     return '<div class="card' + on + '" id="c-' + esc(o.id) + '" data-stay="' + esc(o.id) + '">' +
-      (o.image ? '<img src="' + esc(o.image) + '" alt="" loading="lazy">'
-               : '<div class="ctile">' + esc((o.name || "?").slice(0, 1).toUpperCase()) + "</div>") +
-      '<div class="pad"><h4>' + esc(o.name) + "</h4>" +
+      (o.image
+        ? '<img src="' + esc(o.image) + '" alt="" loading="lazy" ' +
+          "onerror=\"BPnoPhoto(this,'" + letter + "')\">"
+        : '<div class="ctile">' + letter + "</div>") +
+      '<div class="pad">' +
+      (o.score ? '<div class="score"><b>' + esc(o.score.toFixed(1)) + "</b>" +
+        (o.reviews ? "<span>" + o.reviews + " reviews</span>" : "") + "</div>" : "") +
+      "<h4>" + esc(o.name) + "</h4>" +
       '<div class="area">' + esc(o.area || "") + "</div>" +
       '<div class="staytags">' +
         (reach ? '<span class="dist' + (o.walk ? "" : " far") + '">' + esc(reach) + "</span>" : "") +
         (o.est ? '<span class="price">' + esc(o.est) + "</span>" : "") +
       "</div>" +
+      '<div class="pricenote' + (o.price_note ? " live" : "") + '">' +
+        esc(o.price_note || "Estimate, not a quote — tap through for the real number") + "</div>" +
       (o.nearby ? '<p class="desc">' + esc(o.nearby) + "</p>" : "") +
       (o.desc ? '<p class="desc">' + esc(o.desc) + "</p>" : "") +
       (o.pros ? '<ul class="pc pros">' + o.pros.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") +
