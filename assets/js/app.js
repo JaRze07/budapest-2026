@@ -363,8 +363,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mswl9i3c").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mswl9i3c").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mswlfsrb").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mswlfsrb").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -425,8 +425,7 @@ window.BPmissing = function (img, label) {
 
     el("toggleResults").addEventListener("click", function () {
       showResults = !showResults;
-      this.textContent = showResults ? "Hide who picked what" : "Show who picked what";
-      paintWho();
+      this.textContent = showResults ? "Hide the tally" : "Show the tally";
       renderSummary();
     });
 
@@ -1066,13 +1065,9 @@ window.BPmissing = function (img, label) {
     if (!proposeOpen) {
       return '<button type="button" class="addcard" id="addTile">+ Propose something</button>';
     }
-    var cats = (VENUES.categories || []).map(function (c, i) {
-      return '<option value="' + i + '">' + esc(c.title) + "</option>";
-    }).join("");
     return '<div class="addcard open">' +
       '<input id="pName" maxlength="60" placeholder="What are you suggesting?">' +
       '<input id="pNote" maxlength="90" placeholder="Where, price, why — optional">' +
-      '<select id="pCat">' + cats + "</select>" +
       '<div class="pfrow">' +
         '<button type="button" class="btn dim" id="pCancel">Cancel</button>' +
         '<button type="button" class="btn" id="pSave">Add it</button>' +
@@ -1107,13 +1102,11 @@ window.BPmissing = function (img, label) {
 
   function customCard(c) {
     var on = sel.picks[c.id] ? " on" : "";
-    var cat = (VENUES.categories || [])[c.cat];
     return '<div class="card' + on + '" id="c-' + esc(c.id) + '" data-pick="' + esc(c.id) + '">' +
       '<div class="ctile">' + esc((c.name || "?").slice(0, 1).toUpperCase()) + "</div>" +
       '<div class="pad">' +
       '<div class="proposer">Proposed by <b>' + esc(c.by) + "</b></div>" +
       "<h4>" + esc(c.name) + "</h4>" +
-      (cat ? '<div class="area">' + esc(cat.title) + "</div>" : "") +
       (c.note ? '<p class="desc">' + esc(c.note) + "</p>" : "") +
       '<div class="cardfoot">' +
         '<span class="pick" id="p-' + esc(c.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
@@ -1162,7 +1155,7 @@ window.BPmissing = function (img, label) {
       name: name.slice(0, 60),
       note: (el("pNote").value || "").trim().slice(0, 90),
       by: me,
-      cat: +el("pCat").value || 0,
+      cat: 0,
       when: new Date().toISOString()
     };
 
@@ -1224,10 +1217,11 @@ window.BPmissing = function (img, label) {
     });
   }
 
+  /* Who's in shows on every tile, always, and repaints whenever a vote lands.
+     The toggle below only controls the ranked tally at the top. */
   function paintWho() {
     document.querySelectorAll(".who").forEach(function (w) { w.innerHTML = ""; });
     stayChips();
-    if (!showResults) return;
     chips(Object.keys(byId).concat(store.state.customs.map(function (c) { return c.id; })), "picks");
   }
 
@@ -1259,8 +1253,10 @@ window.BPmissing = function (img, label) {
 
     if (!rows.length) { box.innerHTML = '<p class="sec-note">No votes in yet.</p>'; return; }
 
-    box.innerHTML = '<div class="sec-title">The tally</div>' +
-      '<p class="sec-note">★ = everyone who has voted so far picked it. Tap any row to jump to it below.</p>' +
+    // Built like the other sections so it doesn't read as an orphan block.
+    box.innerHTML = "<section>" +
+      '<div class="cathead"><h3>The tally</h3><span>' + rows.length + " with votes</span></div>" +
+      '<p class="catnote">★ = everyone who has voted so far picked it. Tap any row to jump to it.</p>' +
       '<div class="rank">' + rows.map(function (r, i) {
         var bars = CFG.names.map(function (n) {
           return '<i class="' + (r.who.indexOf(n) > -1 ? "f" : "") + '"></i>';
@@ -1272,7 +1268,7 @@ window.BPmissing = function (img, label) {
             (r.what ? '<i class="what">' + esc(r.what) + "</i>" : "") +
             "<small>" + esc(r.who.join(", ")) + "</small></span>" +
           '<span class="bars">' + bars + "</span></button>";
-      }).join("") + "</div>";
+      }).join("") + "</div></section>";
   }
 
   /** First sentence of a description, trimmed to something scannable. */

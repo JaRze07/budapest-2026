@@ -831,7 +831,18 @@ main {
 
 /* ---------- results summary ---------- */
 
-.tallybar { display: flex; gap: 8px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+.tallybar {
+  display: flex;
+  gap: 10px 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.tallybar .btn { flex: 0 0 auto; }
+.tallybar .muted { flex: 1 1 auto; min-width: 0; }
 .rank { margin-top: 12px; border: 1px solid var(--line); background: var(--white); }
 .rank .r {
   display: flex;
