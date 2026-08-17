@@ -348,7 +348,27 @@ window.BPmissing = function (img, label) {
     var out = p.flights.filter(function (f) { return f.dir === "out"; })[0];
     if (!out || !out.legs || !out.legs.length) return null;
     var last = out.legs[out.legs.length - 1];
-    return { date: out.date, time: last.arr, from: last.from_city, min: toMin(last.arr) };
+    return {
+      date: out.date, time: last.arr, from: last.from_city, min: toMin(last.arr),
+      tz: last.arr_tz || TRIP.trip.tz_offset
+    };
+  }
+
+  /* The exact instant they touch down. Built with an explicit offset, so the
+     countdown is right whichever timezone the phone is in — the difference
+     between two absolute instants doesn't care where you're standing. */
+  function arrivalInstant(a) {
+    if (!a) return null;
+    var t = new Date(a.date + "T" + a.time + ":00" + a.tz).getTime();
+    return isNaN(t) ? null : t;
+  }
+
+  /** Their landing time as the phone would show it, if that differs from Budapest. */
+  function localEcho(instant, budapestTime) {
+    try {
+      var local = new Date(instant).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+      return local === budapestTime ? "" : local;
+    } catch (e) { return ""; }
   }
   function departure(p) {
     if (!p || !p.flights) return null;
@@ -363,8 +383,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mswlfsrb").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mswlfsrb").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mswliqpv").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mswliqpv").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -676,13 +696,17 @@ window.BPmissing = function (img, label) {
       '<div class="hype" id="hypeBox"></div>';
     renderHype();
 
-    var target = new Date(TRIP.trip.start + "T00:00:00" + TRIP.trip.tz_offset).getTime();
+    // Counts down to this person's own landing, not a shared trip start.
+    var mine = me ? arrival(person(me)) : null;
+    var landing = arrivalInstant(mine);
+    var target = landing || new Date(TRIP.trip.start + "T00:00:00" + TRIP.trip.tz_offset).getTime();
     var end = new Date(TRIP.trip.end + "T23:59:59" + TRIP.trip.tz_offset).getTime();
+    el("cdKick").textContent = landing ? "You land in" : "Wheels up in";
 
     function tick() {
       var diff = target - Date.now();
       if (diff <= 0) {
-        el("cdKick").textContent = Date.now() > end ? "That was" : "You are in";
+        el("cdKick").textContent = Date.now() > end ? "That was" : "You're in";
         el("cdUnits").innerHTML = '<div class="nowbig">Budapest</div>';
         el("cdLine").textContent = TRIP.trip.label;
         if (cdTimer) clearInterval(cdTimer);
@@ -697,10 +721,14 @@ window.BPmissing = function (img, label) {
         '<div class="u"><b>' + m + "</b><span>min</span></div>" +
         '<div class="u"><b>' + ss + "</b><span>sec</span></div>";
 
-      var mine = me ? arrival(person(me)) : null;
-      el("cdLine").textContent = mine
-        ? "You land " + dayLong(mine.date) + " at " + mine.time + "."
-        : "Flight not in yet — the countdown is the same for everyone.";
+      if (!landing) {
+        el("cdLine").textContent = "Flight not in yet — this counts down to the start of the trip.";
+        return;
+      }
+      var echo = localEcho(landing, mine.time);
+      el("cdLine").textContent =
+        "You land " + dayLong(mine.date) + " at " + mine.time + " Budapest time" +
+        (echo ? " — " + echo + " where you are." : ".");
     }
     tick();
     if (cdTimer) clearInterval(cdTimer);
