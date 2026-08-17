@@ -54,48 +54,95 @@ window.BPnoPhoto = function (img, letter) {
     if (h) document.documentElement.style.setProperty("--topbar", h.offsetHeight + "px");
   }
 
-  /* Uber publishes a universal link that takes a destination; Bolt publishes
-     nothing equivalent and says so outright, so Bolt gets the address on the
-     clipboard instead — one paste into its destination box. */
-  function rideTo(lat, lng, name, addr) {
-    return {
-      uber: "https://m.uber.com/ul/?action=setPickup&pickup=my_location" +
-        "&dropoff%5Blatitude%5D=" + lat +
-        "&dropoff%5Blongitude%5D=" + lng +
-        "&dropoff%5Bnickname%5D=" + encodeURIComponent(name) +
-        (addr ? "&dropoff%5Bformatted_address%5D=" + encodeURIComponent(addr) : ""),
-      maps: "https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + lng
-    };
+  /** Whichever option won the vote — or null while nowhere is decided. */
+  function ourPlace() {
+    var id = TRIP.stay.chosen;
+    if (!id) return null;
+    return TRIP.stay.vote.options.filter(function (o) { return o.id === id; })[0] || null;
   }
 
-  /** Full-width ride row — used for the accommodation. */
-  function rideLinks(compact) {
-    var s = TRIP.stay.current;
-    if (!s.lat || !s.lng) return "";
-    var addr = s.full_address || s.address;
-    var r = rideTo(s.lat, s.lng, s.name, addr);
-    return '<div class="rides">' +
-      '<a class="ride go" href="' + r.uber + '" target="_blank" rel="noopener">Ride with Uber</a>' +
-      '<a class="ride" href="' + r.maps + '" target="_blank" rel="noopener">Directions</a>' +
-      '<button type="button" class="ride" data-copy="' + esc(addr) + '">Copy for Bolt</button>' +
-      (compact ? "" : '<span class="ridenote">Uber drops you at the door. Bolt publishes no link that ' +
-        "carries a destination, so copy the address and paste it into Bolt's box.</span>") +
-      "</div>";
+  /* Uber publishes a universal link that takes both ends of the journey; Bolt
+     publishes nothing equivalent and says so outright, so Bolt gets the address
+     on the clipboard instead — one paste into its destination box.
+     `from` null means "wherever I'm standing". */
+  function rideTo(to, from) {
+    var pickup = from
+      ? "&pickup%5Blatitude%5D=" + from.lat +
+        "&pickup%5Blongitude%5D=" + from.lng +
+        "&pickup%5Bnickname%5D=" + encodeURIComponent(from.name || "Our place")
+      : "";
+    var uber = "https://m.uber.com/ul/?action=setPickup" +
+      (from ? "" : "&pickup=my_location") + pickup +
+      "&dropoff%5Blatitude%5D=" + to.lat +
+      "&dropoff%5Blongitude%5D=" + to.lng +
+      "&dropoff%5Bnickname%5D=" + encodeURIComponent(to.name) +
+      (to.addr ? "&dropoff%5Bformatted_address%5D=" + encodeURIComponent(to.addr) : "");
+    // Omitting origin lets Maps start from wherever the phone is.
+    var maps = "https://www.google.com/maps/dir/?api=1" +
+      (from ? "&origin=" + from.lat + "," + from.lng : "") +
+      "&destination=" + to.lat + "," + to.lng + "&travelmode=transit";
+    return { uber: uber, maps: maps };
   }
 
-  /** Compact ride row for a venue card. */
-  function venueRide(it) {
-    if (!it.lat || !it.lng) return "";
-    var addr = it.area + ", Budapest";
-    var r = rideTo(it.lat, it.lng, it.name, addr);
-    return '<span class="goto">' +
-      '<a class="mini" href="' + r.uber + '" target="_blank" rel="noopener" ' +
-        'title="Ride to ' + esc(it.name) + ' with Uber">Uber</a>' +
-      '<a class="mini" href="' + r.maps + '" target="_blank" rel="noopener" ' +
-        'title="Directions to ' + esc(it.name) + '">Map</a>' +
-      '<button type="button" class="mini" data-copy="' + esc(addr) + '" ' +
-        'title="Copy the address to paste into Bolt">Bolt</button>' +
-      "</span>";
+  function pt(o) {
+    return { lat: o.lat, lng: o.lng, name: o.name, addr: o.full_address || (o.area + ", Budapest") };
+  }
+
+  function ticketBlock(key) {
+    var t = (TRIP.tickets || {})[key];
+    if (!t) return "";
+    return '<div class="tick"><b>' + esc(t.name) + " · " + esc(t.price) + "</b><span>" +
+      esc(t.where) + "</span></div>";
+  }
+
+  /** Two ways to reach anything: from where we sleep, and from wherever you are. */
+  function openSheet(id) {
+    var src = byId[id] ? byId[id].item
+            : store.state.customs.filter(function (c) { return c.id === id; })[0]
+            || TRIP.stay.vote.options.filter(function (o) { return o.id === id; })[0];
+    if (!src || !src.lat) return;
+
+    var to = pt(src);
+    var place = ourPlace();
+    var html = '<div class="kick">Getting there</div>' +
+      "<h3>" + esc(src.name) + "</h3>" +
+      '<div class="sheetarea">' + esc(src.area || "") + "</div>";
+
+    if (place && place.id !== src.id) {
+      html += fromBlock("From our place", place.name, to, pt(place));
+    } else if (!place) {
+      html += '<div class="fromnote">There\'s no <b>from our place</b> yet — nowhere is booked. ' +
+        "It appears here the moment the accommodation vote is settled.</div>";
+    }
+    html += fromBlock("From where I am now", "", to, null);
+
+    html += '<div class="rides">' +
+      '<button type="button" class="ride" data-copy="' + esc(to.addr) + '">Copy address for Bolt</button>' +
+      '<span class="ridenote">Bolt publishes no link that carries a destination — paste the address ' +
+      "into its own box.</span></div>";
+
+    html += '<div class="sheettickets"><div class="kick">Tickets, if you take transit</div>' +
+      ticketBlock("single") + ticketBlock("travelcard") + "</div>";
+
+    el("sheetBody").innerHTML = html;
+    el("sheet").hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeSheet() {
+    el("sheet").hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  /** One labelled origin block inside the Get-there sheet. */
+  function fromBlock(title, sub, to, from) {
+    var r = rideTo(to, from);
+    return '<div class="fromblock">' +
+      '<div class="fromhead">' + esc(title) + (sub ? " <span>" + esc(sub) + "</span>" : "") + "</div>" +
+      '<div class="rides">' +
+        '<a class="ride go" href="' + r.uber + '" target="_blank" rel="noopener">Uber</a>' +
+        '<a class="ride" href="' + r.maps + '" target="_blank" rel="noopener">Transit &amp; walking</a>' +
+      "</div></div>";
   }
 
   /* --- clock maths, all in Budapest local time --- */
@@ -217,6 +264,11 @@ window.BPnoPhoto = function (img, letter) {
     });
 
     document.addEventListener("click", function (e) {
+      var g = e.target.closest("[data-goto]");
+      if (g) { openSheet(g.getAttribute("data-goto")); return; }
+
+      if (e.target.closest("#sheetClose") || e.target.id === "sheet") { closeSheet(); return; }
+
       var b = e.target.closest("[data-copy]");
       if (!b) return;
       var text = b.getAttribute("data-copy");
@@ -228,6 +280,10 @@ window.BPnoPhoto = function (img, letter) {
     window.addEventListener("hashchange", function () {
       var v = (location.hash || "").replace("#/", "");
       if (v && v !== view) go(v, true);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !el("sheet").hidden) closeSheet();
     });
 
     syncTopbar();
@@ -377,9 +433,7 @@ window.BPnoPhoto = function (img, letter) {
             "</ul>" +
           "</div>" +
         "</div>" +
-        '<div class="sec-title">Getting to the boat</div>' +
-        '<p class="sec-note">Generic version until your flight lands in here — timings start from whenever you touch down.</p>' +
-        renderRoutes(null);
+        airportSection(null);
       return;
     }
 
@@ -392,11 +446,27 @@ window.BPnoPhoto = function (img, letter) {
       (out ? flightCard(out, "Out") : "") +
       (back ? flightCard(back, "Back") : "") +
       (p.note ? '<p class="sec-note">' + esc(p.note) + "</p>" : "") +
-      '<div class="sec-title">Airport → the boat</div>' +
-      '<p class="sec-note">You land at ' + esc(arr.time) + " on " + esc(dayLong(arr.date)) +
-        ". " + esc(TRIP.airport.buffer_note) + "</p>" +
-      renderRoutes(arr) +
-      earlyNote(arr);
+      airportSection(arr);
+  }
+
+  /** The way in from BUD — only meaningful once we know where we're going. */
+  function airportSection(arr) {
+    var place = ourPlace();
+    if (!place) {
+      return '<div class="sec-title">Getting in from the airport</div>' +
+        '<div class="pending"><b>Waiting on the accommodation vote</b>' +
+        "<p>The route in depends entirely on where we end up, so there's nothing honest to show yet. " +
+        "The moment the vote is settled this fills in with your own timings, where to buy each ticket, " +
+        "and a car straight to the front door.</p>" +
+        '<a class="btn gobtn" href="#/stay">Go and vote</a></div>';
+    }
+    return '<div class="sec-title">Airport → ' + esc(place.name) + "</div>" +
+      (arr
+        ? '<p class="sec-note">You land at ' + esc(arr.time) + " on " + esc(dayLong(arr.date)) +
+          ". " + esc(TRIP.airport.buffer_note) + "</p>"
+        : '<p class="sec-note">Timings fill in with real clock times once your flight is in here.</p>') +
+      renderRoutes(arr, place) +
+      earlyNote(arr, place);
   }
 
   function flightCard(f, label) {
@@ -415,20 +485,17 @@ window.BPnoPhoto = function (img, letter) {
     "</div>";
   }
 
-  /** Routes from BUD to the boat. With an arrival, every step gets a real clock time. */
-  function renderRoutes(arr) {
+  /* Routes from BUD to wherever we end up staying. The car leads — it's the one
+     that works at any hour and needs no ticket. The transit options carry the
+     last leg as a live Maps link, because it depends entirely on the address. */
+  function renderRoutes(arr, place) {
     var A = TRIP.airport;
     var hour = arr ? arr.min / 60 : 12;
     var late = !!arr && (hour >= 22.5 || hour < 4);
 
-    // Keep the authored order — public transport first, taxi as the fallback.
-    // A late landing flips that: the metro has stopped, so the car leads.
-    var routes = A.routes.slice();
-    if (late) routes.sort(function (a, b) { return (b.id === "taxi") - (a.id === "taxi"); });
-
     var html = late ? '<div class="callout"><b>Landing late</b><p>' + esc(A.night_note) + "</p></div>" : "";
 
-    html += routes.map(function (r, i) {
+    html += A.routes.map(function (r, i) {
       var running = fits(r, hour);
       var t = arr ? arr.min + (A.buffer_arrive || 25) : null;
 
@@ -437,18 +504,37 @@ window.BPnoPhoto = function (img, letter) {
           ? '<div class="clock">' + fmtMin(t) + "<small>+" + s.min + "m</small></div>"
           : '<div class="clock" style="font-size:12px;color:var(--slate)">' + s.min + " min</div>";
         if (t !== null) t += s.min;
-        return "<li>" + clock + "<div>" + esc(s.text) + "</div></li>";
+
+        var onward = "";
+        if (s.onward && place && place.lat) {
+          var hub = A[s.onward];
+          var live = rideTo(pt(place), { lat: hub.lat, lng: hub.lng, name: hub.name });
+          onward = '<div class="onward"><a class="mini" href="' + live.maps + '" target="_blank" ' +
+            'rel="noopener">Live route: ' + esc(hub.name) + " → " + esc(place.name) + "</a></div>";
+        }
+
+        return "<li>" + clock + "<div>" + esc(s.text) + onward +
+          ticketBlock(s.ticket) + "</div></li>";
       }).join("");
 
-      var lands = (t !== null)
-        ? '<li><div class="clock">' + fmtMin(t) + '<small>arrive</small></div><div><b>At Meder u. 9.</b> ' +
-          esc(dur(t - arr.min)) + " door to door from touchdown.</div></li>"
+      var lands = (t !== null && place)
+        ? '<li><div class="clock">' + fmtMin(t) + '<small>arrive</small></div><div><b>At ' +
+          esc(place.name) + ".</b> Roughly " + esc(dur(t - arr.min)) + " door to door from touchdown.</div></li>"
         : "";
+
+      var rides = "";
+      if (r.ride && place && place.lat) {
+        var d = rideTo(pt(place), null);
+        rides = '<div class="rides">' +
+          '<a class="ride go" href="' + d.uber + '" target="_blank" rel="noopener">Ride with Uber</a>' +
+          '<button type="button" class="ride" data-copy="' + esc(pt(place).addr) + '">Copy for Bolt</button>' +
+          "</div>";
+      }
 
       return '<div class="route' + (i === 0 ? "" : " alt") + '">' +
         '<div class="rhead"><b>' + esc(r.label) + '</b><span class="badge">' + esc(r.badge) + "</span></div>" +
         '<ul class="steps">' + steps + lands + "</ul>" +
-        (r.ride ? rideLinks(false) : "") +
+        rides +
         '<div class="rcost">' + esc(r.cost) + "</div>" +
         (!running
           ? '<div class="rwarn"><b>Not running at that hour.</b> ' + esc(A.night_note) + "</div>"
@@ -463,18 +549,19 @@ window.BPnoPhoto = function (img, letter) {
     return hour >= w[0] && hour <= w[1];
   }
 
-  /** Landing well before 15:00 check-in is worth calling out. */
-  function earlyNote(arr) {
-    if (!arr) return "";
+  /** Landing well before check-in is worth calling out. */
+  function earlyNote(arr, place) {
+    if (!arr || !place) return "";
     var A = TRIP.airport;
-    var atBoat = arr.min + (A.buffer_arrive || 25) +
-      A.routes[0].steps.reduce(function (n, s) { return n + s.min; }, 0);
+    var bus = A.routes.filter(function (r) { return r.id === "100e"; })[0] || A.routes[0];
+    var there = arr.min + (A.buffer_arrive || 25) +
+      bus.steps.reduce(function (n, s) { return n + s.min; }, 0);
     var checkin = 15 * 60;
-    if (arr.date !== TRIP.trip.start || atBoat > checkin - 45) return "";
+    if (arr.date !== TRIP.trip.start || there > checkin - 45) return "";
     return '<div class="callout"><b>You get there before check-in</b><p>' +
-      "On that route you're at the dock around " + fmtMin(atBoat) +
-      " and check-in isn't until 15:00. Message the host about dropping bags early — " +
-      "and Margaret Island is the closest thing to kill a few hours, ten minutes down the road.</p></div>";
+      "On that route you're at " + esc(place.name) + " around " + fmtMin(there) +
+      ", and check-in is usually 15:00. Ask about dropping bags early — Margaret Island is the " +
+      "easiest way to kill a few hours with luggage already off your back.</p></div>";
   }
 
   function renderClash() {
@@ -525,18 +612,31 @@ window.BPnoPhoto = function (img, letter) {
   }
 
   function renderStaySummary() {
-    var s = TRIP.stay.current;
+    var place = ourPlace();
+    var voted = CFG.names.filter(function (n) { return store.state.stay[n]; });
+
+    if (!place) {
+      el("homeStay").innerHTML =
+        '<div class="sec-title">Where we sleep</div>' +
+        '<div class="pending"><b>Not decided</b>' +
+        "<p>Five options are up. " + voted.length + " of " + CFG.names.length +
+        " have voted" + (voted.length ? " — " + esc(voted.join(", ")) : "") + ".</p>" +
+        '<a class="btn gobtn" href="#/stay">See the options</a></div>';
+      return;
+    }
+
     el("homeStay").innerHTML =
-      '<div class="sec-title">The boat</div>' +
+      '<div class="sec-title">Where we sleep</div>' +
       '<div class="board">' +
-        '<div class="row"><div class="av">⚓</div><div class="nm"><b>' + esc(s.name) +
-          "</b><small>" + esc(s.address) + " · " + esc(s.metro) + "</small></div></div>" +
-        '<div class="row"><div class="av">↓</div><div class="nm"><b>Check in</b><small>' + esc(s.checkin) + "</small></div></div>" +
-        '<div class="row"><div class="av">↑</div><div class="nm"><b>Check out</b><small>' + esc(s.checkout) + "</small></div></div>" +
+        '<div class="row"><div class="av">⌂</div><div class="nm"><b>' + esc(place.name) +
+          "</b><small>" + esc(place.area) + "</small></div></div>" +
+        (place.checkin ? '<div class="row"><div class="av">↓</div><div class="nm"><b>Check in</b><small>' +
+          esc(place.checkin) + "</small></div></div>" : "") +
+        (place.checkout ? '<div class="row"><div class="av">↑</div><div class="nm"><b>Check out</b><small>' +
+          esc(place.checkout) + "</small></div></div>" : "") +
       "</div>" +
-      rideLinks(true) +
-      '<div class="links"><a href="#/stay">Details &amp; vote</a>' +
-      '<a href="' + esc(s.link) + '" target="_blank" rel="noopener">Listing</a></div>';
+      '<div class="links"><button type="button" class="gotolink" data-goto="' + esc(place.id) +
+        '">Get there</button><a href="#/stay">Details</a></div>';
   }
 
   function renderSchedule() {
@@ -592,7 +692,7 @@ window.BPnoPhoto = function (img, letter) {
         (it.key_fact ? '<p class="keyfact">' + esc(it.key_fact) + "</p>" : "") +
         '<div class="cardfoot">' +
           '<span class="pick" id="p-' + esc(it.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
-          venueRide(it) +
+          (it.lat ? '<button type="button" class="mini" data-goto="' + esc(it.id) + '">Get there</button>' : "") +
         "</div>" +
         '<div class="who" id="w-' + esc(it.id) + '"></div>' +
       "</div></div>";
@@ -750,21 +850,28 @@ window.BPnoPhoto = function (img, letter) {
         '<div class="grid">' + S.vote.options.map(stayCard).join("") + "</div>";
     }
 
-    var s = S.current;
+    // Only once something has actually won — until then there is no "our place".
+    var s = ourPlace();
+    if (!s) {
+      el("stayCurrent").innerHTML =
+        '<p class="sec-note" style="margin-top:22px">Nothing is booked, and nothing else on the site ' +
+        "assumes a winner — the airport routes and the from-our-place option on every venue stay " +
+        "switched off until this is settled.</p>";
+      return;
+    }
+
     el("stayCurrent").innerHTML =
       '<div class="stay-hero">' +
-        '<div class="sh"><span>' + esc(S.vote.options.length ? "The incumbent, in detail" : "The plan right now") + "</span><b>" +
-          esc(s.name) + "</b></div>" +
+        '<div class="sh"><span>Where we\'re staying</span><b>' + esc(s.name) + "</b></div>" +
         '<div class="body">' +
-          '<div class="kv"><span class="k">What</span><span>' + esc(s.kind) + ", sleeps " + s.sleeps + "</span></div>" +
-          '<div class="kv"><span class="k">Where</span><span>' + esc(s.address) + "</span></div>" +
-          '<div class="kv"><span class="k">Metro</span><span>' + esc(s.metro) + "</span></div>" +
-          '<div class="kv"><span class="k">In / out</span><span>' + esc(s.checkin) + " → " + esc(s.checkout) + "</span></div>" +
-          "<ul class=\"perks\">" + s.perks.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>" +
-          rideLinks(false) +
+          '<div class="kv"><span class="k">Where</span><span>' + esc(s.full_address || s.area) + "</span></div>" +
+          (s.sleeps ? '<div class="kv"><span class="k">Sleeps</span><span>' + s.sleeps + "</span></div>" : "") +
+          (s.checkin ? '<div class="kv"><span class="k">In / out</span><span>' + esc(s.checkin) +
+            " → " + esc(s.checkout || "") + "</span></div>" : "") +
+          (s.perks ? '<ul class="perks">' + s.perks.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>" : "") +
           '<div class="links">' +
-            '<a href="' + esc(s.link) + '" target="_blank" rel="noopener">Listing</a>' +
-            '<a href="' + esc(s.map) + '" target="_blank" rel="noopener">Maps</a>' +
+            '<button type="button" class="gotolink" data-goto="' + esc(s.id) + '">Get there</button>' +
+            (s.link ? '<a href="' + esc(s.link) + '" target="_blank" rel="noopener">Listing</a>' : "") +
           "</div>" +
         "</div></div>";
   }
@@ -773,7 +880,6 @@ window.BPnoPhoto = function (img, letter) {
     var on = sel.stay[o.id] ? " on" : "";
     var reach = o.walk ? o.walk + " min walk to the bars"
               : o.transit ? o.transit + " to the bars" : "";
-    var r = (o.lat && o.lng) ? rideTo(o.lat, o.lng, o.name, o.area) : null;
 
     return '<div class="card' + on + '" id="c-' + esc(o.id) + '" data-stay="' + esc(o.id) + '">' +
       (o.image ? '<img src="' + esc(o.image) + '" alt="" loading="lazy">'
@@ -788,10 +894,7 @@ window.BPnoPhoto = function (img, letter) {
         (o.id === "flat" ? "Browse flats · our dates" : "Check price · our dates") + "</a>" : "") +
       '<div class="cardfoot">' +
         '<span class="pick" id="p-' + esc(o.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
-        (r ? '<span class="goto">' +
-          '<a class="mini" href="' + r.uber + '" target="_blank" rel="noopener">Uber</a>' +
-          '<a class="mini" href="' + r.maps + '" target="_blank" rel="noopener">Map</a>' +
-          "</span>" : "") +
+        (o.lat ? '<button type="button" class="mini" data-goto="' + esc(o.id) + '">Get there</button>' : "") +
       "</div>" +
       '<div class="who" id="w-' + esc(o.id) + '"></div></div></div>';
   }
@@ -806,9 +909,20 @@ window.BPnoPhoto = function (img, letter) {
       }).join("") + "</div>";
     };
 
+    var place = ourPlace();
     el("infoBody").innerHTML = '<div class="acc">' +
-      panel("Airport → the boat", true,
-        "<p style=\"margin:0 0 10px\">" + esc(A.buffer_note) + "</p>" + renderRoutes(me ? arrival(person(me)) : null)) +
+      (place
+        ? panel("Airport → " + place.name, true,
+            '<p style="margin:0 0 10px">' + esc(A.buffer_note) + "</p>" +
+            renderRoutes(me ? arrival(person(me)) : null, place))
+        : panel("Airport → town", true,
+            "<p style=\"margin:0 0 10px\">Nowhere is booked yet, so the last leg is anyone's guess. " +
+            "These are the two ways into the middle of the city; the rest fills in once the " +
+            "accommodation vote lands.</p>" +
+            '<p style="margin:0 0 10px">' + esc(A.buffer_note) + "</p>" +
+            renderRoutes(me ? arrival(person(me)) : null, null))) +
+      panel("Tickets, and where to buy them", false,
+        ["airport", "single", "travelcard"].map(ticketBlock).join("")) +
       panel("Getting around", false, deflist(TRIP.getting_around)) +
       panel("Money", false, deflist(TRIP.money)) +
       panel("Hungarian, the useful fifteen", false,

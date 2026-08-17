@@ -37,6 +37,12 @@ Almost everything is data, not code.
 (two legs). Everything else follows automatically: their countdown line, their airport route with
 real clock times, their row on the arrivals board, and the "flight missing" banner disappears.
 
+**Settle the accommodation** — set `data/trip.json` → `stay.chosen` to the winning option's
+`id` (e.g. `"continental"`). That one field switches on everything that depends on having a
+base: the airport routes on Home and in Info, the check-in callout, the "where we sleep" card,
+and a **from our place** origin on every venue's Get-there sheet. Leave it `null` and all of
+that stays hidden rather than guessing.
+
 **Add accommodation options** — `data/trip.json` → `stay.vote.options`:
 
 ```json
