@@ -383,8 +383,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=msx4vb7t").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=msx4vb7t").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=msxe136g").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=msxe136g").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1455,7 +1455,19 @@ window.BPmissing = function (img, label) {
       "</div>";
     }).join("");
 
-    var undecided = CFG.names.filter(function (n) { return !(finals[n] && finals[n].id); });
+    /* A pick only counts while the place is still on the shortlist. Somebody
+       vetoing your choice after you made it has to put you back in the
+       undecided pile, or you'd sit there thinking you'd chosen. */
+    var alive = {};
+    s.alive.forEach(function (x) { alive[x.o.id] = true; });
+    var undecided = CFG.names.filter(function (n) {
+      return !(finals[n] && finals[n].id && alive[finals[n].id]);
+    });
+
+    var myId = finals[me] && finals[me].id;
+    var killed = myId && !alive[myId]
+      ? (TRIP.stay.vote.options.filter(function (o) { return o.id === myId; })[0] || {}).name
+      : null;
 
     box.innerHTML = "<section>" +
       '<div class="cathead"><h3>The shortlist</h3><span>' +
@@ -1465,6 +1477,10 @@ window.BPmissing = function (img, label) {
         "Tap a star to make one of them your single pick" +
         (undecided.length ? " — still to choose: " + esc(undecided.join(", ")) : " — everyone has chosen") +
       ".</p>" +
+      (killed
+        ? '<div class="callout"><b>Your pick got vetoed</b><p>You had chosen <b>' + esc(killed) +
+          "</b>, but somebody has said No to it since. Star another one.</p></div>"
+        : "") +
       (s.alive.length ? '<div class="short">' + rows + "</div>"
         : '<p class="sec-note">Everything has a No against it. Somebody needs to soften.</p>') +
     "</section>";
