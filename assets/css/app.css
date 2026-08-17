@@ -1071,17 +1071,39 @@ nav.tabs button .dot {
 
 .short { margin-top: 12px; border: 1px solid var(--line); background: var(--white); }
 .srow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 4px 12px;
+  padding: 14px;
 }
 .srow + .srow { border-top: 1px solid var(--line); }
 .srow.mine { background: #F2FBF5; }
-.sname { flex: 1; min-width: 0; }
-.sname b { font-family: var(--serif); font-weight: 400; font-size: 17px; display: block; line-height: 1.2; }
-.sname small { display: block; color: var(--slate); font-size: 11.5px; margin-top: 2px; }
-.verdicts { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+.sname { min-width: 0; text-decoration: none; display: block; }
+.sname b {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 17px;
+  display: block;
+  line-height: 1.25;
+}
+.sname:hover b { color: var(--brass-dim); }
+.sname small { display: block; color: var(--slate); font-size: 11.5px; margin-top: 3px; }
+.sname .ext { font-style: normal; font-size: 12px; color: var(--brass); margin-left: 5px; }
+.sscore {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--serif);
+  font-size: 13px;
+  padding: 1px 7px;
+  border-radius: 3px;
+  margin-bottom: 5px;
+}
+.sdetail { grid-column: 1 / -1; }
+.sdetail .desc { font-size: 12.5px; line-height: 1.5; margin: 9px 0 0; }
+.sdetail .pc { margin-top: 7px; }
+.verdicts { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 9px; }
 .v {
   font-size: 10.5px;
   font-weight: 700;

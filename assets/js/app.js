@@ -383,8 +383,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=msx4pnlj").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=msx4pnlj").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=msx4vb7t").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=msx4vb7t").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1421,22 +1421,37 @@ window.BPmissing = function (img, label) {
     var rows = s.alive.map(function (x) {
       var pickedBy = CFG.names.filter(function (n) { return finals[n] && finals[n].id === x.o.id; });
       var mine = finals[me] && finals[me].id === x.o.id;
+      var o = x.o;
+      // The row itself opens the listing, with our dates already on it.
+      var open = o.link
+        ? '<a class="sname" href="' + esc(o.link) + '" target="_blank" rel="noopener">'
+        : '<div class="sname">';
+
       return '<div class="srow' + (mine ? " mine" : "") + '">' +
-        '<div class="sname">' +
-          "<b>" + esc(x.o.name) + "</b>" +
-          "<small>" + esc(x.o.area) + " · " + esc(x.o.est || "") +
-            (x.o.suits ? " · for " + x.o.suits : "") + "</small>" +
+        open +
+          (o.score ? '<span class="sscore">' + esc(o.score.toFixed(1)) + "</span>" : "") +
+          "<b>" + esc(o.name) + (o.link ? '<i class="ext">↗</i>' : "") + "</b>" +
+          "<small>" + esc(o.area) + " · " + esc(o.est || "") +
+            (o.suits ? " · priced for " + o.suits : "") +
+            (o.walk ? " · " + o.walk + " min walk" : (o.transit ? " · " + esc(o.transit) : "")) + "</small>" +
+        (o.link ? "</a>" : "</div>") +
+
+        '<button type="button" class="pickone' + (mine ? " on" : "") +
+          '" data-final="' + esc(o.id) + '" title="Make this my one pick">' +
+          (mine ? "★" : "☆") + "</button>" +
+
+        '<div class="sdetail">' +
           '<div class="verdicts">' +
             x.yes.map(function (n) { return '<span class="v yes">' + esc(n) + "</span>"; }).join("") +
             x.ok.map(function (n) { return '<span class="v ok">' + esc(n) + "</span>"; }).join("") +
           "</div>" +
+          (o.nearby ? '<p class="desc">' + esc(o.nearby) + "</p>" : "") +
+          (o.pros ? '<ul class="pc pros">' + o.pros.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "") +
+          (o.cons ? '<ul class="pc cons">' + o.cons.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "") +
           (pickedBy.length
             ? '<div class="pickedby">Picked by <b>' + esc(pickedBy.join(", ")) + "</b></div>"
             : "") +
         "</div>" +
-        '<button type="button" class="pickone' + (mine ? " on" : "") +
-          '" data-final="' + esc(x.o.id) + '" title="Make this my one pick">' +
-          (mine ? "★" : "☆") + "</button>" +
       "</div>";
     }).join("");
 
