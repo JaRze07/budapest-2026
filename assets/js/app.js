@@ -13,6 +13,15 @@ window.BPnoPhoto = function (img, letter) {
   if (area) area.textContent = area.textContent.replace(" · photo illustrative", "");
 };
 
+/* A photo that isn't in the repo yet shows as a labelled placeholder rather
+   than a broken-image icon. */
+window.BPmissing = function (img, label) {
+  var box = document.createElement("div");
+  box.className = "tmissing";
+  box.textContent = label + " — photo not added yet";
+  img.replaceWith(box);
+};
+
 (function () {
   "use strict";
 
@@ -151,11 +160,21 @@ window.BPnoPhoto = function (img, letter) {
      No account, no keys, nothing to deploy — the topic name is the secret. */
   function renderPing() {
     var n = CFG.ntfy;
-    if (!n || !n.topic) return;
-    el("homePing").innerHTML =
+    if (!n || !n.topic || !el("infoPing")) return;
+    el("infoPing").innerHTML =
       '<div class="sec-title">Ping the group</div>' +
-      '<p class="sec-note">Lands on everyone\'s phone as a notification. Each of you needs the ntfy ' +
-      "app once — it's in the Info tab, takes a minute.</p>" +
+      '<div class="pingsetup">' +
+        "<p><b>There's no browser pop-up asking you to allow notifications — this doesn't use them.</b> " +
+        "That's why you never saw one. It goes through the ntfy app instead, which is the whole point: " +
+        "it reaches your phone even when this page is shut.</p>" +
+        "<ol>" +
+          "<li>Install <b>ntfy</b> — the buttons are just below.</li>" +
+          '<li>Open it, tap <b>+</b>, and subscribe to <code>' + esc(n.topic) + "</code> " +
+            '<button type="button" class="mini" data-copy="' + esc(n.topic) + '">Copy</button></li>' +
+          "<li>Come back here and send yourself a test.</li>" +
+        "</ol>" +
+        "<p class=\"warnline\">Keep that topic between the four of us — anyone who has it can send to your phones.</p>" +
+      "</div>" +
       '<div class="ping">' +
         '<div class="pingquick">' +
           n.presets.map(function (p) {
@@ -350,11 +369,8 @@ window.BPnoPhoto = function (img, letter) {
 
     // Delegated once — the containers persist, only their innerHTML changes.
     el("cats").addEventListener("click", onBoardClick);
-    el("stayVote").addEventListener("click", function (e) {
-      if (e.target.closest("a, .mini")) return;
-      var c = e.target.closest("[data-stay]");
-      if (c) toggle("stay", c.getAttribute("data-stay"));
-    });
+    // Accommodation cards aren't click-to-toggle any more — the three rating
+    // buttons are handled by the document-level delegate.
 
     // Only one Info panel open at a time — `toggle` doesn't bubble, so capture.
     document.addEventListener("toggle", function (e) {
@@ -370,6 +386,12 @@ window.BPnoPhoto = function (img, letter) {
     });
 
     document.addEventListener("click", function (e) {
+      var hy = e.target.closest("[data-hype]");
+      if (hy) { setHype(+hy.getAttribute("data-hype")); return; }
+
+      var sr = e.target.closest("[data-rate]");
+      if (sr) { setStay(sr.getAttribute("data-opt"), sr.getAttribute("data-rate")); return; }
+
       var q = e.target.closest("[data-ping]");
       if (q) { sendPing(q.getAttribute("data-ping")); return; }
       if (e.target.id === "pingSend") { sendPing(el("pingText").value); return; }
@@ -417,10 +439,10 @@ window.BPnoPhoto = function (img, letter) {
 
     // Pre-tick whatever this person already has on record.
     sel = { picks: {}, stay: {} };
-    ["picks", "stay"].forEach(function (kind) {
-      var rec = store.state[kind][name];
-      if (rec && rec.ids) rec.ids.forEach(function (id) { sel[kind][id] = true; });
-    });
+    var pk = store.state.picks[name];
+    if (pk && pk.ids) pk.ids.forEach(function (id) { sel.picks[id] = true; });
+    var st = store.state.stay[name];
+    if (st && st.r) Object.keys(st.r).forEach(function (id) { sel.stay[id] = st.r[id]; });
 
     renderAll();
     var v = (location.hash || "").replace("#/", "");
@@ -479,11 +501,13 @@ window.BPnoPhoto = function (img, letter) {
       customCount = store.state.customs.length;
       renderPicks();
     }
-    paintWho();
-    renderSummary();
+    renderStay();
     renderClash();
     renderArrivals();
-    renderStay();
+    renderHypeOthers();
+    // After renderStay — it rebuilds the cards, which would wipe the chips.
+    paintWho();
+    renderSummary();
     el("submittedLine").textContent = submittedLine();
     updateBar();
   }
@@ -492,7 +516,7 @@ window.BPnoPhoto = function (img, letter) {
 
   function renderHome() {
     renderCountdown();
-    renderPing();
+    renderTransformation();
     renderYou();
     renderClash();
     renderArrivals();
@@ -500,42 +524,100 @@ window.BPnoPhoto = function (img, letter) {
     renderSchedule();
   }
 
+  /* The box is built once and only the digits are rewritten each second —
+     otherwise the ticker would tear down the hype panel under your finger. */
   var cdTimer = null;
   function renderCountdown() {
+    el("countdown").innerHTML =
+      '<div class="welcome">Welcome back, <b>' + esc(me || "") + "</b></div>" +
+      '<div class="kick" id="cdKick">Wheels up in</div>' +
+      '<div class="units" id="cdUnits"></div>' +
+      '<div class="line" id="cdLine"></div>' +
+      '<div class="hype" id="hypeBox"></div>';
+    renderHype();
+
     var target = new Date(TRIP.trip.start + "T00:00:00" + TRIP.trip.tz_offset).getTime();
+    var end = new Date(TRIP.trip.end + "T23:59:59" + TRIP.trip.tz_offset).getTime();
+
     function tick() {
       var diff = target - Date.now();
-      var box = el("countdown");
       if (diff <= 0) {
-        var end = new Date(TRIP.trip.end + "T23:59:59" + TRIP.trip.tz_offset).getTime();
-        box.innerHTML = '<div class="kick">' + (Date.now() > end ? "That was" : "You are in") + '</div>' +
-          '<div style="font-family:Georgia,serif;font-size:34px;margin-top:8px">Budapest</div>' +
-          '<div class="line">' + esc(TRIP.trip.label) + "</div>";
+        el("cdKick").textContent = Date.now() > end ? "That was" : "You are in";
+        el("cdUnits").innerHTML = '<div class="nowbig">Budapest</div>';
+        el("cdLine").textContent = TRIP.trip.label;
         if (cdTimer) clearInterval(cdTimer);
         return;
       }
       var s = Math.floor(diff / 1000);
       var d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600),
           m = Math.floor(s % 3600 / 60), ss = s % 60;
+      el("cdUnits").innerHTML =
+        '<div class="u"><b>' + d + "</b><span>days</span></div>" +
+        '<div class="u"><b>' + h + "</b><span>hrs</span></div>" +
+        '<div class="u"><b>' + m + "</b><span>min</span></div>" +
+        '<div class="u"><b>' + ss + "</b><span>sec</span></div>";
 
       var mine = me ? arrival(person(me)) : null;
-      var line = mine
+      el("cdLine").textContent = mine
         ? "You land " + dayLong(mine.date) + " at " + mine.time + "."
         : "Flight not in yet — the countdown is the same for everyone.";
-
-      box.innerHTML =
-        '<div class="kick">Wheels up in</div>' +
-        '<div class="units">' +
-          '<div class="u"><b>' + d + "</b><span>days</span></div>" +
-          '<div class="u"><b>' + h + "</b><span>hrs</span></div>" +
-          '<div class="u"><b>' + m + "</b><span>min</span></div>" +
-          '<div class="u"><b>' + ss + "</b><span>sec</span></div>" +
-        "</div>" +
-        '<div class="line">' + esc(line) + "</div>";
     }
     tick();
     if (cdTimer) clearInterval(cdTimer);
     cdTimer = setInterval(tick, 1000);
+  }
+
+  /* ---- how excited are you ---- */
+
+  function renderHype() {
+    var H = TRIP.hype;
+    if (!H || !el("hypeBox")) return;
+    var mine = store.state.hype[me];
+    var lvl = mine ? mine.level : null;
+    el("hypeBox").innerHTML =
+      '<div class="hq">' + esc(H.question) + "</div>" +
+      '<div class="hopts">' + H.levels.map(function (l, i) {
+        return '<button type="button" class="hopt' + (lvl === i ? " on" : "") +
+          '" data-hype="' + i + '">' + esc(l) + "</button>";
+      }).join("") + "</div>" +
+      '<div class="hothers" id="hypeOthers"></div>';
+    renderHypeOthers();
+  }
+
+  function renderHypeOthers() {
+    var H = TRIP.hype, box = el("hypeOthers");
+    if (!box) return;
+    box.innerHTML = CFG.names.map(function (n) {
+      var h = store.state.hype[n];
+      var said = h && H.levels[h.level] ? H.levels[h.level] : null;
+      return '<div class="hrow' + (n === me ? " mine" : "") + '">' +
+        "<span>" + esc(n) + "</span>" +
+        (said ? "<b>" + esc(said) + "</b>" : '<i class="pendingdash">hasn\'t said</i>') +
+        "</div>";
+    }).join("");
+  }
+
+  async function setHype(level) {
+    if (!me) return;
+    await store.saveHype(me, level);
+    renderHype();
+  }
+
+  /* ---- Nhi's before and after ---- */
+
+  function renderTransformation() {
+    var T = TRIP.transformation, box = el("homeTransform");
+    if (!box) return;
+    if (!T || me !== T.for) { box.innerHTML = ""; return; }
+    box.innerHTML =
+      '<div class="transform">' +
+        '<div class="kick">' + esc(T.title) + "</div>" +
+        '<div class="tpair">' +
+          '<img src="' + esc(T.before) + '" alt="Before" onerror="BPmissing(this,\'Before\')">' +
+          '<img src="' + esc(T.after) + '" alt="After" onerror="BPmissing(this,\'After\')">' +
+        "</div>" +
+        (T.caption ? '<p class="tcap">' + esc(T.caption) + "</p>" : "") +
+      "</div>";
   }
 
   /** Your flight, your route from the airport — or the nudge if we don't have it. */
@@ -859,6 +941,23 @@ window.BPnoPhoto = function (img, letter) {
     updateBar();
   }
 
+  /** Accommodation is a three-way call, not a tick: No / Can do / I like this. */
+  function setStay(id, val) {
+    if (!me || !id) return;
+    if (sel.stay[id] === val) delete sel.stay[id]; else sel.stay[id] = val;
+    var cur = sel.stay[id];
+    var card = el("c-" + id);
+    if (card) {
+      card.classList.toggle("on", cur === "yes");
+      card.classList.toggle("rated-ok", cur === "ok");
+      card.classList.toggle("rated-no", cur === "no");
+      Array.prototype.forEach.call(card.querySelectorAll("[data-rate]"), function (b) {
+        b.classList.toggle("on", b.getAttribute("data-rate") === cur);
+      });
+    }
+    updateBar();
+  }
+
   function openAdd(ci) {
     var a = el("add-" + ci);
     a.removeAttribute("data-add");
@@ -916,10 +1015,25 @@ window.BPnoPhoto = function (img, letter) {
     });
   }
 
+  /** Who said what about each place — always visible, no toggle over there. */
+  function stayChips() {
+    var word = { yes: "likes it", ok: "can do", no: "no" };
+    (TRIP.stay.vote.options || []).forEach(function (o) {
+      var w = el("w-" + o.id);
+      if (!w) return;
+      w.innerHTML = CFG.names.map(function (n) {
+        var rec = store.state.stay[n];
+        var v = rec && rec.r && rec.r[o.id];
+        if (!v) return "";
+        var cls = v === "yes" ? "n" : v === "no" ? "nay" : "";
+        return '<span class="' + cls + '">' + esc(n) + " · " + word[v] + "</span>";
+      }).join("");
+    });
+  }
+
   function paintWho() {
     document.querySelectorAll(".who").forEach(function (w) { w.innerHTML = ""; });
-    // Accommodation chips are always on — there's no results toggle over there.
-    chips(TRIP.stay.vote.options.map(function (o) { return o.id; }), "stay");
+    stayChips();
     if (!showResults) return;
     chips(Object.keys(byId).concat(store.state.customs.map(function (c) { return c.id; })), "picks");
   }
@@ -1029,7 +1143,8 @@ window.BPnoPhoto = function (img, letter) {
   }
 
   function stayCard(o) {
-    var on = sel.stay[o.id] ? " on" : "";
+    var cur = sel.stay[o.id];
+    var on = cur === "yes" ? " on" : cur === "ok" ? " rated-ok" : cur === "no" ? " rated-no" : "";
     var reach = o.walk ? o.walk + " min walk to the bars" : (o.transit || "");
     var letter = esc((o.name || "?").slice(0, 1).toUpperCase());
 
@@ -1056,8 +1171,11 @@ window.BPnoPhoto = function (img, letter) {
       (o.why ? '<p class="keyfact">' + esc(o.why) + "</p>" : "") +
       (o.link ? '<a class="ride go pricebtn" href="' + esc(o.link) + '" target="_blank" rel="noopener">' +
         "Check live price</a>" : "") +
+      '<div class="rate">' + (TRIP.stay.vote.scale || []).map(function (s) {
+        return '<button type="button" class="rbtn r-' + s.id + (cur === s.id ? " on" : "") +
+          '" data-opt="' + esc(o.id) + '" data-rate="' + esc(s.id) + '">' + esc(s.label) + "</button>";
+      }).join("") + "</div>" +
       '<div class="cardfoot">' +
-        '<span class="pick" id="p-' + esc(o.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
         (o.lat ? '<button type="button" class="mini" data-goto="' + esc(o.id) + '">Get there</button>' : "") +
       "</div>" +
       '<div class="who" id="w-' + esc(o.id) + '"></div></div></div>';
@@ -1073,6 +1191,7 @@ window.BPnoPhoto = function (img, letter) {
       }).join("") + "</div>";
     };
 
+    renderPing();
     renderApps();
     var place = ourPlace();
     el("infoBody").innerHTML = '<div class="acc">' +
@@ -1128,8 +1247,9 @@ window.BPnoPhoto = function (img, letter) {
     if (!kind || !me) { bar.classList.remove("on"); return; }
     bar.classList.add("on");
     var n = Object.keys(sel[kind]).length;
-    el("pickCount").textContent = n;
-    el("pickWord").textContent = kind === "stay" ? (n === 1 ? "option" : "options") : "picked";
+    var total = kind === "stay" ? TRIP.stay.vote.options.length : 0;
+    el("pickCount").textContent = kind === "stay" ? n + " / " + total : n;
+    el("pickWord").textContent = kind === "stay" ? "rated" : "picked";
     el("sendBtn").textContent = store.state[kind][me] ? "Update" : "Submit";
     el("sendBtn").disabled = false;
   }
@@ -1138,9 +1258,11 @@ window.BPnoPhoto = function (img, letter) {
     var ids = Object.keys(sel[kind]);
     if (kind === "stay") {
       var opts = TRIP.stay.vote.options;
+      var scale = {};
+      (TRIP.stay.vote.scale || []).forEach(function (s) { scale[s.id] = s.label; });
       return ids.map(function (id) {
         var o = opts.filter(function (x) { return x.id === id; })[0];
-        return o ? o.name : id;
+        return (o ? o.name : id) + " — " + (scale[sel.stay[id]] || sel.stay[id]);
       });
     }
     return ids.map(function (id) {
@@ -1154,14 +1276,16 @@ window.BPnoPhoto = function (img, letter) {
     var kind = activeKind();
     if (!kind || !me) return;
     var ids = Object.keys(sel[kind]);
-    if (!ids.length) { toast("Nothing picked yet"); return; }
+    if (!ids.length) { toast(kind === "stay" ? "Rate at least one place first" : "Nothing picked yet"); return; }
 
     var btn = el("sendBtn");
     btn.disabled = true;
     btn.textContent = "Sending…";
     var labels = labelsFor(kind);
 
-    var res = await store.saveVote(kind, me, ids);
+    var res = kind === "stay"
+      ? await store.saveStay(me, sel.stay)
+      : await store.saveVote(kind, me, ids);
 
     paintWho();
     renderSummary();

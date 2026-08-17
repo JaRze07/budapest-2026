@@ -161,7 +161,7 @@
    "open": true,
    "status": "open",
    "blurb": "Everything here sleeps the group for under €450 across the three nights. Tick every option you'd be happy with, not just your favourite.",
-   "note": "The ones with photos come from Jacek's Booking shortlist — those prices are the real quote for our dates and party size, pulled on 17 Aug. The rest are places I researched, where the price is an estimate. Either way, the button on each card opens the live price.",
+   "note": "All from Jacek's Booking shortlist. The prices are the real quote for our dates and party size, pulled on 17 Aug — the button on each card opens the live one.",
    "groups": [
     {
      "id": "four",
@@ -309,75 +309,6 @@
      "walk": 8
     },
     {
-     "id": "bo33",
-     "group": "four",
-     "name": "Bo33 Hotel Family & Suites",
-     "area": "Szövetség u. 33 · District VII",
-     "est": "~€330–420 for 3 nights",
-     "walk": 12,
-     "lat": 47.501574,
-     "lng": 19.073196,
-     "full_address": "Szövetség u. 33, 1072 Budapest, Hungary",
-     "nearby": "The quiet end of District VII, a few streets behind the Grand Boulevard. Keleti station is walkable, there's a supermarket on the corner, and the ruin bars are twelve minutes away — far enough that you actually sleep.",
-     "pros": [
-      "One suite sleeps all four, so you pay for one unit",
-      "Kitchenette, and a small sauna and wellness room",
-      "Genuinely quiet street"
-     ],
-     "cons": [
-      "Twelve minutes home at 3am",
-      "Residential block — nothing on the doorstep itself"
-     ],
-     "link": "https://www.booking.com/searchresults.html?ss=Bo33%20Hotel%20Family%20and%20Suites%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "source": "researched"
-    },
-    {
-     "id": "opera",
-     "group": "four",
-     "name": "Opera Garden Hotel & Apartments",
-     "area": "Hajós u. 24 · District VI",
-     "est": "~€340–440 for 3 nights",
-     "walk": 12,
-     "lat": 47.504427,
-     "lng": 19.056765,
-     "full_address": "Hajós u. 24, 1065 Budapest, Hungary",
-     "nearby": "A quiet side street directly behind the Opera House, just off Andrássy út. Cafés and the Opera on the doorstep, Oktogon five minutes up the avenue, the ruin bars about twelve minutes back down.",
-     "pros": [
-      "Real apartments — kitchen, living room, space to sit that isn't a bed",
-      "Leafy inner courtyard",
-      "The best-looking street of the six"
-     ],
-     "cons": [
-      "Top of the budget",
-      "District VI is calm, so it's a proper walk back from the bars"
-     ],
-     "link": "https://www.booking.com/searchresults.html?ss=Opera%20Garden%20Hotel%20and%20Apartments%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "source": "researched"
-    },
-    {
-     "id": "maverick",
-     "group": "four",
-     "name": "Maverick City Lodge",
-     "area": "Kazinczy u. 24–26 · District VII",
-     "est": "~€240–330 for 3 nights",
-     "walk": 1,
-     "lat": 47.497802,
-     "lng": 19.062807,
-     "full_address": "Kazinczy u. 24-26, 1075 Budapest, Hungary",
-     "nearby": "On Kazinczy utca itself. Szimpla is sixty seconds away, Fat Mama is next door, and effectively everything on the picks board is inside five minutes on foot.",
-     "pros": [
-      "Cheapest here by a distance",
-      "Private en-suite rooms and apartments, not dorms — it's well designed",
-      "You can walk home from anywhere in seconds"
-     ],
-     "cons": [
-      "It's a lodge: young crowd, and it can be loud",
-      "You're sleeping above the bar strip — that's the point and the problem"
-     ],
-     "link": "https://www.booking.com/searchresults.html?ss=Maverick%20City%20Lodge%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "source": "researched"
-    },
-    {
      "id": "wlflatmargaret",
      "group": "three",
      "source": "wishlist",
@@ -490,75 +421,20 @@
      "nearby": "Újlipótváros, a genuinely local corner of north Pest: cafés, the embankment, and Margaret Island a few minutes away.",
      "why": "352 reviews behind that score. Well out of the centre — you'd be commuting to the bars.",
      "transit": "2.1 km out — metro or a car"
+    }
+   ],
+   "scale": [
+    {
+     "id": "no",
+     "label": "No"
     },
     {
-     "id": "roombach",
-     "group": "three",
-     "name": "Roombach Hotel Budapest Center",
-     "area": "Rumbach Sebestyén u. 14 · District VII",
-     "est": "~€270–360 for 3 nights",
-     "walk": 5,
-     "lat": 47.497746,
-     "lng": 19.058127,
-     "full_address": "Rumbach Sebestyén u. 14, 1075 Budapest, Hungary",
-     "nearby": "Between the Great Synagogue and Gozsdu Court. Five minutes to Szimpla one way, five minutes to Deák Ferenc tér and all three metro lines the other.",
-     "pros": [
-      "Best location-for-money on the list",
-      "Triple rooms as standard",
-      "Everything walkable, including the airport bus terminus"
-     ],
-     "cons": [
-      "Plain three-star rooms — clean, not charming",
-      "Breakfast is usually extra"
-     ],
-     "link": "https://www.booking.com/searchresults.html?ss=Roombach%20Hotel%20Budapest%20Center&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
-     "source": "researched"
+     "id": "ok",
+     "label": "Can do"
     },
     {
-     "id": "museum",
-     "group": "three",
-     "name": "Hotel Museum Budapest",
-     "area": "Múzeum krt. · District VIII",
-     "est": "~€300–400 for 3 nights",
-     "walk": 5,
-     "lat": 47.493741,
-     "lng": 19.063349,
-     "full_address": "Trefort u. 2, 1088 Budapest, Hungary",
-     "nearby": "Beside the National Museum on the edge of the Palace Quarter — handsome nineteenth-century streets, quiet at night. The bars are about seven minutes north, the Central Market ten minutes south.",
-     "pros": [
-      "Boutique hotel in a historic building — the nicest rooms in this price band",
-      "Quiet, and the neighbourhood is beautiful",
-      "Still walkable to everything"
-     ],
-     "cons": [
-      "Just outside the action rather than in it",
-      "District VIII gets scruffier a few streets further east"
-     ],
-     "link": "https://www.booking.com/searchresults.html?ss=Hotel%20Museum%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
-     "source": "researched"
-    },
-    {
-     "id": "promenade",
-     "group": "three",
-     "name": "Promenade City Hotel",
-     "area": "Váci u. 22 · District V",
-     "est": "~€330–430 for 3 nights",
-     "walk": 10,
-     "lat": 47.493945,
-     "lng": 19.052772,
-     "full_address": "Váci u. 22, 1052 Budapest, Hungary",
-     "nearby": "On the Váci utca pedestrian street, two minutes from the river and ten from the Central Market Hall. Busy with tourists by day, genuinely calm at night.",
-     "pros": [
-      "Smart four-star — the most grown-up option here",
-      "Riverside walks and the Danube panorama on the doorstep",
-      "No traffic outside the door"
-     ],
-     "cons": [
-      "Priciest of the three",
-      "Váci utca restaurants are aimed squarely at tourists — eat elsewhere"
-     ],
-     "link": "https://www.booking.com/searchresults.html?ss=Promenade%20City%20Hotel%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0",
-     "source": "researched"
+     "id": "yes",
+     "label": "I like this"
     }
    ]
   }
@@ -939,5 +815,21 @@
    "android": "https://play.google.com/store/apps/details?id=io.heckel.ntfy",
    "required": false
   }
- ]
+ ],
+ "hype": {
+  "question": "How excited are you?",
+  "levels": [
+   "Pumped",
+   "Fucking ecstatic",
+   "'My nhipples are hard' excited",
+   "I just came from excitement"
+  ]
+ },
+ "transformation": {
+  "for": "Nhi",
+  "title": "Ready for your transformation?",
+  "before": "images/nhi-before.jpg",
+  "after": "images/nhi-after.jpg",
+  "caption": "Left: what Budapest thinks it is getting. Right: what actually turns up at Sparty."
+ }
 }

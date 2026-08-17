@@ -18,10 +18,20 @@
     "stay": {
       "$name": {
         ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
-        ".validate": "newData.hasChildren(['ids','when'])",
-        "ids": {
-          "$i": { ".validate": "newData.isString() && newData.val().length <= 32" }
+        ".validate": "newData.hasChildren(['r','when'])",
+        "r": {
+          "$opt": { ".validate": "newData.isString() && newData.val().matches(/^(yes|ok|no)$/)" }
         },
+        "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "hype": {
+      "$name": {
+        ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
+        ".validate": "newData.hasChildren(['level','when'])",
+        "level": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 5" },
         "when": { ".validate": "newData.isString() && newData.val().length <= 40" },
         "$other": { ".validate": false }
       }

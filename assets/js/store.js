@@ -15,7 +15,7 @@ BP.store = (function () {
   var LS_ME = "bp26.me";
   var LS_PENDING = "bp26.pending";
 
-  var state = { picks: {}, stay: {}, customs: [] };
+  var state = { picks: {}, stay: {}, hype: {}, customs: [] };
   var online = false;
   var listeners = [];
   var es = null;
@@ -31,10 +31,11 @@ BP.store = (function () {
   /* ---------- shape ---------- */
 
   function normalise(raw) {
-    var s = { picks: {}, stay: {}, customs: [] };
+    var s = { picks: {}, stay: {}, hype: {}, customs: [] };
     if (!raw || typeof raw !== "object") return s;
     s.picks = raw.picks || {};
     s.stay = raw.stay || {};
+    s.hype = raw.hype || {};
     // Customs are an object keyed by id in the database, an array in the file.
     var c = raw.customs;
     s.customs = Array.isArray(c) ? c.slice()
@@ -61,7 +62,7 @@ BP.store = (function () {
   /** Anything still pending locally wins over what came back from the server. */
   function overlay(s) {
     var p = pending();
-    ["picks", "stay"].forEach(function (kind) {
+    ["picks", "stay", "hype"].forEach(function (kind) {
       var group = p[kind] || {};
       Object.keys(group).forEach(function (name) {
         var mine = group[name], theirs = s[kind][name];
@@ -101,7 +102,7 @@ BP.store = (function () {
   /** Push anything that failed to send last time. */
   function replayPending() {
     var p = pending();
-    ["picks", "stay"].forEach(function (kind) {
+    ["picks", "stay", "hype"].forEach(function (kind) {
       Object.keys(p[kind] || {}).forEach(function (name) {
         put(kind + "/" + name, p[kind][name]).then(function (ok) {
           if (ok) { clearPending(kind, name); }
@@ -123,7 +124,7 @@ BP.store = (function () {
   function setPath(path, data) {
     var parts = path.split("/").filter(Boolean);
     if (!parts.length) { state = overlay(normalise(data)); return; }
-    var raw = { picks: state.picks, stay: state.stay, customs: {} };
+    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, customs: {} };
     state.customs.forEach(function (c) { raw.customs[c.id] = c; });
     var node = raw;
     for (var i = 0; i < parts.length - 1; i++) {
@@ -166,17 +167,30 @@ BP.store = (function () {
   }
 
   /**
-   * kind: "picks" | "stay". Lands locally first so the UI never lies about
-   * what you picked, then goes to the server.
+   * Lands locally first so the UI never lies about what you chose, then goes
+   * to the server. kind is "picks" | "stay" | "hype"; the record shape differs
+   * per kind and is validated server-side by database.rules.json.
    */
-  async function saveVote(kind, name, ids) {
-    var record = { ids: ids.slice(), when: new Date().toISOString() };
+  async function saveRecord(kind, name, fields) {
+    var record = Object.assign({}, fields, { when: new Date().toISOString() });
     state[kind][name] = record;
     setPending(kind, name, record);
 
     var ok = await put(kind + "/" + name, record);
     if (ok) clearPending(kind, name);
     return { synced: ok };
+  }
+
+  function saveVote(kind, name, ids) {
+    return saveRecord(kind, name, { ids: ids.slice() });
+  }
+  /** r: { optionId: "yes" | "ok" | "no" } */
+  function saveStay(name, r) {
+    return saveRecord("stay", name, { r: r });
+  }
+  /** level: index into TRIP.hype.levels */
+  function saveHype(name, level) {
+    return saveRecord("hype", name, { level: level });
   }
 
   async function addCustom(item) {
@@ -201,6 +215,8 @@ BP.store = (function () {
     listen: listen,
     onChange: function (fn) { listeners.push(fn); },
     saveVote: saveVote,
+    saveStay: saveStay,
+    saveHype: saveHype,
     addCustom: addCustom,
     me: function () { return lsGet(LS_ME, null); },
     setMe: function (n) { lsSet(LS_ME, n); },
