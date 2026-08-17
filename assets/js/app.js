@@ -363,8 +363,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mswk72pl").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mswk72pl").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mswkdxfy").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mswkdxfy").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -746,11 +746,13 @@ window.BPmissing = function (img, label) {
     if (!box) return;
     if (!T || me !== T.for) { box.innerHTML = ""; return; }
 
+    // A file tagged in the dropbox wins; otherwise the one that ships with the site.
     var pics = (T.slots || []).map(function (s) {
       var fid = (store.state.assign || {})[s.key];
       var f = fid && store.state.files[fid];
-      return f
-        ? '<img src="' + esc(f.data) + '" alt="' + esc(s.label) + '">'
+      var src = f ? f.data : (s.src || null);
+      return src
+        ? '<img src="' + esc(src) + '" alt="' + esc(s.label) + '">'
         : '<div class="tmissing">' + esc(s.label) + " — not uploaded yet</div>";
     });
     if (!pics.length) { box.innerHTML = ""; return; }

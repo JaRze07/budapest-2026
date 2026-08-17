@@ -15,9 +15,50 @@
    "short": "Areeb",
    "initial": "A",
    "status": "coming",
-   "flight_status": "pending",
-   "note": "Flight booked — details still to come.",
-   "flights": []
+   "flight_status": "confirmed",
+   "note": "Lands between Jacek and Nhi, and is the last one out on Monday.",
+   "flights": [
+    {
+     "dir": "out",
+     "date": "2026-08-28",
+     "legs": [
+      {
+       "from": "HEL",
+       "from_city": "Helsinki",
+       "to": "BUD",
+       "to_city": "Budapest",
+       "dep": "10:00",
+       "dep_tz": "+03:00",
+       "arr": "11:20",
+       "arr_tz": "+02:00",
+       "duration": "2 h 20 min",
+       "carrier": "Finnair AY1251 (operated by Nordic Reg)",
+       "direct": true
+      }
+     ],
+     "connection": "Arrives Terminal 2B."
+    },
+    {
+     "dir": "back",
+     "date": "2026-08-31",
+     "legs": [
+      {
+       "from": "BUD",
+       "from_city": "Budapest",
+       "to": "HEL",
+       "to_city": "Helsinki",
+       "dep": "18:25",
+       "dep_tz": "+02:00",
+       "arr": "21:45",
+       "arr_tz": "+03:00",
+       "duration": "2 h 20 min",
+       "carrier": "Finnair AY1256 (operated by Jettime A/S)",
+       "direct": true
+      }
+     ],
+     "connection": "Departs Terminal 2B."
+    }
+   ]
   },
   {
    "name": "Nhi",
@@ -777,6 +818,11 @@
      "time": "Evening",
      "t": "To be determined",
      "kind": "tbd"
+    },
+    {
+     "time": "11:20",
+     "t": "Areeb lands",
+     "kind": "travel"
     }
    ]
   },
@@ -848,6 +894,11 @@
      "time": "17:35",
      "t": "Jacek flies home",
      "kind": "travel"
+    },
+    {
+     "time": "18:25",
+     "t": "Areeb flies home",
+     "kind": "travel"
     }
    ]
   }
@@ -912,11 +963,13 @@
   "slots": [
    {
     "key": "nhiBefore",
-    "label": "Before — the soft one"
+    "label": "Before — the soft one",
+    "src": "images/nhi-before.jpg"
    },
    {
     "key": "nhiAfter",
-    "label": "After — the Sparty one"
+    "label": "After — the Sparty one",
+    "src": "images/nhi-after.jpg"
    }
   ]
  }
