@@ -157,88 +157,155 @@
  ],
  "stay": {
   "chosen": null,
-  "undecided_note": "Nowhere is booked yet. Once the vote lands, set \"chosen\" to the winning option id and this whole page wires itself up — your route in from the airport, and a from-our-place option on every venue.",
   "vote": {
    "open": true,
    "status": "open",
-   "blurb": "Five options, all real places, all a short walk from the bar strip except the boat. Tick everything you'd be happy with — not just your favourite. Prices move daily, so every card has a live price check for our exact dates.",
-   "note": "Researched, not booked. Airbnb has no public API and Booking's needs an affiliate account, so nothing here can confirm live availability — the price buttons open our exact dates so you can see for yourself in one tap.",
+   "blurb": "Six places, all walkable to the bar strip, all under €450 for the whole three nights — for the group, not each. Tick everything you'd be happy with, not just your favourite.",
+   "note": "Prices are estimates from published rates, not live quotes — Airbnb's API is partner-only and Booking's needs an affiliate account, so nothing here can see the real number. Every card has a button that opens our exact dates and party size so you can.",
+   "groups": [
+    {
+     "id": "four",
+     "title": "If all four of us go",
+     "note": "One apartment or family suite. Two hotel rooms for three nights blows the budget on its own, so these are all single-unit places with a kitchen or a kitchenette."
+    },
+    {
+     "id": "three",
+     "title": "If it's three of us",
+     "note": "A triple room works, which opens up proper hotels at the same money. Nicer rooms, no kitchen."
+    }
+   ],
    "options": [
     {
-     "id": "yacht",
-     "name": "Prestige Yacht Resort",
-     "area": "Meder u. 9 · District XIII",
-     "desc": "The current plan. A private houseboat with a rooftop hot tub, sun deck and full kitchen, breakfast on the dock.",
-     "meta": "Sleeps 6 · hot tub · 25–30 min to the bars · last metro 23:20, so taxis home",
-     "walk": null,
-     "transit": "25–30 min by M3",
-     "lat": 47.5496678,
-     "lng": 19.0680519,
-     "full_address": "Meder u. 9, 1138 Budapest, Hungary",
-     "link": "https://www.airbnb.com/rooms/1529617600949626894",
-     "why": "Nothing else on this list is a boat with a hot tub. The cost is that every night out ends in a car.",
-     "sleeps": 6,
-     "checkin": "15:00, Fri 28 Aug",
-     "checkout": "11:00, Mon 31 Aug",
-     "perks": [
-      "Rooftop hot tub",
-      "Sun deck",
-      "Full kitchen",
-      "Free parking",
-      "Breakfast included — Melba Bistro on the dock, 08:00–11:00"
-     ]
-    },
-    {
-     "id": "continental",
-     "name": "Continental Hotel Budapest",
-     "area": "Dohány u. 42–44 · District VII",
-     "desc": "Four-star on the edge of the Jewish Quarter with a rooftop pool, sauna and spa. The one that keeps the water and drops the commute.",
-     "meta": "4★ · rooftop pool + spa · 4 min walk to Szimpla",
-     "walk": 4,
-     "lat": 47.497116,
-     "lng": 19.066986,
-     "link": "https://www.booking.com/searchresults.html?ss=Continental+Hotel+Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=2&group_children=0",
-     "why": "The direct answer to the boat: you still get water and a deck, and you can walk home from Szimpla in four minutes.",
-     "full_address": "Dohány u. 42-44, 1074 Budapest, Hungary"
-    },
-    {
      "id": "bo33",
+     "group": "four",
      "name": "Bo33 Hotel Family & Suites",
      "area": "Szövetség u. 33 · District VII",
-     "desc": "Quiet end of District VII. Family suites built to sleep four in one unit, with a small wellness area and a kitchenette.",
-     "meta": "Suites for 4 in one room · sauna · 12 min walk",
+     "est": "~€330–420 for 3 nights",
      "walk": 12,
      "lat": 47.501574,
      "lng": 19.073196,
-     "link": "https://www.booking.com/searchresults.html?ss=Bo33+Hotel+Family+and+Suites+Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
-     "why": "Usually the best price per head here, and one suite for all of us beats two separate rooms.",
-     "full_address": "Szövetség u. 33, 1072 Budapest, Hungary"
+     "full_address": "Szövetség u. 33, 1072 Budapest, Hungary",
+     "nearby": "The quiet end of District VII, a few streets behind the Grand Boulevard. Keleti station is walkable, there's a supermarket on the corner, and the ruin bars are twelve minutes away — far enough that you actually sleep.",
+     "pros": [
+      "One suite sleeps all four, so you pay for one unit",
+      "Kitchenette, and a small sauna and wellness room",
+      "Genuinely quiet street"
+     ],
+     "cons": [
+      "Twelve minutes home at 3am",
+      "Residential block — nothing on the doorstep itself"
+     ],
+     "link": "https://www.booking.com/searchresults.html?ss=Bo33%20Hotel%20Family%20and%20Suites%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0"
     },
     {
-     "id": "rum",
-     "name": "Hotel Rum Budapest",
-     "area": "Királyi Pál u. 4 · District V",
-     "desc": "Design hotel a street back from the river with a well-known rooftop bar. Calmer than District VII without being far from it.",
-     "meta": "Rooftop bar · 10 min walk · near the Market Hall",
-     "walk": 10,
-     "lat": 47.490414,
-     "lng": 19.059137,
-     "link": "https://www.booking.com/searchresults.html?ss=Hotel+Rum+Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=2&group_children=0",
-     "why": "If you want to sleep somewhere that isn't directly above a bar but still walk everywhere.",
-     "full_address": "Királyi Pál u. 4, 1053 Budapest, Hungary"
+     "id": "opera",
+     "group": "four",
+     "name": "Opera Garden Hotel & Apartments",
+     "area": "Hajós u. 24 · District VI",
+     "est": "~€340–440 for 3 nights",
+     "walk": 12,
+     "lat": 47.504427,
+     "lng": 19.056765,
+     "full_address": "Hajós u. 24, 1065 Budapest, Hungary",
+     "nearby": "A quiet side street directly behind the Opera House, just off Andrássy út. Cafés and the Opera on the doorstep, Oktogon five minutes up the avenue, the ruin bars about twelve minutes back down.",
+     "pros": [
+      "Real apartments — kitchen, living room, space to sit that isn't a bed",
+      "Leafy inner courtyard",
+      "The best-looking street of the six"
+     ],
+     "cons": [
+      "Top of the budget",
+      "District VI is calm, so it's a proper walk back from the bars"
+     ],
+     "link": "https://www.booking.com/searchresults.html?ss=Opera%20Garden%20Hotel%20and%20Apartments%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0"
     },
     {
-     "id": "flat",
-     "name": "A flat in District VII",
-     "area": "Jewish Quarter",
-     "desc": "One apartment, four beds, a kitchen and a living room instead of separate hotel rooms. Cheapest per head, and there's somewhere to sit that isn't a bed.",
-     "meta": "Usually the cheapest · pick one together from the search",
+     "id": "maverick",
+     "group": "four",
+     "name": "Maverick City Lodge",
+     "area": "Kazinczy u. 24–26 · District VII",
+     "est": "~€240–330 for 3 nights",
+     "walk": 1,
+     "lat": 47.497802,
+     "lng": 19.062807,
+     "full_address": "Kazinczy u. 24-26, 1075 Budapest, Hungary",
+     "nearby": "On Kazinczy utca itself. Szimpla is sixty seconds away, Fat Mama is next door, and effectively everything on the picks board is inside five minutes on foot.",
+     "pros": [
+      "Cheapest here by a distance",
+      "Private en-suite rooms and apartments, not dorms — it's well designed",
+      "You can walk home from anywhere in seconds"
+     ],
+     "cons": [
+      "It's a lodge: young crowd, and it can be loud",
+      "You're sleeping above the bar strip — that's the point and the problem"
+     ],
+     "link": "https://www.booking.com/searchresults.html?ss=Maverick%20City%20Lodge%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0"
+    },
+    {
+     "id": "roombach",
+     "group": "three",
+     "name": "Roombach Hotel Budapest Center",
+     "area": "Rumbach Sebestyén u. 14 · District VII",
+     "est": "~€270–360 for 3 nights",
      "walk": 5,
-     "lat": 47.497,
-     "lng": 19.063,
-     "link": "https://www.airbnb.com/s/Budapest--Hungary/homes?checkin=2026-08-28&checkout=2026-08-31&adults=4&room_types%5B%5D=Entire%20home%2Fapt",
-     "why": "Not one specific place — individual flats get booked and delisted constantly. Vote for the route, then we pick the actual flat together.",
-     "full_address": "Jewish Quarter, District VII, Budapest, Hungary"
+     "lat": 47.497746,
+     "lng": 19.058127,
+     "full_address": "Rumbach Sebestyén u. 14, 1075 Budapest, Hungary",
+     "nearby": "Between the Great Synagogue and Gozsdu Court. Five minutes to Szimpla one way, five minutes to Deák Ferenc tér and all three metro lines the other.",
+     "pros": [
+      "Best location-for-money on the list",
+      "Triple rooms as standard",
+      "Everything walkable, including the airport bus terminus"
+     ],
+     "cons": [
+      "Plain three-star rooms — clean, not charming",
+      "Breakfast is usually extra"
+     ],
+     "link": "https://www.booking.com/searchresults.html?ss=Roombach%20Hotel%20Budapest%20Center&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0"
+    },
+    {
+     "id": "museum",
+     "group": "three",
+     "name": "Hotel Museum Budapest",
+     "area": "Múzeum krt. · District VIII",
+     "est": "~€300–400 for 3 nights",
+     "walk": 5,
+     "lat": 47.493741,
+     "lng": 19.063349,
+     "full_address": "Trefort u. 2, 1088 Budapest, Hungary",
+     "nearby": "Beside the National Museum on the edge of the Palace Quarter — handsome nineteenth-century streets, quiet at night. The bars are about seven minutes north, the Central Market ten minutes south.",
+     "pros": [
+      "Boutique hotel in a historic building — the nicest rooms in this price band",
+      "Quiet, and the neighbourhood is beautiful",
+      "Still walkable to everything"
+     ],
+     "cons": [
+      "Just outside the action rather than in it",
+      "District VIII gets scruffier a few streets further east"
+     ],
+     "link": "https://www.booking.com/searchresults.html?ss=Hotel%20Museum%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0"
+    },
+    {
+     "id": "promenade",
+     "group": "three",
+     "name": "Promenade City Hotel",
+     "area": "Váci u. 22 · District V",
+     "est": "~€330–430 for 3 nights",
+     "walk": 10,
+     "lat": 47.493945,
+     "lng": 19.052772,
+     "full_address": "Váci u. 22, 1052 Budapest, Hungary",
+     "nearby": "On the Váci utca pedestrian street, two minutes from the river and ten from the Central Market Hall. Busy with tourists by day, genuinely calm at night.",
+     "pros": [
+      "Smart four-star — the most grown-up option here",
+      "Riverside walks and the Danube panorama on the doorstep",
+      "No traffic outside the door"
+     ],
+     "cons": [
+      "Priciest of the three",
+      "Váci utca restaurants are aimed squarely at tourists — eat elsewhere"
+     ],
+     "link": "https://www.booking.com/searchresults.html?ss=Promenade%20City%20Hotel%20Budapest&checkin=2026-08-28&checkout=2026-08-31&group_adults=3&no_rooms=1&group_children=0"
     }
    ]
   }
@@ -599,5 +666,25 @@
    "price": "Pay in the app",
    "where": "Uber and Bolt charge the card on file. A Főtaxi from the official rank runs on the meter — pay by card in the car."
   }
- }
+ },
+ "apps": [
+  {
+   "id": "budapestgo",
+   "name": "BudapestGO",
+   "by": "BKK — the official transport app",
+   "what": "Buy and activate tickets on your phone, and plan any journey door to door with live departures. It replaces hunting for a ticket machine, and it's the only way to buy without cash or a card terminal.",
+   "ios": "https://apps.apple.com/us/app/budapestgo/id916193835",
+   "android": "https://play.google.com/store/apps/details?id=hu.webvalto.bkkfutar",
+   "required": true
+  },
+  {
+   "id": "ntfy",
+   "name": "ntfy",
+   "by": "Group pings",
+   "what": "Install it, subscribe to our topic once, and anything anyone sends from the Ping tab lands on your phone as a notification. No account, no sign-up.",
+   "ios": "https://apps.apple.com/us/app/ntfy/id1625396347",
+   "android": "https://play.google.com/store/apps/details?id=io.heckel.ntfy",
+   "required": false
+  }
+ ]
 }

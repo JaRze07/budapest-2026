@@ -815,6 +815,110 @@ nav.tabs button .dot {
   background: var(--laser);
 }
 
+/* ---------- ping the group ---------- */
+
+.ping { margin-top: 12px; border: 1px solid var(--line); background: var(--white); padding: 12px; }
+.pingquick { display: flex; flex-wrap: wrap; gap: 6px; }
+.pingrow { display: flex; gap: 8px; margin-top: 10px; }
+.pingrow input {
+  flex: 1;
+  min-width: 0;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  padding: 9px 11px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+}
+.pingrow input:focus { border-color: var(--brass); }
+.pingrow .btn { flex: 0 0 auto; }
+.pinglog { margin-top: 12px; }
+.pingmsg {
+  border-left: 2px solid var(--laser);
+  background: var(--white);
+  padding: 7px 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  margin-bottom: 6px;
+}
+.pingmsg span {
+  color: var(--slate);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  margin-right: 8px;
+}
+
+/* ---------- app cards ---------- */
+
+.app { border: 1px solid var(--line); background: var(--white); padding: 14px 16px; margin-top: 12px; }
+.app.req { border-left: 4px solid var(--brass); }
+.app .apphead { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.app .apphead b { font-family: var(--serif); font-weight: 400; font-size: 19px; }
+.app .apphead span { color: var(--slate); font-size: 12px; }
+.app .appreq {
+  background: var(--brass);
+  color: var(--ink);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-style: normal;
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-left: auto;
+}
+.app p { font-size: 13px; line-height: 1.55; margin: 8px 0 0; }
+.app .appsub { color: var(--slate); font-size: 12.5px; }
+.app .appsub code {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 1px 6px;
+  font-size: 12px;
+  word-break: break-all;
+}
+.app .applinks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+/* ---------- stay extras ---------- */
+
+.staytags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+.card .price {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--ink);
+  background: #F0E7D2;
+  border: 1px solid var(--line);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.pc { list-style: none; margin: 8px 0 0; padding: 0; }
+.pc li { position: relative; padding: 3px 0 3px 17px; font-size: 12px; line-height: 1.45; }
+.pc.pros li::before { content: "+"; position: absolute; left: 2px; color: #2E8B57; font-weight: 700; }
+.pc.cons li::before { content: "−"; position: absolute; left: 2px; color: var(--warn); font-weight: 700; }
+.pc.cons li { color: var(--slate); }
+
+/* ---------- tally rows ---------- */
+
+.rank .r {
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  background: var(--white);
+  border: none;
+  cursor: pointer;
+}
+.rank .r:hover { background: #FBF6E8; }
+.rank .r .nm .what {
+  display: block;
+  font-style: normal;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 2px 0 1px;
+}
+@keyframes flash { 0%, 100% { outline-color: transparent; } 30%, 70% { outline-color: var(--brass); } }
+.card.flash { outline: 3px solid var(--brass); outline-offset: -3px; animation: flash 1.5s ease; }
+
 /* ---------- get-there sheet ---------- */
 
 .sheet {

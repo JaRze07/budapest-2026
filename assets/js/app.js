@@ -145,6 +145,99 @@ window.BPnoPhoto = function (img, letter) {
       "</div></div>";
   }
 
+  /* ================= push notifications ================= */
+
+  /* ntfy.sh: publish is a plain POST to a topic, subscribing is the app.
+     No account, no keys, nothing to deploy — the topic name is the secret. */
+  function renderPing() {
+    var n = CFG.ntfy;
+    if (!n || !n.topic) return;
+    el("homePing").innerHTML =
+      '<div class="sec-title">Ping the group</div>' +
+      '<p class="sec-note">Lands on everyone\'s phone as a notification. Each of you needs the ntfy ' +
+      "app once — it's in the Info tab, takes a minute.</p>" +
+      '<div class="ping">' +
+        '<div class="pingquick">' +
+          n.presets.map(function (p) {
+            return '<button type="button" class="mini" data-ping="' + esc(p) + '">' + esc(p) + "</button>";
+          }).join("") +
+        "</div>" +
+        '<div class="pingrow">' +
+          '<input id="pingText" maxlength="140" placeholder="…or type your own">' +
+          '<button class="btn" id="pingSend" type="button">Send</button>' +
+        "</div>" +
+      "</div>" +
+      '<div id="pingLog" class="pinglog"></div>';
+    loadPings();
+  }
+
+  async function sendPing(text) {
+    var n = CFG.ntfy;
+    text = String(text || "").trim();
+    if (!text) { toast("Type something first"); return; }
+    var btn = el("pingSend");
+    if (btn) { btn.disabled = true; btn.textContent = "…"; }
+    try {
+      var r = await fetch(n.server + "/" + n.topic, {
+        method: "POST",
+        headers: { "Title": "Budapest 2026", "Tags": "airplane", "Priority": "default" },
+        body: (me ? me + ": " : "") + text
+      });
+      if (!r.ok) throw new Error(r.status);
+      if (el("pingText")) el("pingText").value = "";
+      toast("Sent to everyone who's subscribed.", 3000);
+      setTimeout(loadPings, 900);
+    } catch (e) {
+      toast("Couldn't send — check you're online.", 3500);
+    }
+    if (btn) { btn.disabled = false; btn.textContent = "Send"; }
+  }
+
+  /** ntfy keeps messages ~12 h; show the recent ones so you can see it worked. */
+  async function loadPings() {
+    var n = CFG.ntfy, box = el("pingLog");
+    if (!box) return;
+    try {
+      var r = await fetch(n.server + "/" + n.topic + "/json?poll=1&since=12h", { cache: "no-store" });
+      if (!r.ok) throw new Error();
+      var lines = (await r.text()).trim().split("\n").filter(Boolean);
+      var msgs = lines.map(function (l) { try { return JSON.parse(l); } catch (e) { return null; } })
+        .filter(function (m) { return m && m.event === "message" && m.message; })
+        .slice(-6).reverse();
+      box.innerHTML = msgs.length
+        ? '<div class="kick" style="margin-bottom:6px">Recent</div>' + msgs.map(function (m) {
+            var t = new Date(m.time * 1000);
+            var hh = ("0" + t.getHours()).slice(-2) + ":" + ("0" + t.getMinutes()).slice(-2);
+            return '<div class="pingmsg"><span>' + hh + "</span>" + esc(m.message) + "</div>";
+          }).join("")
+        : '<p class="sec-note">Nothing sent in the last 12 hours.</p>';
+    } catch (e) {
+      box.innerHTML = '<p class="sec-note">Couldn\'t reach the notification service just now.</p>';
+    }
+  }
+
+  /* ================= the apps you need ================= */
+
+  function renderApps() {
+    var apps = TRIP.apps || [];
+    if (!apps.length) { el("infoApps").innerHTML = ""; return; }
+    el("infoApps").innerHTML = apps.map(function (a) {
+      return '<div class="app' + (a.required ? " req" : "") + '">' +
+        '<div class="apphead"><b>' + esc(a.name) + "</b><span>" + esc(a.by) + "</span>" +
+          (a.required ? '<em class="appreq">Install before you fly</em>' : "") + "</div>" +
+        "<p>" + esc(a.what) + "</p>" +
+        (a.id === "ntfy"
+          ? '<p class="appsub">Open the app → <b>+</b> → subscribe to the topic <code>' +
+            esc(CFG.ntfy.topic) + "</code>. That's the whole setup. " +
+            '<button type="button" class="mini" data-copy="' + esc(CFG.ntfy.topic) + '">Copy topic</button></p>'
+          : "") +
+        '<div class="applinks">' +
+          '<a class="ride go" href="' + esc(a.ios) + '" target="_blank" rel="noopener">App Store</a>' +
+          '<a class="ride" href="' + esc(a.android) + '" target="_blank" rel="noopener">Google Play</a>' +
+        "</div></div>";
+    }).join("");
+  }
+
   /* --- clock maths, all in Budapest local time --- */
   function toMin(hhmm) {
     var m = /^(\d{1,2}):(\d{2})$/.exec(String(hhmm || "").trim());
@@ -263,7 +356,27 @@ window.BPnoPhoto = function (img, letter) {
       if (c) toggle("stay", c.getAttribute("data-stay"));
     });
 
+    // Only one Info panel open at a time — `toggle` doesn't bubble, so capture.
+    document.addEventListener("toggle", function (e) {
+      var d = e.target;
+      if (!d.matches || !d.matches("#infoBody details") || !d.open) return;
+      Array.prototype.forEach.call(document.querySelectorAll("#infoBody details"), function (o) {
+        if (o !== d) o.open = false;
+      });
+    }, true);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && e.target.id === "pingText") sendPing(e.target.value);
+    });
+
     document.addEventListener("click", function (e) {
+      var q = e.target.closest("[data-ping]");
+      if (q) { sendPing(q.getAttribute("data-ping")); return; }
+      if (e.target.id === "pingSend") { sendPing(el("pingText").value); return; }
+
+      var jump = e.target.closest("[data-jump]");
+      if (jump) { scrollToCard(jump.getAttribute("data-jump")); return; }
+
       var g = e.target.closest("[data-goto]");
       if (g) { openSheet(g.getAttribute("data-goto")); return; }
 
@@ -314,9 +427,27 @@ window.BPnoPhoto = function (img, letter) {
     go(CFG.names.indexOf(name) > -1 && v ? v : "home");
   }
 
+  /** Jump from a tally row to the card itself, clearing the two sticky bars. */
+  function scrollToCard(id) {
+    if (view !== "picks") go("picks");
+    var c = el("c-" + id);
+    if (!c) return;
+    var bar = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--topbar"), 10) || 51;
+    var top = c.getBoundingClientRect().top + window.pageYOffset - bar - 58;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    c.classList.add("flash");
+    setTimeout(function () { c.classList.remove("flash"); }, 1500);
+  }
+
   function go(v, fromHash) {
     if (["home", "picks", "stay", "info"].indexOf(v) === -1) v = "home";
     view = v;
+    // Entering Info always starts fully collapsed.
+    if (v === "info") {
+      Array.prototype.forEach.call(document.querySelectorAll("#infoBody details"), function (d) {
+        d.open = false;
+      });
+    }
     ["home", "picks", "stay", "info"].forEach(function (k) {
       el("view-" + k).classList.toggle("on", k === v);
     });
@@ -361,6 +492,7 @@ window.BPnoPhoto = function (img, letter) {
 
   function renderHome() {
     renderCountdown();
+    renderPing();
     renderYou();
     renderClash();
     renderArrivals();
@@ -428,7 +560,7 @@ window.BPnoPhoto = function (img, letter) {
           '<div class="awill"><span>Once it\'s in, you\'ll see here:</span>' +
             "<ul>" +
               "<li>Your flights out and back, leg by leg</li>" +
-              "<li>A door-to-door route to the boat, timed to <em>your</em> landing</li>" +
+              "<li>A door-to-door route in, timed to <em>your</em> landing</li>" +
               "<li>Your slot on the arrivals board so everyone knows when you're in</li>" +
             "</ul>" +
           "</div>" +
@@ -807,47 +939,67 @@ window.BPnoPhoto = function (img, letter) {
     var rows = [];
     Object.keys(byId).forEach(function (id) {
       var v = votersFor(id);
-      if (v.length) rows.push({ id: id, name: byId[id].item.name, area: byId[id].item.area, n: v.length, who: v });
+      if (v.length) rows.push({
+        id: id, name: byId[id].item.name, what: gist(byId[id].item.desc),
+        n: v.length, who: v
+      });
     });
     store.state.customs.forEach(function (c) {
       var v = votersFor(c.id);
-      if (v.length) rows.push({ id: c.id, name: c.name, area: "suggested by " + c.by, n: v.length, who: v });
+      if (v.length) rows.push({ id: c.id, name: c.name, what: c.note || "Suggested by " + c.by, n: v.length, who: v });
     });
     rows.sort(function (a, b) { return b.n - a.n || a.name.localeCompare(b.name); });
 
     if (!rows.length) { box.innerHTML = '<p class="sec-note">No votes in yet.</p>'; return; }
 
     box.innerHTML = '<div class="sec-title">The tally</div>' +
-      '<p class="sec-note">★ = everyone who has voted so far picked it.</p>' +
+      '<p class="sec-note">★ = everyone who has voted so far picked it. Tap any row to jump to it below.</p>' +
       '<div class="rank">' + rows.map(function (r, i) {
         var bars = CFG.names.map(function (n) {
           return '<i class="' + (r.who.indexOf(n) > -1 ? "f" : "") + '"></i>';
         }).join("");
         var unan = voted.length > 1 && r.n === voted.length;
-        return '<div class="r' + (unan ? " unan" : "") + '">' +
+        return '<button type="button" class="r' + (unan ? " unan" : "") + '" data-jump="' + esc(r.id) + '">' +
           '<span class="n">' + (i + 1) + "</span>" +
-          '<span class="nm"><b>' + esc(r.name) + "</b><small>" + esc(r.who.join(", ")) + "</small></span>" +
-          '<span class="bars">' + bars + "</span></div>";
+          '<span class="nm"><b>' + esc(r.name) + "</b>" +
+            (r.what ? '<i class="what">' + esc(r.what) + "</i>" : "") +
+            "<small>" + esc(r.who.join(", ")) + "</small></span>" +
+          '<span class="bars">' + bars + "</span></button>";
       }).join("") + "</div>";
+  }
+
+  /** First sentence of a description, trimmed to something scannable. */
+  function gist(desc) {
+    var s = String(desc || "").trim();
+    if (!s) return "";
+    var cut = s.search(/\.\s|—\s/);
+    if (cut > 20) s = s.slice(0, cut + 1);
+    s = s.replace(/[.\s]+$/, "");
+    return s.length > 88 ? s.slice(0, 85).replace(/\s\S*$/, "") + "…" : s;
   }
 
   /* ================= STAY ================= */
 
   function renderStay() {
     var S = TRIP.stay;
-    el("stayBlurb").textContent = S.vote.open && !S.vote.options.length
-      ? S.vote.blurb
-      : "Pick every option you'd be happy with, not just your favourite.";
+    el("stayBlurb").textContent = S.vote.blurb;
 
     var vbox = el("stayVote");
     if (!S.vote.options.length) {
       vbox.innerHTML =
         '<div class="pending"><b>Options land here</b>' +
-        "<p>Nothing to vote on yet. As soon as the shortlist is in, this turns into a board just like the picks page.</p></div>";
+        "<p>Nothing to vote on yet.</p></div>";
     } else {
-      vbox.innerHTML = '<div class="sec-title">Vote</div>' +
-        (S.vote.note ? '<p class="sec-note">' + esc(S.vote.note) + "</p>" : "") +
-        '<div class="grid">' + S.vote.options.map(stayCard).join("") + "</div>";
+      var groups = S.vote.groups || [{ id: null, title: "Vote", note: "" }];
+      vbox.innerHTML =
+        (S.vote.note ? '<p class="sec-note" style="margin-top:14px">' + esc(S.vote.note) + "</p>" : "") +
+        groups.map(function (g) {
+          var opts = S.vote.options.filter(function (o) { return !g.id || o.group === g.id; });
+          if (!opts.length) return "";
+          return '<div class="sec-title">' + esc(g.title) + "</div>" +
+            (g.note ? '<p class="sec-note">' + esc(g.note) + "</p>" : "") +
+            '<div class="grid">' + opts.map(stayCard).join("") + "</div>";
+        }).join("");
     }
 
     // Only once something has actually won — until then there is no "our place".
@@ -886,12 +1038,17 @@ window.BPnoPhoto = function (img, letter) {
                : '<div class="ctile">' + esc((o.name || "?").slice(0, 1).toUpperCase()) + "</div>") +
       '<div class="pad"><h4>' + esc(o.name) + "</h4>" +
       '<div class="area">' + esc(o.area || "") + "</div>" +
-      (reach ? '<div class="dist' + (o.walk ? "" : " far") + '">' + esc(reach) + "</div>" : "") +
+      '<div class="staytags">' +
+        (reach ? '<span class="dist' + (o.walk ? "" : " far") + '">' + esc(reach) + "</span>" : "") +
+        (o.est ? '<span class="price">' + esc(o.est) + "</span>" : "") +
+      "</div>" +
+      (o.nearby ? '<p class="desc">' + esc(o.nearby) + "</p>" : "") +
       (o.desc ? '<p class="desc">' + esc(o.desc) + "</p>" : "") +
-      (o.meta ? '<p class="meta">' + esc(o.meta) + "</p>" : "") +
+      (o.pros ? '<ul class="pc pros">' + o.pros.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") +
+      (o.cons ? '<ul class="pc cons">' + o.cons.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") +
       (o.why ? '<p class="keyfact">' + esc(o.why) + "</p>" : "") +
       (o.link ? '<a class="ride go pricebtn" href="' + esc(o.link) + '" target="_blank" rel="noopener">' +
-        (o.id === "flat" ? "Browse flats · our dates" : "Check price · our dates") + "</a>" : "") +
+        "Check live price</a>" : "") +
       '<div class="cardfoot">' +
         '<span class="pick" id="p-' + esc(o.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
         (o.lat ? '<button type="button" class="mini" data-goto="' + esc(o.id) + '">Get there</button>' : "") +
@@ -909,13 +1066,14 @@ window.BPnoPhoto = function (img, letter) {
       }).join("") + "</div>";
     };
 
+    renderApps();
     var place = ourPlace();
     el("infoBody").innerHTML = '<div class="acc">' +
       (place
-        ? panel("Airport → " + place.name, true,
+        ? panel("Airport → " + place.name, false,
             '<p style="margin:0 0 10px">' + esc(A.buffer_note) + "</p>" +
             renderRoutes(me ? arrival(person(me)) : null, place))
-        : panel("Airport → town", true,
+        : panel("Airport → town", false,
             "<p style=\"margin:0 0 10px\">Nowhere is booked yet, so the last leg is anyone's guess. " +
             "These are the two ways into the middle of the city; the rest fills in once the " +
             "accommodation vote lands.</p>" +

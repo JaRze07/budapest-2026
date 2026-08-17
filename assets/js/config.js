@@ -17,5 +17,22 @@
 window.BP_CONFIG = {
   db: "https://budapest-2026-trip-default-rtdb.europe-west1.firebasedatabase.app",
   fallbackVotes: "votes/all.json",
-  names: ["Areeb", "Nhi", "Phuong", "Jacek"]
+  names: ["Areeb", "Nhi", "Phuong", "Jacek"],
+
+  /* Push notifications run on ntfy.sh — no account, no server, no keys.
+     Anyone subscribed to the topic gets the notification on their phone.
+     The topic name IS the password, which is why it's a random string:
+     don't put it anywhere public. Messages expire after ~12 hours. */
+  ntfy: {
+    server: "https://ntfy.sh",
+    topic: "budapest26-0348bef5d7",
+    presets: [
+      "I've landed",
+      "Heading out now",
+      "Running late",
+      "Where are you?",
+      "At the bar",
+      "Calling it, going home"
+    ]
+  }
 };
