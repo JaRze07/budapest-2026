@@ -959,7 +959,6 @@
   "title": "Ready for your transformation?",
   "before": null,
   "after": null,
-  "caption": "Left: what Budapest thinks it is getting. Right: what actually turns up at Sparty.",
   "slots": [
    {
     "key": "nhiBefore",
