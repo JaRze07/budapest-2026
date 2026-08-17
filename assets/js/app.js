@@ -363,8 +363,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mswkohat").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mswkohat").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mswl114s").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mswl114s").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -482,6 +482,10 @@ window.BPmissing = function (img, label) {
 
       var del = e.target.closest("[data-del]");
       if (del) { removeFile(del.getAttribute("data-del")); return; }
+
+      if (e.target.id === "proposeBtn") { toggleProposeForm(true); return; }
+      if (e.target.id === "pCancel") { toggleProposeForm(false); return; }
+      if (e.target.id === "pSave") { saveCustom(); return; }
 
       var hy = e.target.closest("[data-hype]");
       if (hy) { setHype(+hy.getAttribute("data-hype")); return; }
@@ -1029,9 +1033,7 @@ window.BPmissing = function (img, label) {
         '<div class="cathead"><h3>' + esc(c.title) + "</h3><span>" +
           (c.items || []).length + " options</span></div>" +
         (c.note ? '<p class="catnote">' + esc(c.note) + "</p>" : "") +
-        '<div class="grid" id="g-' + ci + '">' + cards +
-          '<button type="button" class="addcard" id="add-' + ci + '" data-add="' + ci + '">+ Add your own</button>' +
-        "</div></section>";
+        '<div class="grid" id="g-' + ci + '">' + cards + "</div></section>";
     }).join("");
 
     renderProposed();
@@ -1045,18 +1047,41 @@ window.BPmissing = function (img, label) {
     var list = store.state.customs.slice()
       .sort(function (a, b) { return String(a.when).localeCompare(String(b.when)); });
 
-    if (!list.length) {
-      box.innerHTML =
-        '<div class="sec-title">Proposed activities</div>' +
-        '<p class="sec-note">Nothing yet. Use <b>+ Add your own</b> at the end of any category ' +
-        "below and it shows up here for everyone.</p>";
-      return;
-    }
     box.innerHTML =
       '<div class="sec-title">Proposed activities</div>' +
-      '<p class="sec-note">Added by us rather than off the original list. Whoever proposes ' +
-      "something counts as in on it automatically.</p>" +
-      '<div class="grid">' + list.map(customCard).join("") + "</div>";
+      '<p class="sec-note">' + (list.length
+        ? "Added by us rather than off the list below. Whoever proposes something counts as in on it automatically."
+        : "Nothing yet — anything any of us adds shows up here for everyone.") + "</p>" +
+      proposeForm() +
+      (list.length ? '<div class="grid">' + list.map(customCard).join("") + "</div>" : "");
+  }
+
+  /* The only place anything can be added. It used to sit at the end of every
+     category, which put six identical buttons on the page. */
+  var proposeOpen = false;
+
+  function proposeForm() {
+    if (!proposeOpen) {
+      return '<button type="button" class="btn big proposebtn" id="proposeBtn">+ Propose something</button>';
+    }
+    var cats = (VENUES.categories || []).map(function (c, i) {
+      return '<option value="' + i + '">' + esc(c.title) + "</option>";
+    }).join("");
+    return '<div class="proposeform">' +
+      '<input id="pName" maxlength="60" placeholder="What are you suggesting?">' +
+      '<input id="pNote" maxlength="90" placeholder="Where, price, why — optional">' +
+      '<select id="pCat">' + cats + "</select>" +
+      '<div class="pfrow">' +
+        '<button type="button" class="btn dim" id="pCancel">Cancel</button>' +
+        '<button type="button" class="btn" id="pSave">Add it</button>' +
+      "</div></div>";
+  }
+
+  function toggleProposeForm(open) {
+    proposeOpen = open;
+    renderProposed();
+    paintWho();
+    if (open && el("pName")) el("pName").focus();
   }
 
   function venueCard(it) {
@@ -1099,8 +1124,6 @@ window.BPmissing = function (img, label) {
     if (e.target.closest("a, .mini")) return;
     var card = e.target.closest("[data-pick]");
     if (card) { toggle("picks", card.getAttribute("data-pick")); return; }
-    var add = e.target.closest("[data-add]");
-    if (add) openAdd(+add.getAttribute("data-add"));
   }
 
   function toggle(kind, id) {
@@ -1129,50 +1152,37 @@ window.BPmissing = function (img, label) {
     updateBar();
   }
 
-  function openAdd(ci) {
-    var a = el("add-" + ci);
-    a.removeAttribute("data-add");
-    a.innerHTML = '<div style="width:100%">' +
-      '<input id="ai-' + ci + '" maxlength="60" placeholder="What are you suggesting?">' +
-      '<input id="an-' + ci + '" maxlength="90" placeholder="Where, price, why — optional">' +
-      '<button type="button" class="btn" id="save-' + ci + '">Add it</button></div>';
-    el("ai-" + ci).focus();
-    el("save-" + ci).addEventListener("click", function (ev) {
-      ev.stopPropagation();
-      saveCustom(ci);
-    });
-  }
-
-  async function saveCustom(ci) {
-    var name = (el("ai-" + ci).value || "").trim();
+  async function saveCustom() {
+    var name = (el("pName").value || "").trim();
     if (!name) { toast("Give it a name first"); return; }
-    var note = (el("an-" + ci).value || "").trim();
     var item = {
       id: "c" + Date.now().toString(36),
       name: name.slice(0, 60),
-      note: note.slice(0, 90),
+      note: (el("pNote").value || "").trim().slice(0, 90),
       by: me,
-      cat: ci,
+      cat: +el("pCat").value || 0,
       when: new Date().toISOString()
     };
+
     var r = await store.addCustom(item);
     sel.picks[item.id] = true;
 
-    /* Proposing it counts as being in on it. Merge into what's already been
-       submitted rather than the in-progress selection, so this doesn't publish
-       edits they haven't committed yet. */
+    /* Proposing it counts as being in on it. Merge into what has already been
+       submitted rather than the in-progress selection, so this cannot publish
+       edits they have not committed yet. */
     var stored = (store.state.picks[me] && store.state.picks[me].ids) || [];
     if (stored.indexOf(item.id) === -1) {
       await store.saveVote("picks", me, stored.concat([item.id]));
     }
 
-    renderPicks();
+    proposeOpen = false;
+    renderProposed();
     paintWho();
     renderSummary();
     updateBar();
     toast(r.synced
-      ? "Added — it's on everyone's board, and you're counted in on it."
-      : "Added on your phone. It'll go up for the others next time you're online.", 4500);
+      ? "Added — it is on everyone’s board, and you are counted in on it."
+      : "Added on your phone. It will go up for the others next time you are online.", 4500);
   }
 
   function votersFor(id, kind) {
