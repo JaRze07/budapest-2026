@@ -154,85 +154,72 @@ window.BPmissing = function (img, label) {
       "</div></div>";
   }
 
-  /* ================= push notifications ================= */
+  /* ================= photo uploads ================= */
 
-  /* ntfy.sh: publish is a plain POST to a topic, subscribing is the app.
-     No account, no keys, nothing to deploy — the topic name is the secret. */
-  function renderPing() {
-    var n = CFG.ntfy;
-    if (!n || !n.topic || !el("infoPing")) return;
-    el("infoPing").innerHTML =
-      '<div class="sec-title">Ping the group</div>' +
-      '<div class="pingsetup">' +
-        "<p><b>There's no browser pop-up asking you to allow notifications — this doesn't use them.</b> " +
-        "That's why you never saw one. It goes through the ntfy app instead, which is the whole point: " +
-        "it reaches your phone even when this page is shut.</p>" +
-        "<ol>" +
-          "<li>Install <b>ntfy</b> — the buttons are just below.</li>" +
-          '<li>Open it, tap <b>+</b>, and subscribe to <code>' + esc(n.topic) + "</code> " +
-            '<button type="button" class="mini" data-copy="' + esc(n.topic) + '">Copy</button></li>' +
-          "<li>Come back here and send yourself a test.</li>" +
-        "</ol>" +
-        "<p class=\"warnline\">Keep that topic between the four of us — anyone who has it can send to your phones.</p>" +
-      "</div>" +
-      '<div class="ping">' +
-        '<div class="pingquick">' +
-          n.presets.map(function (p) {
-            return '<button type="button" class="mini" data-ping="' + esc(p) + '">' + esc(p) + "</button>";
-          }).join("") +
-        "</div>" +
-        '<div class="pingrow">' +
-          '<input id="pingText" maxlength="140" placeholder="…or type your own">' +
-          '<button class="btn" id="pingSend" type="button">Send</button>' +
-        "</div>" +
-      "</div>" +
-      '<div id="pingLog" class="pinglog"></div>';
-    loadPings();
-  }
-
-  async function sendPing(text) {
-    var n = CFG.ntfy;
-    text = String(text || "").trim();
-    if (!text) { toast("Type something first"); return; }
-    var btn = el("pingSend");
-    if (btn) { btn.disabled = true; btn.textContent = "…"; }
-    try {
-      var r = await fetch(n.server + "/" + n.topic, {
-        method: "POST",
-        headers: { "Title": "Budapest 2026", "Tags": "airplane", "Priority": "default" },
-        body: (me ? me + ": " : "") + text
-      });
-      if (!r.ok) throw new Error(r.status);
-      if (el("pingText")) el("pingText").value = "";
-      toast("Sent to everyone who's subscribed.", 3000);
-      setTimeout(loadPings, 900);
-    } catch (e) {
-      toast("Couldn't send — check you're online.", 3500);
-    }
-    if (btn) { btn.disabled = false; btn.textContent = "Send"; }
-  }
-
-  /** ntfy keeps messages ~12 h; show the recent ones so you can see it worked. */
-  async function loadPings() {
-    var n = CFG.ntfy, box = el("pingLog");
+  /* Two slots, Jacek only. Files are shrunk in a canvas and stored as data
+     URLs in the database, so there's no file hosting and no build step —
+     and they appear on Nhi's home screen the moment they land. */
+  function renderUpload() {
+    var T = TRIP.transformation, box = el("infoUpload");
     if (!box) return;
+    if (!T || !T.slots || me !== CFG.uploader) { box.innerHTML = ""; return; }
+
+    box.innerHTML =
+      '<div class="sec-title">Nhi\'s before and after</div>' +
+      '<p class="sec-note">Only you can see this. Drop a photo into each slot — it goes ' +
+      "straight onto her home screen. Re-drop to replace.</p>" +
+      '<div class="drops">' + T.slots.map(function (s) {
+        var has = store.state.photos[s.key];
+        return '<label class="drop" data-slot="' + esc(s.key) + '">' +
+          '<input type="file" accept="image/*" data-slotinput="' + esc(s.key) + '" hidden>' +
+          (has ? '<img src="' + esc(has) + '" alt="">' : '<span class="dropicon">+</span>') +
+          '<span class="droplabel">' + esc(s.label) + "</span>" +
+          '<span class="dropstate">' + (has ? "Tap to replace" : "Tap or drop a photo") + "</span>" +
+        "</label>";
+      }).join("") + "</div>";
+  }
+
+  /** Shrink to something a database row can hold without complaint. */
+  function shrink(file, maxPx, quality) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onerror = function () { reject(new Error("read")); };
+      reader.onload = function () {
+        var img = new Image();
+        img.onerror = function () { reject(new Error("decode")); };
+        img.onload = function () {
+          var w = img.width, h = img.height;
+          var scale = Math.min(1, maxPx / Math.max(w, h));
+          var c = document.createElement("canvas");
+          c.width = Math.round(w * scale);
+          c.height = Math.round(h * scale);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          resolve(c.toDataURL("image/jpeg", quality));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function acceptPhoto(slot, file) {
+    if (!file || !/^image\//.test(file.type)) { toast("That's not an image."); return; }
+    toast("Processing…", 8000);
+    var url;
     try {
-      var r = await fetch(n.server + "/" + n.topic + "/json?poll=1&since=12h", { cache: "no-store" });
-      if (!r.ok) throw new Error();
-      var lines = (await r.text()).trim().split("\n").filter(Boolean);
-      var msgs = lines.map(function (l) { try { return JSON.parse(l); } catch (e) { return null; } })
-        .filter(function (m) { return m && m.event === "message" && m.message; })
-        .slice(-6).reverse();
-      box.innerHTML = msgs.length
-        ? '<div class="kick" style="margin-bottom:6px">Recent</div>' + msgs.map(function (m) {
-            var t = new Date(m.time * 1000);
-            var hh = ("0" + t.getHours()).slice(-2) + ":" + ("0" + t.getMinutes()).slice(-2);
-            return '<div class="pingmsg"><span>' + hh + "</span>" + esc(m.message) + "</div>";
-          }).join("")
-        : '<p class="sec-note">Nothing sent in the last 12 hours.</p>';
-    } catch (e) {
-      box.innerHTML = '<p class="sec-note">Couldn\'t reach the notification service just now.</p>';
-    }
+      url = await shrink(file, 900, 0.82);
+      // The database caps the row; drop quality until it fits rather than failing.
+      var q = 0.82;
+      while (url.length > 650000 && q > 0.4) { q -= 0.12; url = await shrink(file, 900, q); }
+      if (url.length > 650000) url = await shrink(file, 640, 0.6);
+    } catch (e) { toast("Couldn't read that file."); return; }
+
+    var res = await store.savePhoto(slot, url);
+    renderUpload();
+    renderTransformation();
+    toast(res.synced
+      ? "Uploaded — it's on her home screen now."
+      : "Couldn't upload. Check you're online and try again.", 4000);
   }
 
   /* ================= the apps you need ================= */
@@ -245,11 +232,6 @@ window.BPmissing = function (img, label) {
         '<div class="apphead"><b>' + esc(a.name) + "</b><span>" + esc(a.by) + "</span>" +
           (a.required ? '<em class="appreq">Install before you fly</em>' : "") + "</div>" +
         "<p>" + esc(a.what) + "</p>" +
-        (a.id === "ntfy"
-          ? '<p class="appsub">Open the app → <b>+</b> → subscribe to the topic <code>' +
-            esc(CFG.ntfy.topic) + "</code>. That's the whole setup. " +
-            '<button type="button" class="mini" data-copy="' + esc(CFG.ntfy.topic) + '">Copy topic</button></p>'
-          : "") +
         '<div class="applinks">' +
           '<a class="ride go" href="' + esc(a.ios) + '" target="_blank" rel="noopener">App Store</a>' +
           '<a class="ride" href="' + esc(a.android) + '" target="_blank" rel="noopener">Google Play</a>' +
@@ -343,7 +325,13 @@ window.BPmissing = function (img, label) {
 
     el("names").addEventListener("click", function (e) {
       var b = e.target.closest("button[data-name]");
-      if (b) enter(b.getAttribute("data-name"));
+      if (b) askPassword(b.getAttribute("data-name"));
+    });
+
+    el("pwBack").addEventListener("click", backToNames);
+    el("pwBox").addEventListener("submit", function (e) {
+      e.preventDefault();
+      tryPassword();
     });
 
     el("swapBtn").addEventListener("click", function () {
@@ -381,8 +369,33 @@ window.BPmissing = function (img, label) {
       });
     }, true);
 
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" && e.target.id === "pingText") sendPing(e.target.value);
+    // File picker, plus real drag-and-drop onto either slot.
+    document.addEventListener("change", function (e) {
+      var inp = e.target.closest("[data-slotinput]");
+      if (inp && inp.files && inp.files[0]) {
+        acceptPhoto(inp.getAttribute("data-slotinput"), inp.files[0]);
+        inp.value = "";
+      }
+    });
+    ["dragenter", "dragover"].forEach(function (ev) {
+      document.addEventListener(ev, function (e) {
+        var d = e.target.closest && e.target.closest(".drop");
+        if (!d) return;
+        e.preventDefault();
+        d.classList.add("over");
+      });
+    });
+    document.addEventListener("dragleave", function (e) {
+      var d = e.target.closest && e.target.closest(".drop");
+      if (d) d.classList.remove("over");
+    });
+    document.addEventListener("drop", function (e) {
+      var d = e.target.closest && e.target.closest(".drop");
+      if (!d) return;
+      e.preventDefault();
+      d.classList.remove("over");
+      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f) acceptPhoto(d.getAttribute("data-slot"), f);
     });
 
     document.addEventListener("click", function (e) {
@@ -391,10 +404,6 @@ window.BPmissing = function (img, label) {
 
       var sr = e.target.closest("[data-rate]");
       if (sr) { setStay(sr.getAttribute("data-opt"), sr.getAttribute("data-rate")); return; }
-
-      var q = e.target.closest("[data-ping]");
-      if (q) { sendPing(q.getAttribute("data-ping")); return; }
-      if (e.target.id === "pingSend") { sendPing(el("pingText").value); return; }
 
       var jump = e.target.closest("[data-jump]");
       if (jump) { scrollToCard(jump.getAttribute("data-jump")); return; }
@@ -428,6 +437,47 @@ window.BPmissing = function (img, label) {
   function openGate() {
     el("gate").hidden = false;
     el("topName").textContent = "—";
+    backToNames();
+  }
+
+  /* A doorknob, not a lock — enough that nobody wanders into someone else's
+     page by accident. The passwords are in config.js in the clear. */
+  var pending_name = null;
+
+  function backToNames() {
+    pending_name = null;
+    el("pwBox").hidden = true;
+    el("names").hidden = false;
+    el("gateHint").hidden = false;
+    el("pwErr").hidden = true;
+    el("pwInput").value = "";
+  }
+
+  function askPassword(name) {
+    if (CFG.names.indexOf(name) === -1) return;
+    if (!CFG.passwords || !CFG.passwords[name]) { enter(name); return; }
+    pending_name = name;
+    el("names").hidden = true;
+    el("gateHint").hidden = true;
+    el("pwBox").hidden = false;
+    el("pwName").textContent = name;
+    el("pwErr").hidden = true;
+    el("pwInput").value = "";
+    el("pwInput").focus();
+  }
+
+  function tryPassword() {
+    if (!pending_name) return;
+    var given = el("pwInput").value.trim();
+    if (given === CFG.passwords[pending_name]) {
+      var name = pending_name;
+      backToNames();
+      enter(name);
+    } else {
+      el("pwErr").hidden = false;
+      el("pwInput").value = "";
+      el("pwInput").focus();
+    }
   }
 
   function enter(name) {
@@ -505,6 +555,8 @@ window.BPmissing = function (img, label) {
     renderClash();
     renderArrivals();
     renderHypeOthers();
+    renderTransformation();
+    renderUpload();
     // After renderStay — it rebuilds the cards, which would wipe the chips.
     paintWho();
     renderSummary();
@@ -609,13 +661,19 @@ window.BPmissing = function (img, label) {
     var T = TRIP.transformation, box = el("homeTransform");
     if (!box) return;
     if (!T || me !== T.for) { box.innerHTML = ""; return; }
+
+    var pics = (T.slots || []).map(function (s) {
+      var url = store.state.photos[s.key] || null;
+      return url
+        ? '<img src="' + esc(url) + '" alt="' + esc(s.label) + '">'
+        : '<div class="tmissing">' + esc(s.label) + " — not uploaded yet</div>";
+    });
+    if (!pics.length) { box.innerHTML = ""; return; }
+
     box.innerHTML =
       '<div class="transform">' +
         '<div class="kick">' + esc(T.title) + "</div>" +
-        '<div class="tpair">' +
-          '<img src="' + esc(T.before) + '" alt="Before" onerror="BPmissing(this,\'Before\')">' +
-          '<img src="' + esc(T.after) + '" alt="After" onerror="BPmissing(this,\'After\')">' +
-        "</div>" +
+        '<div class="tpair">' + pics.join("") + "</div>" +
         (T.caption ? '<p class="tcap">' + esc(T.caption) + "</p>" : "") +
       "</div>";
   }
@@ -1191,7 +1249,7 @@ window.BPmissing = function (img, label) {
       }).join("") + "</div>";
     };
 
-    renderPing();
+    renderUpload();
     renderApps();
     var place = ourPlace();
     el("infoBody").innerHTML = '<div class="acc">' +

@@ -37,6 +37,13 @@
       }
     },
 
+    "photos": {
+      "$slot": {
+        ".write": "newData.exists() && $slot.matches(/^(nhiBefore|nhiAfter)$/)",
+        ".validate": "newData.isString() && newData.val().beginsWith('data:image/') && newData.val().length <= 700000"
+      }
+    },
+
     "customs": {
       "$id": {
         ".write": "!data.exists() && newData.exists()",

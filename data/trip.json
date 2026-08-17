@@ -184,7 +184,7 @@
      "score": 9.7,
      "reviews": 92,
      "est": "€246 for 3 nights",
-     "price_note": "1,059 zł for 4 · live on Booking",
+     "price_note": "Live Booking quote for 4, our dates",
      "lat": 47.49991,
      "lng": 19.065668,
      "full_address": "47.49991, 19.065668",
@@ -203,7 +203,7 @@
      "score": 9.5,
      "reviews": 6,
      "est": "€356 for 3 nights",
-     "price_note": "1,534 zł for 4 · live on Booking",
+     "price_note": "Live Booking quote for 4, our dates",
      "lat": 47.501576,
      "lng": 19.06461,
      "full_address": "47.501576, 19.06461",
@@ -222,7 +222,7 @@
      "score": 9.5,
      "reviews": 32,
      "est": "€300 for 3 nights",
-     "price_note": "1,292 zł for 4 · live on Booking",
+     "price_note": "Live Booking quote for 4, our dates",
      "lat": 47.48194,
      "lng": 19.065428,
      "full_address": "47.48194, 19.065428",
@@ -241,7 +241,7 @@
      "score": 9.4,
      "reviews": 158,
      "est": "€344 for 3 nights",
-     "price_note": "1,482 zł for 4 · live on Booking",
+     "price_note": "Live Booking quote for 4, our dates",
      "lat": 47.502225,
      "lng": 19.071278,
      "full_address": "47.502225, 19.071278",
@@ -260,7 +260,7 @@
      "score": 9.1,
      "reviews": 120,
      "est": "€345 for 3 nights",
-     "price_note": "1,487 zł for 4 · live on Booking",
+     "price_note": "Live Booking quote for 4, our dates",
      "lat": 47.50004,
      "lng": 19.063022,
      "full_address": "47.50004, 19.063022",
@@ -279,7 +279,7 @@
      "score": 9.1,
      "reviews": 104,
      "est": "€404 for 3 nights",
-     "price_note": "1,741 zł for 4 · live on Booking",
+     "price_note": "Live Booking quote for 4, our dates",
      "lat": 47.488921,
      "lng": 19.071953,
      "full_address": "47.488921, 19.071953",
@@ -298,7 +298,7 @@
      "score": 8.4,
      "reviews": 90,
      "est": "€362 for 3 nights",
-     "price_note": "1,558 zł for 4 · live on Booking",
+     "price_note": "Live Booking quote for 4, our dates",
      "lat": 47.499478,
      "lng": 19.071337,
      "full_address": "47.499478, 19.071337",
@@ -317,7 +317,7 @@
      "score": 9.8,
      "reviews": 40,
      "est": "€283 for 3 nights",
-     "price_note": "1,218 zł for 3 · live on Booking",
+     "price_note": "Live Booking quote for 3, our dates",
      "lat": 47.510727,
      "lng": 19.032029,
      "full_address": "47.510727, 19.032029",
@@ -336,7 +336,7 @@
      "score": 9.5,
      "reviews": 101,
      "est": "€398 for 3 nights",
-     "price_note": "1,716 zł for 3 · live on Booking",
+     "price_note": "Live Booking quote for 3, our dates",
      "lat": 47.517172,
      "lng": 19.059447,
      "full_address": "47.517172, 19.059447",
@@ -355,7 +355,7 @@
      "score": 9.4,
      "reviews": 436,
      "est": "€316 for 3 nights",
-     "price_note": "1,360 zł for 3 · live on Booking",
+     "price_note": "Live Booking quote for 3, our dates",
      "lat": 47.498328,
      "lng": 19.060701,
      "full_address": "47.498328, 19.060701",
@@ -374,7 +374,7 @@
      "score": 9.3,
      "reviews": 67,
      "est": "€334 for 3 nights",
-     "price_note": "1,438 zł for 3 · live on Booking",
+     "price_note": "Live Booking quote for 3, our dates",
      "lat": 47.488598,
      "lng": 19.05471,
      "full_address": "47.488598, 19.05471",
@@ -393,7 +393,7 @@
      "score": 9.3,
      "reviews": 97,
      "est": "€388 for 3 nights",
-     "price_note": "1,670 zł for 3 · live on Booking",
+     "price_note": "Live Booking quote for 3, our dates",
      "lat": 47.497571,
      "lng": 19.068255,
      "full_address": "47.497571, 19.068255",
@@ -412,7 +412,7 @@
      "score": 9.3,
      "reviews": 352,
      "est": "€312 for 3 nights",
-     "price_note": "1,344 zł for 3 · live on Booking",
+     "price_note": "Live Booking quote for 3, our dates",
      "lat": 47.513495,
      "lng": 19.049804,
      "full_address": "47.513495, 19.049804",
@@ -805,15 +805,6 @@
    "ios": "https://apps.apple.com/us/app/budapestgo/id916193835",
    "android": "https://play.google.com/store/apps/details?id=hu.webvalto.bkkfutar",
    "required": true
-  },
-  {
-   "id": "ntfy",
-   "name": "ntfy",
-   "by": "Group pings",
-   "what": "Install it, subscribe to our topic once, and anything anyone sends from the Ping tab lands on your phone as a notification. No account, no sign-up.",
-   "ios": "https://apps.apple.com/us/app/ntfy/id1625396347",
-   "android": "https://play.google.com/store/apps/details?id=io.heckel.ntfy",
-   "required": false
   }
  ],
  "hype": {
@@ -828,8 +819,18 @@
  "transformation": {
   "for": "Nhi",
   "title": "Ready for your transformation?",
-  "before": "images/nhi-before.jpg",
-  "after": "images/nhi-after.jpg",
-  "caption": "Left: what Budapest thinks it is getting. Right: what actually turns up at Sparty."
+  "before": null,
+  "after": null,
+  "caption": "Left: what Budapest thinks it is getting. Right: what actually turns up at Sparty.",
+  "slots": [
+   {
+    "key": "nhiBefore",
+    "label": "Before — the soft one"
+   },
+   {
+    "key": "nhiAfter",
+    "label": "After — the Sparty one"
+   }
+  ]
  }
 }

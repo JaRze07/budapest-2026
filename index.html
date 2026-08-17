@@ -17,8 +17,17 @@
   <div class="inner">
     <div class="kick">Budapest · 28–31 Aug 2026</div>
     <h1>Four days. <em>Who's this?</em></h1>
-    <p>Tap your name. It remembers you on this phone — no password, nothing to sign up for.</p>
+    <p id="gateHint">Tap your name, then your password. It remembers you on this phone after that.</p>
     <div class="names" id="names"></div>
+    <form class="pwbox" id="pwBox" hidden autocomplete="off">
+      <div class="pwwho">Signing in as <b id="pwName"></b></div>
+      <input type="password" id="pwInput" placeholder="Password" autocomplete="current-password" enterkeyhint="go">
+      <div class="pwrow">
+        <button type="button" class="btn dim" id="pwBack">Back</button>
+        <button type="submit" class="btn" id="pwGo">Let me in</button>
+      </div>
+      <div class="pwerr" id="pwErr" hidden>Not that one. Try again.</div>
+    </form>
   </div>
 </div>
 
@@ -107,7 +116,7 @@
       <div class="kick">Know-how</div>
       <h2>Everything you'll want to look up at 1am.</h2>
     </div>
-    <div id="infoPing"></div>
+    <div id="infoUpload"></div>
     <div id="infoApps"></div>
     <div id="infoBody"></div>
     <footer id="infoFoot"></footer>

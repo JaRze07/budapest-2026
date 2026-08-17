@@ -15,7 +15,7 @@ BP.store = (function () {
   var LS_ME = "bp26.me";
   var LS_PENDING = "bp26.pending";
 
-  var state = { picks: {}, stay: {}, hype: {}, customs: [] };
+  var state = { picks: {}, stay: {}, hype: {}, photos: {}, customs: [] };
   var online = false;
   var listeners = [];
   var es = null;
@@ -31,11 +31,12 @@ BP.store = (function () {
   /* ---------- shape ---------- */
 
   function normalise(raw) {
-    var s = { picks: {}, stay: {}, hype: {}, customs: [] };
+    var s = { picks: {}, stay: {}, hype: {}, photos: {}, customs: [] };
     if (!raw || typeof raw !== "object") return s;
     s.picks = raw.picks || {};
     s.stay = raw.stay || {};
     s.hype = raw.hype || {};
+    s.photos = raw.photos || {};
     // Customs are an object keyed by id in the database, an array in the file.
     var c = raw.customs;
     s.customs = Array.isArray(c) ? c.slice()
@@ -124,7 +125,7 @@ BP.store = (function () {
   function setPath(path, data) {
     var parts = path.split("/").filter(Boolean);
     if (!parts.length) { state = overlay(normalise(data)); return; }
-    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, customs: {} };
+    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, photos: state.photos, customs: {} };
     state.customs.forEach(function (c) { raw.customs[c.id] = c; });
     var node = raw;
     for (var i = 0; i < parts.length - 1; i++) {
@@ -181,6 +182,13 @@ BP.store = (function () {
     return { synced: ok };
   }
 
+  /** Photos are stored as data URLs so no file hosting is involved. */
+  async function savePhoto(slot, dataUrl) {
+    state.photos[slot] = dataUrl;
+    var ok = await put("photos/" + slot, dataUrl);
+    return { synced: ok };
+  }
+
   function saveVote(kind, name, ids) {
     return saveRecord(kind, name, { ids: ids.slice() });
   }
@@ -216,6 +224,7 @@ BP.store = (function () {
     onChange: function (fn) { listeners.push(fn); },
     saveVote: saveVote,
     saveStay: saveStay,
+    savePhoto: savePhoto,
     saveHype: saveHype,
     addCustom: addCustom,
     me: function () { return lsGet(LS_ME, null); },
