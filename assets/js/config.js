@@ -35,6 +35,7 @@ window.BP_CONFIG = {
     Jacek: "jrs69"
   },
 
-  /** Who may upload the photos in the Info tab. */
-  uploader: "Jacek"
+  /** Who may upload photos, and who slots activities into the plan. */
+  uploader: "Jacek",
+  planner: "Jacek"
 };

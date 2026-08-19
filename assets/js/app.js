@@ -429,8 +429,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt09tgkm").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt09tgkm").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt0ldvz2").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt0ldvz2").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -583,6 +583,12 @@ window.BPmissing = function (img, label) {
 
       var hy = e.target.closest("[data-hype]");
       if (hy) { setHype(+hy.getAttribute("data-hype")); return; }
+
+      var pl = e.target.closest("[data-plan]");
+      if (pl) { openSlotPicker(pl.getAttribute("data-plan")); return; }
+
+      var sl = e.target.closest("[data-slot]");
+      if (sl) { setSlot(sl.getAttribute("data-for"), sl.getAttribute("data-slot")); return; }
 
       var jump = e.target.closest("[data-jump]");
       if (jump) { scrollToCard(jump.getAttribute("data-jump")); return; }
@@ -743,8 +749,8 @@ window.BPmissing = function (img, label) {
     renderTransformation();
     renderUpload();
     renderProposed();
-    renderMoney();
-    // After renderStay — it rebuilds the cards, which would wipe the chips.
+    renderSchedule();          // someone else may have slotted something
+    // After the boards are rebuilt — they would otherwise wipe the chips.
     paintWho();
     renderSummary();
     el("submittedLine").textContent = submittedLine();
@@ -1123,8 +1129,21 @@ window.BPmissing = function (img, label) {
         return '<div class="slot ' + esc(s.kind) + '"><div class="st">' + esc(s.time) +
           '</div><div class="sd">' + esc(s.t) + "</div></div>";
       }).join("");
+      // Anything slotted into one of this day's bands, under the fixed points.
+      var dayName = d.day + " " + parseInt(d.date.slice(8), 10);
+      var bands = (TRIP.slots || []).filter(function (s) { return s.day === dayName; })
+        .map(function (s) {
+          var got = plannedIn(s.id);
+          if (!got.length) return "";
+          return '<div class="slot planned"><div class="st">' + esc(s.when) + "</div>" +
+            '<div class="sd">' + got.map(function (id) {
+              return '<span class="ptag">' + esc(nameOf(id)) + "</span>";
+            }).join("") + "</div></div>";
+        }).join("");
+
       return '<div class="day"><div class="dhead"><b>' + esc(d.day) + " " +
-        esc(d.date.slice(8)) + " Aug</b><span>" + esc(d.label) + "</span></div>" + slots + "</div>";
+        esc(d.date.slice(8)) + " Aug</b><span>" + esc(d.label) + "</span></div>" +
+        slots + bands + "</div>";
     }).join("");
     el("homeSchedule").innerHTML = html;
   }
@@ -1389,13 +1408,86 @@ window.BPmissing = function (img, label) {
           return '<i class="' + (r.who.indexOf(n) > -1 ? "f" : "") + '"></i>';
         }).join("");
         var unan = voted.length > 1 && r.n === voted.length;
-        return '<button type="button" class="r' + (unan ? " unan" : "") + '" data-jump="' + esc(r.id) + '">' +
-          '<span class="n">' + (i + 1) + "</span>" +
-          '<span class="nm"><b>' + esc(r.name) + "</b>" +
-            (r.what ? '<i class="what">' + esc(r.what) + "</i>" : "") +
-            "<small>" + esc(r.who.join(", ")) + "</small></span>" +
-          '<span class="bars">' + bars + "</span></button>";
+        var slot = slotById((store.state.plan || {})[r.id]);
+        return '<div class="rwrap">' +
+          '<button type="button" class="r' + (unan ? " unan" : "") + '" data-jump="' + esc(r.id) + '">' +
+            '<span class="n">' + (i + 1) + "</span>" +
+            '<span class="nm"><b>' + esc(r.name) + "</b>" +
+              (r.what ? '<i class="what">' + esc(r.what) + "</i>" : "") +
+              (slot ? '<i class="slotted">' + esc(slot.day) + " · " + esc(slot.when) + "</i>" : "") +
+              "<small>" + esc(r.who.join(", ")) + "</small></span>" +
+            '<span class="bars">' + bars + "</span>" +
+          "</button>" +
+          (canPlan()
+            ? '<button type="button" class="slotadd' + (slot ? " on" : "") +
+              '" data-plan="' + esc(r.id) + '" title="Put this in a slot">' + (slot ? "✎" : "+") + "</button>"
+            : "") +
+        "</div>";
       }).join("") + "</div></section>";
+  }
+
+
+  /* ---- slotting activities into the days ---- */
+
+  function slotById(id) {
+    return (TRIP.slots || []).filter(function (s) { return s.id === id; })[0] || null;
+  }
+  function nameOf(id) {
+    if (byId[id]) return byId[id].item.name;
+    var c = store.state.customs.filter(function (x) { return x.id === id; })[0];
+    return c ? c.name : id;
+  }
+  /** Everything slotted into one band, in the order the tally ranks them. */
+  function plannedIn(slotId) {
+    var p = store.state.plan || {};
+    return Object.keys(p).filter(function (id) { return p[id] === slotId; });
+  }
+
+  /* Only the planner gets to move things about — everyone else just sees where
+     they landed. There is no auth behind this, so it is a tidiness measure
+     rather than a lock. */
+  function canPlan() { return me === (CFG.planner || CFG.uploader); }
+
+  function openSlotPicker(activityId) {
+    var cur = (store.state.plan || {})[activityId] || "";
+    var days = [];
+    (TRIP.slots || []).forEach(function (s) {
+      var d = days.filter(function (x) { return x.day === s.day; })[0];
+      if (!d) { d = { day: s.day, slots: [] }; days.push(d); }
+      d.slots.push(s);
+    });
+
+    el("sheetBody").innerHTML =
+      '<div class="kick">When are we doing this</div>' +
+      "<h3>" + esc(nameOf(activityId)) + "</h3>" +
+      '<div class="slotpick">' + days.map(function (d) {
+        return '<div class="slotday"><div class="slotdayname">' + esc(d.day) + "</div>" +
+          d.slots.map(function (s) {
+            var here = plannedIn(s.id).filter(function (x) { return x !== activityId; });
+            return '<button type="button" class="slotbtn' + (cur === s.id ? " on" : "") +
+              '" data-slot="' + esc(s.id) + '" data-for="' + esc(activityId) + '">' +
+              '<span class="slotwhen">' + esc(s.when) + "</span>" +
+              (s.note ? '<span class="slotnote">' + esc(s.note) + "</span>" : "") +
+              (here.length ? '<span class="slothas">already here: ' +
+                esc(here.map(nameOf).join(", ")) + "</span>" : "") +
+            "</button>";
+          }).join("") + "</div>";
+      }).join("") +
+      (cur ? '<button type="button" class="btn dim clearslot" data-slot="" data-for="' +
+        esc(activityId) + '">Take it off the plan</button>' : "") +
+      "</div>";
+    el("sheet").hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  async function setSlot(activityId, slotId) {
+    await store.savePlan(activityId, slotId);
+    closeSheet();
+    renderSummary();
+    renderSchedule();
+    toast(slotId
+      ? nameOf(activityId) + " → " + (slotById(slotId) || {}).day + ", " + (slotById(slotId) || {}).when
+      : "Taken off the plan", 3000);
   }
 
   /** First sentence of a description, trimmed to something scannable. */

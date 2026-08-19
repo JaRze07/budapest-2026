@@ -1010,5 +1010,61 @@
     "hint": "Type what each person owes. Must add up to the total."
    }
   ]
- }
+ },
+ "slots": [
+  {
+   "id": "fri-pm",
+   "day": "Friday 28",
+   "when": "Noon → 17:40",
+   "note": "Jacek and Areeb are already in. Nhi lands at the end of this."
+  },
+  {
+   "id": "fri-eve",
+   "day": "Friday 28",
+   "when": "17:40 → late",
+   "note": "First night, all of us in town."
+  },
+  {
+   "id": "sat-am",
+   "day": "Saturday 29",
+   "when": "Before noon",
+   "note": ""
+  },
+  {
+   "id": "sat-pm",
+   "day": "Saturday 29",
+   "when": "Noon → 18:00",
+   "note": ""
+  },
+  {
+   "id": "sat-eve",
+   "day": "Saturday 29",
+   "when": "18:00 → late",
+   "note": "Sparty and the Remember Parade both land here — you get one."
+  },
+  {
+   "id": "sun-am",
+   "day": "Sunday 30",
+   "when": "Before noon",
+   "note": ""
+  },
+  {
+   "id": "sun-pm",
+   "day": "Sunday 30",
+   "when": "Noon → 18:00",
+   "note": "Nhi leaves for the airport in this window."
+  },
+  {
+   "id": "sun-eve",
+   "day": "Sunday 30",
+   "when": "18:00 → late",
+   "note": "Nhi has flown — three of you."
+  },
+  {
+   "id": "mon",
+   "day": "Monday 31",
+   "when": "Checkout → 15:00",
+   "note": "Bags down, one last thing, then out."
+  }
+ ]
 }

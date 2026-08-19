@@ -1577,3 +1577,57 @@ footer {
 .hlegs li::before { content: "•"; position: absolute; left: 3px; color: var(--brass); }
 .hlegs li.walk { color: var(--slate); }
 .hlegs li.walk::before { content: "·"; }
+
+/* ---------- slotting into the plan ---------- */
+
+.rwrap { display: flex; align-items: stretch; }
+.rwrap + .rwrap { border-top: 1px solid var(--line); }
+.rwrap .r { flex: 1; min-width: 0; }
+.rank .rwrap .r + .r { border-top: none; }
+.slotadd {
+  flex: 0 0 auto;
+  width: 40px;
+  border: none;
+  border-left: 1px solid var(--line);
+  background: transparent;
+  color: var(--brass);
+  font-size: 17px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.slotadd:hover { background: #FBF6E8; }
+.slotadd.on { color: var(--ink); background: #F2FBF5; }
+.nm .slotted {
+  display: block;
+  font-style: normal;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--brass-dim);
+  margin: 3px 0 1px;
+}
+
+.slotpick { margin-top: 14px; }
+.slotday + .slotday { margin-top: 16px; }
+.slotdayname {
+  font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+  font-weight: 700; color: var(--brass-dim); margin-bottom: 7px;
+}
+.slotbtn {
+  display: block; width: 100%; text-align: left;
+  border: 1.5px solid var(--line); background: var(--white);
+  padding: 10px 12px; margin-bottom: 7px; cursor: pointer; font-family: inherit;
+}
+.slotbtn:hover { border-color: var(--brass); }
+.slotbtn.on { border-color: var(--laser); background: #F2FBF5; }
+.slotwhen { display: block; font-weight: 700; font-size: 13.5px; }
+.slotnote { display: block; color: var(--slate); font-size: 11.5px; margin-top: 3px; line-height: 1.4; }
+.slothas { display: block; color: var(--brass-dim); font-size: 11px; margin-top: 5px; }
+.clearslot { display: block; width: 100%; margin-top: 14px; border-color: var(--line); color: var(--slate); }
+
+.slot.planned .sd { display: flex; flex-wrap: wrap; gap: 5px; }
+.ptag {
+  background: var(--laser); color: var(--ink);
+  font-size: 11px; font-weight: 700;
+  padding: 3px 9px; border-radius: 999px;
+}

@@ -15,7 +15,7 @@ BP.store = (function () {
   var LS_ME = "bp26.me";
   var LS_PENDING = "bp26.pending";
 
-  var state = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, customs: [] };
+  var state = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, plan: {}, customs: [] };
   var online = false;
   var listeners = [];
   var es = null;
@@ -31,7 +31,7 @@ BP.store = (function () {
   /* ---------- shape ---------- */
 
   function normalise(raw) {
-    var s = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, customs: [] };
+    var s = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, plan: {}, customs: [] };
     if (!raw || typeof raw !== "object") return s;
     s.picks = raw.picks || {};
     s.stay = raw.stay || {};
@@ -40,6 +40,7 @@ BP.store = (function () {
     s.assign = raw.assign || {};
     s.final = raw.final || {};
     s.expenses = raw.expenses || {};
+    s.plan = raw.plan || {};
     // Customs are an object keyed by id in the database, an array in the file.
     var c = raw.customs;
     s.customs = Array.isArray(c) ? c.slice()
@@ -128,7 +129,7 @@ BP.store = (function () {
   function setPath(path, data) {
     var parts = path.split("/").filter(Boolean);
     if (!parts.length) { state = overlay(normalise(data)); return; }
-    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, files: state.files, assign: state.assign, final: state.final, expenses: state.expenses, customs: {} };
+    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, files: state.files, assign: state.assign, final: state.final, expenses: state.expenses, plan: state.plan, customs: {} };
     state.customs.forEach(function (c) { raw.customs[c.id] = c; });
     var node = raw;
     for (var i = 0; i < parts.length - 1; i++) {
@@ -224,6 +225,13 @@ BP.store = (function () {
     return { synced: ok };
   }
 
+  /** One slot per activity; a slot holds as many as you like. "" clears it. */
+  async function savePlan(activityId, slotId) {
+    state.plan[activityId] = slotId || "";
+    var ok = await put("plan/" + activityId, slotId || "");
+    return { synced: ok };
+  }
+
   async function deleteExpense(id) {
     delete state.expenses[id];
     try {
@@ -277,6 +285,7 @@ BP.store = (function () {
     saveHype: saveHype,
     saveFinal: saveFinal,
     saveExpense: saveExpense,
+    savePlan: savePlan,
     deleteExpense: deleteExpense,
     addCustom: addCustom,
     me: function () { return lsGet(LS_ME, null); },

@@ -161,6 +161,12 @@
           ".validate": false
         }
       }
+    },
+    "plan": {
+      "$activity": {
+        ".write": true,
+        ".validate": "newData.isString() && newData.val().matches(/^(fri-pm|fri-eve|sat-am|sat-pm|sat-eve|sun-am|sun-pm|sun-eve|mon)?$/)"
+      }
     }
   }
 }
