@@ -113,9 +113,14 @@ window.BPmissing = function (img, label) {
 
     var to = pt(src);
     var place = ourPlace();
+    var fb = src.fromBase || {};
     var html = '<div class="kick">Getting there</div>' +
       "<h3>" + esc(src.name) + "</h3>" +
-      '<div class="sheetarea">' + esc(src.area || "") + "</div>";
+      '<div class="sheetarea">' + esc(src.area || "") +
+        (fb.walk ? " · " + fb.walk.min + " min walk" : "") + "</div>" +
+      (src.desc ? '<p class="sheetdesc">' + esc(src.desc) + "</p>" : "") +
+      (src.meta ? '<p class="sheetmeta">' + esc(src.meta) + "</p>" : "") +
+      (src.key_fact ? '<p class="keyfact">' + esc(src.key_fact) + "</p>" : "");
 
     if (place && place.id !== src.id) {
       html += fromBlock("From our place", place.name, to, pt(place)) + howToGetThere(src);
@@ -429,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt0ldvz2").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt0ldvz2").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt0oid94").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt0oid94").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1137,7 +1142,21 @@ window.BPmissing = function (img, label) {
           if (!got.length) return "";
           return '<div class="slot planned"><div class="st">' + esc(s.when) + "</div>" +
             '<div class="sd">' + got.map(function (id) {
-              return '<span class="ptag">' + esc(nameOf(id)) + "</span>";
+              var v = byId[id] ? byId[id].item : customById(id);
+              var w = v && v.fromBase && v.fromBase.walk;
+              var t = v && v.fromBase && v.fromBase.transit;
+              /* transit only earns its place when it saves a real walk */
+              var how = w ? (t && (w.min - t.min) >= 6
+                ? t.min + " min · " + t.summary
+                : w.min + " min walk") : "";
+              var line = (v && (v.meta || v.note)) || "";
+              var open = v && v.lat;                  /* customs have no pin to open */
+              return (open ? '<button type="button" class="ptag pitem" data-goto="' + esc(id) + '">'
+                           : '<span class="ptag pitem plain">') +
+                "<b>" + esc(nameOf(id)) + "</b>" +
+                (line ? "<small>" + esc(line) + "</small>" : "") +
+                (how ? '<span class="phow">' + esc(how) + "</span>" : "") +
+              (open ? "</button>" : "</span>");
             }).join("") + "</div></div>";
         }).join("");
 
@@ -1432,6 +1451,10 @@ window.BPmissing = function (img, label) {
   function slotById(id) {
     return (TRIP.slots || []).filter(function (s) { return s.id === id; })[0] || null;
   }
+  function customById(id) {
+    return store.state.customs.filter(function (c) { return c.id === id; })[0] || null;
+  }
+
   function nameOf(id) {
     if (byId[id]) return byId[id].item.name;
     var c = store.state.customs.filter(function (x) { return x.id === id; })[0];

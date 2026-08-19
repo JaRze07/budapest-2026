@@ -1625,9 +1625,30 @@ footer {
 .slothas { display: block; color: var(--brass-dim); font-size: 11px; margin-top: 5px; }
 .clearslot { display: block; width: 100%; margin-top: 14px; border-color: var(--line); color: var(--slate); }
 
-.slot.planned .sd { display: flex; flex-wrap: wrap; gap: 5px; }
+/* ---------- planned items on the schedule ---------- */
+
+.slot.planned .sd { display: block; }
 .ptag {
-  background: var(--laser); color: var(--ink);
-  font-size: 11px; font-weight: 700;
-  padding: 3px 9px; border-radius: 999px;
+  display: block; width: 100%; text-align: left;
+  border: 1px solid var(--line); border-left: 3px solid var(--laser);
+  background: var(--paper); color: var(--ink);
+  padding: 8px 34px 8px 10px; margin-bottom: 6px; font-family: inherit;
+  position: relative;
 }
+.ptag:last-child { margin-bottom: 0; }
+button.ptag { cursor: pointer; }
+button.ptag:hover { border-color: var(--brass); border-left-color: var(--laser); background: #FBF6E8; }
+button.ptag::after {
+  content: "›"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 17px; font-weight: 700; color: var(--brass-dim); line-height: 1;
+}
+button.ptag:hover::after { color: var(--brass); }
+.ptag b { display: block; font-size: 13px; }
+.ptag small { display: block; color: var(--slate); font-size: 11px; line-height: 1.4; margin-top: 2px; }
+.ptag .phow {
+  display: inline-block; margin-top: 5px;
+  background: var(--laser); color: var(--ink);
+  font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px;
+}
+.sheetdesc { font-size: 13.5px; line-height: 1.55; margin: 12px 0 0; }
+.sheetmeta { font-size: 12px; color: var(--brass-dim); margin: 7px 0 0; line-height: 1.5; }

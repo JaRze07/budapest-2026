@@ -13,6 +13,217 @@
  },
  "categories": [
   {
+   "items": [
+    {
+     "id": "cirkusz",
+     "name": "Cirkusz",
+     "area": "Dob u. 25",
+     "desc": "The brunch everyone names first — eggs benedict, French toast towers, coffee roasted in house.",
+     "meta": "Opens 07:30 · no bookings, expect to queue · ~€12 a head",
+     "tags": [
+      "brunch",
+      "no bookings"
+     ],
+     "lat": 47.498355,
+     "lng": 19.061542,
+     "fromBase": {
+      "walk": {
+       "m": 1031,
+       "min": 14
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "embassy",
+     "name": "Espresso Embassy",
+     "area": "Arany János u. 15",
+     "desc": "Specialty coffee taken seriously, with pastries to match. A short stop rather than a sit-down breakfast.",
+     "meta": "Weekday mornings from 07:30, later at weekends · coffee ~€3",
+     "tags": [
+      "coffee",
+      "quick"
+     ],
+     "lat": 47.50179,
+     "lng": 19.050048,
+     "fromBase": {
+      "walk": {
+       "m": 2153,
+       "min": 29
+      },
+      "transit": {
+       "min": 29,
+       "changes": 0,
+       "summary": "metro M1",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 12 min to Vörösmarty utca"
+        },
+        {
+         "mode": "metro",
+         "line": "M1",
+         "text": "metro M1 from Vörösmarty utca to Bajcsy-Zsilinszky út"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 13 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "fruccola",
+     "name": "Fruccola",
+     "area": "Arany János u. 32",
+     "desc": "Fresh juices, big salads and eggs done properly. The one for a morning that needs undoing.",
+     "meta": "From 08:00 weekdays · counter service, no waiting for a table",
+     "tags": [
+      "healthy",
+      "fast"
+     ],
+     "lat": 47.502713,
+     "lng": 19.053383,
+     "fromBase": {
+      "walk": {
+       "m": 1890,
+       "min": 25
+      },
+      "transit": {
+       "min": 21,
+       "changes": 1,
+       "summary": "bus 74 → bus 9",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Astoria M (Dohány utca)"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min to Astoria M"
+        },
+        {
+         "mode": "bus",
+         "line": "9",
+         "text": "bus 9 from Astoria M to Arany János utca M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "butter",
+     "name": "Butter Brothers",
+     "area": "Szent István krt 22",
+     "desc": "All-day breakfast on the Grand Boulevard — pancakes, benedicts, decent flat whites.",
+     "meta": "From 08:00 · walk-ins usually fine",
+     "tags": [
+      "brunch",
+      "all day"
+     ],
+     "lat": 47.51159,
+     "lng": 19.053079,
+     "fromBase": {
+      "walk": {
+       "m": 2035,
+       "min": 27
+      },
+      "transit": {
+       "min": 15,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Nyugati pályaudvar M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 5 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "madal",
+     "name": "Madal Cafe",
+     "area": "Hollán Ernő u. 3",
+     "desc": "Quiet Újlipótváros café, good beans, and a room you can actually talk in.",
+     "meta": "From 08:00 · calm, laptops welcome",
+     "tags": [
+      "coffee",
+      "quiet"
+     ],
+     "lat": 47.513327,
+     "lng": 19.049692,
+     "fromBase": {
+      "walk": {
+       "m": 2450,
+       "min": 33
+      },
+      "transit": {
+       "min": 15,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Jászai Mari tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
+    }
+   ],
+   "id": "breakfast",
+   "title": "Breakfast & coffee",
+   "note": "Three mornings to fill, and Cirkusz is eleven minutes away."
+  },
+  {
    "id": "bars",
    "title": "Bars & drinks",
    "note": "All but two within ten minutes of each other in District VII.",
@@ -249,6 +460,204 @@
         {
          "mode": "walk",
          "text": "Walk 6 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "ankert",
+     "name": "Anker't",
+     "area": "Paulay Ede u. 33",
+     "desc": "A bare concrete courtyard the size of a car park, strung with lights. The ruin bar with room to breathe.",
+     "meta": "Daily till late in season · beer ~€3",
+     "tags": [
+      "ruin bar",
+      "courtyard",
+      "big"
+     ],
+     "lat": 47.501166,
+     "lng": 19.0596,
+     "fromBase": {
+      "walk": {
+       "m": 1346,
+       "min": 18
+      },
+      "transit": {
+       "min": 17,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 10 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "kisuzem",
+     "name": "Kisüzem",
+     "area": "Kis Diófa u. 2",
+     "desc": "Small, scruffy and local — the corner bar the neighbourhood actually drinks in.",
+     "meta": "Daily till ~02:00 · cheap · food till late",
+     "tags": [
+      "local",
+      "small",
+      "cheap"
+     ],
+     "lat": 47.499812,
+     "lng": 19.06267,
+     "fromBase": {
+      "walk": {
+       "m": 882,
+       "min": 12
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Kéthly Anna tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 5 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "mikativadar",
+     "name": "Mika Tivadar Mulató",
+     "area": "Kazinczy u. 47",
+     "desc": "Two floors and a garden at the quiet end of Kazinczy, a minute from the noise.",
+     "meta": "Daily till ~02:00 · garden in season",
+     "tags": [
+      "courtyard",
+      "cocktails"
+     ],
+     "lat": 47.499436,
+     "lng": 19.060937,
+     "fromBase": {
+      "walk": {
+       "m": 1097,
+       "min": 15
+      },
+      "transit": {
+       "min": 13,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 6 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "highnote",
+     "name": "High Note SkyBar",
+     "area": "Hercegprímás u. 5",
+     "desc": "Rooftop level with the dome of St Stephen's Basilica, close enough to read the stonework.",
+     "meta": "Daily till ~00:00 · smart-ish · book for sunset · ~€13 a drink",
+     "tags": [
+      "rooftop",
+      "view",
+      "booking"
+     ],
+     "lat": 47.499858,
+     "lng": 19.053615,
+     "fromBase": {
+      "walk": {
+       "m": 1972,
+       "min": 27
+      },
+      "transit": {
+       "min": 21,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Astoria M (Dohány utca)"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 13 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "csendes",
+     "name": "Csendes Létterem",
+     "area": "Ferenczy István u. 5",
+     "desc": "Junk-shop décor floor to ceiling, university crowd, no attempt at a concept.",
+     "meta": "Mon–Sat till ~00:00 · cheap",
+     "tags": [
+      "quirky",
+      "cheap"
+     ],
+     "lat": 47.492754,
+     "lng": 19.06016,
+     "fromBase": {
+      "walk": {
+       "m": 1600,
+       "min": 21
+      },
+      "transit": {
+       "min": 15,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Astoria M (Dohány utca)"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 7 min"
         }
        ]
       }
@@ -551,6 +960,164 @@
        ]
       }
      }
+    },
+    {
+     "id": "corvinteto",
+     "name": "Corvintető",
+     "area": "Blaha Lujza tér 1–2",
+     "desc": "Club on the roof of a socialist department store, with the whole of Pest laid out behind the dancefloor.",
+     "meta": "Thu–Sat late · rooftop in season · 8 min walk from the flat",
+     "tags": [
+      "rooftop",
+      "club",
+      "close"
+     ],
+     "lat": 47.495976,
+     "lng": 19.069198,
+     "fromBase": {
+      "walk": {
+       "m": 966,
+       "min": 13
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 6 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Blaha Lujza tér M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "otkert",
+     "name": "Ötkert",
+     "area": "Zrínyi u. 4",
+     "desc": "Garden club behind the Basilica — commercial, busy, and the easiest night out to organise.",
+     "meta": "Thu–Sat late · door can be picky · dress up a little",
+     "tags": [
+      "club",
+      "garden"
+     ],
+     "lat": 47.500537,
+     "lng": 19.048672,
+     "fromBase": {
+      "walk": {
+       "m": 2264,
+       "min": 30
+      },
+      "transit": {
+       "min": 27,
+       "changes": 0,
+       "summary": "metro M1",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 12 min to Vörösmarty utca"
+        },
+        {
+         "mode": "metro",
+         "line": "M1",
+         "text": "metro M1 from Vörösmarty utca to Vörösmarty tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 9 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "toldi",
+     "name": "Toldi Klub",
+     "area": "Bajcsy-Zsilinszky út 36–38",
+     "desc": "An art-house cinema that turns into a club after the last screening. Better music than most.",
+     "meta": "Fri–Sat late · check the programme",
+     "tags": [
+      "club",
+      "live music"
+     ],
+     "lat": 47.503909,
+     "lng": 19.054561,
+     "fromBase": {
+      "walk": {
+       "m": 1870,
+       "min": 25
+      },
+      "transit": {
+       "min": 21,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Oktogon M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 13 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "morrisons",
+     "name": "Morrison's 2",
+     "area": "Szent István krt 11",
+     "desc": "A warren of rooms under the Grand Boulevard, each with a different genre and its own bar — one of them is a karaoke room.",
+     "meta": "Tue–Sat till ~05:00 · cheap entry · very busy",
+     "tags": [
+      "club",
+      "big",
+      "cheap"
+     ],
+     "lat": 47.511239,
+     "lng": 19.053682,
+     "fromBase": {
+      "walk": {
+       "m": 2028,
+       "min": 27
+      },
+      "transit": {
+       "min": 17,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Nyugati pályaudvar M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 7 min"
+        }
+       ]
+      }
+     }
     }
    ]
   },
@@ -775,6 +1342,184 @@
        ]
       }
      }
+    },
+    {
+     "id": "gellert",
+     "name": "Gellért Baths",
+     "area": "Kelenhegyi út 4 · Buda",
+     "desc": "The art nouveau one — stained glass, mosaic columns, a vaulted indoor hall that looks like a cathedral.",
+     "meta": "Daily 09:00–19:00 · ~€6,900 HUF · take a cabin",
+     "tags": [
+      "thermal bath",
+      "landmark",
+      "beautiful"
+     ],
+     "lat": 47.483816,
+     "lng": 19.050953,
+     "fromBase": {
+      "walk": {
+       "m": 2975,
+       "min": 40
+      },
+      "transit": {
+       "min": 27,
+       "changes": 0,
+       "summary": "metro M4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 15 min to II. János Pál pápa tér"
+        },
+        {
+         "mode": "metro",
+         "line": "M4",
+         "text": "metro M4 from II. János Pál pápa tér to Szent Gellért tér - Műegyetem"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 7 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "kiraly",
+     "name": "Király Baths",
+     "area": "Fő u. 84 · Buda",
+     "desc": "1565 Ottoman dome with shafts of light through the roof. Small, dim and completely unlike the big ones.",
+     "meta": "Daily 09:00–21:00 · ~€4,500 HUF · no outdoor pools",
+     "tags": [
+      "thermal bath",
+      "historic",
+      "small"
+     ],
+     "lat": 47.510678,
+     "lng": 19.037865,
+     "fromBase": {
+      "walk": {
+       "m": 3738,
+       "min": 50
+      },
+      "transit": {
+       "min": 25,
+       "changes": 1,
+       "summary": "tram 4 → metro M2",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 6 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Blaha Lujza tér M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Blaha Lujza tér"
+        },
+        {
+         "mode": "metro",
+         "line": "M2",
+         "text": "metro M2 from Blaha Lujza tér to Batthyány tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 8 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "velibej",
+     "name": "Veli Bej",
+     "area": "Árpád fejedelem útja 7 · Buda",
+     "desc": "The Ottoman bath the tour groups miss — five pools under a restored dome, capped numbers, calm.",
+     "meta": "Daily 06:00–12:00 and 15:00–21:00 · ~€4,900 HUF · book ahead",
+     "tags": [
+      "thermal bath",
+      "historic",
+      "quiet"
+     ],
+     "lat": 47.519182,
+     "lng": 19.037091,
+     "fromBase": {
+      "walk": {
+       "m": 3876,
+       "min": 52
+      },
+      "transit": {
+       "min": 26,
+       "changes": 1,
+       "summary": "tram 4 → bus 9",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Jászai Mari tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Jászai Mari tér"
+        },
+        {
+         "mode": "bus",
+         "line": "9",
+         "text": "bus 9 from Jászai Mari tér to Császár-Komjádi uszoda"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 7 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "dandar",
+     "name": "Dandár Baths",
+     "area": "Dandár u. 5–7 · District IX",
+     "desc": "A small neighbourhood bath in Ferencváros. No queue, no spectacle, half the price.",
+     "meta": "Daily 06:00–21:00 · ~€3,500 HUF",
+     "tags": [
+      "thermal bath",
+      "value",
+      "local"
+     ],
+     "lat": 47.476521,
+     "lng": 19.0714,
+     "fromBase": {
+      "walk": {
+       "m": 3290,
+       "min": 44
+      },
+      "transit": {
+       "min": 25,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 6 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Mester utca / Ferenc körút"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 12 min"
+        }
+       ]
+      }
+     }
     }
    ]
   },
@@ -978,6 +1723,204 @@
         {
          "mode": "walk",
          "text": "Walk 8 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "menza",
+     "name": "Menza",
+     "area": "Liszt Ferenc tér 2",
+     "desc": "Sixties-canteen styling, Hungarian classics done well, tables outside on the square.",
+     "meta": "Daily till 24:00 · mains ~€12 · book at weekends",
+     "tags": [
+      "hungarian",
+      "group friendly",
+      "booking"
+     ],
+     "lat": 47.504038,
+     "lng": 19.062744,
+     "fromBase": {
+      "walk": {
+       "m": 929,
+       "min": 12
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Király utca / Erzsébet körút"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 5 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "koleves",
+     "name": "Kőleves Vendéglő",
+     "area": "Kazinczy u. 41",
+     "desc": "Jewish-Hungarian cooking in the middle of the bar strip, with a garden next door.",
+     "meta": "Daily till 23:00 · mains ~€13 · book weekends",
+     "tags": [
+      "hungarian",
+      "garden",
+      "booking"
+     ],
+     "lat": 47.499062,
+     "lng": 19.061272,
+     "fromBase": {
+      "walk": {
+       "m": 1048,
+       "min": 14
+      },
+      "transit": {
+       "min": 12,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 5 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "rosenstein",
+     "name": "Rosenstein",
+     "area": "Mosonyi u. 3",
+     "desc": "Family-run Hungarian-Jewish kitchen behind Keleti. Unfashionable street, seriously good food.",
+     "meta": "Mon–Sat till 23:00 · mains ~€18 · booking essential",
+     "tags": [
+      "hungarian",
+      "booking required"
+     ],
+     "lat": 47.498376,
+     "lng": 19.082371,
+     "fromBase": {
+      "walk": {
+       "m": 1239,
+       "min": 17
+      },
+      "transit": {
+       "min": 15,
+       "changes": 0,
+       "summary": "bus 73",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 4 min to Wesselényi utca / Izabella utca"
+        },
+        {
+         "mode": "bus",
+         "line": "73",
+         "text": "bus 73 from Wesselényi utca / Izabella utca to Keleti pályaudvar M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 5 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "pestidiszno",
+     "name": "Pesti Disznó",
+     "area": "Nagymező u. 19",
+     "desc": "Pork, mostly, on the theatre street. Loud, cheerful, and open when the shows come out.",
+     "meta": "Daily till 24:00 · mains ~€14",
+     "tags": [
+      "hungarian",
+      "late"
+     ],
+     "lat": 47.504084,
+     "lng": 19.059889,
+     "fromBase": {
+      "walk": {
+       "m": 1286,
+       "min": 17
+      },
+      "transit": {
+       "min": 14,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Oktogon M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 6 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "bors",
+     "name": "Bors GasztroBár",
+     "area": "Kazinczy u. 10",
+     "desc": "A hatch in the wall doing soups and hot baguettes. Six euros, eaten standing, absurdly good.",
+     "meta": "Daily till ~21:00 · ~€6 · no seats to speak of",
+     "tags": [
+      "cheap",
+      "quick",
+      "no seats"
+     ],
+     "lat": 47.496727,
+     "lng": 19.063549,
+     "fromBase": {
+      "walk": {
+       "m": 913,
+       "min": 12
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
         }
        ]
       }
@@ -1239,6 +2182,165 @@
        ]
       }
      }
+    },
+    {
+     "id": "axe",
+     "name": "Axe throwing",
+     "area": "Balta Dobálás · Dohány u. 30/a",
+     "desc": "Lanes, hatchets, and someone who shows you how so nobody loses a finger. Ten minutes from the flat.",
+     "meta": "Daily 12:00–20:00, till 22:00 Fri–Sat · ~€12 pp an hour · book a lane",
+     "tags": [
+      "booking required",
+      "group",
+      "indoor"
+     ],
+     "lat": 47.496132,
+     "lng": 19.064457,
+     "fromBase": {
+      "walk": {
+       "m": 1027,
+       "min": 14
+      },
+      "transit": {
+       "min": 13,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 6 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "pinball",
+     "name": "Pinball Museum",
+     "area": "Radnóti Miklós u. 18",
+     "desc": "A basement of 130-odd working machines from the 1880s onward. One entry fee, then everything plays free.",
+     "meta": "Wed–Sun afternoons till late · ~€8 · free play all night",
+     "tags": [
+      "indoor",
+      "value",
+      "group"
+     ],
+     "lat": 47.514646,
+     "lng": 19.054396,
+     "fromBase": {
+      "walk": {
+       "m": 2181,
+       "min": 29
+      },
+      "transit": {
+       "min": 20,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Nyugati pályaudvar M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 10 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "labyrinth",
+     "name": "Castle Labyrinth",
+     "area": "Úri u. 9 · Buda Castle",
+     "desc": "Caves under the castle hill, lit by oil lamps and deliberately disorienting.",
+     "meta": "Daily 10:00–19:00 · ~€10 · cold underground, bring a layer",
+     "tags": [
+      "indoor",
+      "landmark"
+     ],
+     "lat": 47.500115,
+     "lng": 19.034104,
+     "fromBase": {
+      "walk": {
+       "m": 3586,
+       "min": 48
+      },
+      "transit": {
+       "min": 32,
+       "changes": 0,
+       "summary": "bus 5",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 11 min to Blaha Lujza tér M"
+        },
+        {
+         "mode": "bus",
+         "line": "5",
+         "text": "bus 5 from Blaha Lujza tér M to Alagút utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 8 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "illusions",
+     "name": "Museum of Illusions",
+     "area": "Paulay Ede u. 47",
+     "desc": "Tilted rooms and forced perspective. Forty minutes of taking photographs of each other.",
+     "meta": "Daily 10:00–20:00 · ~€10 · nine minutes' walk",
+     "tags": [
+      "indoor",
+      "quick",
+      "close"
+     ],
+     "lat": 47.50227,
+     "lng": 19.060727,
+     "fromBase": {
+      "walk": {
+       "m": 1158,
+       "min": 16
+      },
+      "transit": {
+       "min": 15,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Király utca / Erzsébet körút"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 9 min"
+        }
+       ]
+      }
+     }
     }
    ]
   },
@@ -1403,6 +2505,106 @@
         {
          "mode": "walk",
          "text": "Walk 6 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "viberooms",
+     "name": "Vibe Rooms",
+     "area": "Wesselényi u. 55",
+     "desc": "Private karaoke boxes two minutes from the front door — 80,000 songs, wireless mics, nobody else listening.",
+     "meta": "Wed–Thu 18:00–24:00 · Fri–Sat 17:00–24:00 · closed Sun–Tue · ~2,500 HUF pp an hour",
+     "tags": [
+      "karaoke",
+      "private room",
+      "closest"
+     ],
+     "lat": 47.50138,
+     "lng": 19.070509,
+     "fromBase": {
+      "walk": {
+       "m": 113,
+       "min": 2
+      }
+     }
+    },
+    {
+     "id": "stifler",
+     "name": "Stifler House",
+     "area": "Dob u. 19",
+     "desc": "Karaoke on a proper stage, not in a booth — you sing to the whole room, which is either the point or the problem.",
+     "meta": "Open 17:00–06:00 · karaoke Thu–Sat · no booking, no room fee",
+     "tags": [
+      "karaoke",
+      "stage",
+      "no booking"
+     ],
+     "lat": 47.497886,
+     "lng": 19.061039,
+     "fromBase": {
+      "walk": {
+       "m": 1062,
+       "min": 14
+      },
+      "transit": {
+       "min": 10,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "kazinczykocsma",
+     "name": "Kazinczy Kocsma",
+     "area": "Kazinczy u. 5",
+     "desc": "A basement pub that runs karaoke from ten. Cheap beer, locals, zero polish.",
+     "meta": "Karaoke Thu–Sat from 22:00 · cheap · basement, no queue",
+     "tags": [
+      "karaoke",
+      "cheap",
+      "local"
+     ],
+     "lat": 47.496588,
+     "lng": 19.064361,
+     "fromBase": {
+      "walk": {
+       "m": 952,
+       "min": 13
+      },
+      "transit": {
+       "min": 12,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 5 min"
         }
        ]
       }
