@@ -118,7 +118,7 @@ window.BPmissing = function (img, label) {
       '<div class="sheetarea">' + esc(src.area || "") + "</div>";
 
     if (place && place.id !== src.id) {
-      html += fromBlock("From our place", place.name, to, pt(place));
+      html += fromBlock("From our place", place.name, to, pt(place)) + howToGetThere(src);
     } else if (!place) {
       html += '<div class="fromnote">There\'s no <b>from our place</b> yet — nowhere is booked. ' +
         "It appears here the moment the accommodation vote is settled.</div>";
@@ -141,6 +141,52 @@ window.BPmissing = function (img, label) {
   function closeSheet() {
     el("sheet").hidden = true;
     document.body.style.overflow = "";
+  }
+
+
+  /* Walking and transit from the flat, worked out once against a real foot
+     router and BKK's own timetable, so no key or live call is needed here. */
+  function howToGetThere(src) {
+    var f = src.fromBase;
+    if (!f || (!f.walk && !f.transit)) return "";
+
+    // Transit only earns its place if it saves a real amount of time.
+    var worthIt = f.walk && f.transit && (f.walk.min - f.transit.min) >= 6;
+    var walkFirst = !f.transit || !worthIt;
+
+    var km = f.walk ? (f.walk.m >= 1000
+      ? (f.walk.m / 1000).toFixed(1) + " km"
+      : f.walk.m + " m") : "";
+
+    var walkRow = f.walk
+      ? '<div class="hrow' + (walkFirst ? " best" : "") + '">' +
+          '<div class="hmain">' +
+            '<span class="hmode">Walk</span>' +
+            '<span class="hdesc">' + km + (walkFirst ? " — quicker than waiting for anything" : "") + "</span>" +
+          "</div>" +
+          '<span class="htime">' + f.walk.min + " min</span>" +
+        "</div>"
+      : "";
+
+    var transitRow = f.transit
+      ? '<div class="hrow' + (walkFirst ? "" : " best") + '">' +
+          '<div class="hmain">' +
+            '<span class="hmode">' + esc(f.transit.summary) + "</span>" +
+            '<span class="hdesc">' +
+              (f.transit.changes ? f.transit.changes + " change" + (f.transit.changes > 1 ? "s" : "") : "no changes") +
+            "</span>" +
+            '<ol class="hlegs">' + (f.transit.legs || []).map(function (l) {
+              return '<li class="' + esc(l.mode) + '">' + esc(l.text) + "</li>";
+            }).join("") + "</ol>" +
+          "</div>" +
+          '<span class="htime">' + f.transit.min + " min</span>" +
+        "</div>"
+      : "";
+
+    return '<div class="howto">' +
+      '<div class="hhead">From the flat</div>' +
+      (walkFirst ? walkRow + transitRow : transitRow + walkRow) +
+    "</div>";
   }
 
   /** One labelled origin block inside the Get-there sheet. */
@@ -383,8 +429,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt08zkd8").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt08zkd8").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt09tgkm").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt09tgkm").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];

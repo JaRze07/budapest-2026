@@ -29,7 +29,33 @@
       "cheap"
      ],
      "lat": 47.496878,
-     "lng": 19.063217
+     "lng": 19.063217,
+     "fromBase": {
+      "walk": {
+       "m": 887,
+       "min": 12
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "warmup",
@@ -42,7 +68,33 @@
       "small venue"
      ],
      "lat": 47.498387,
-     "lng": 19.064003
+     "lng": 19.064003,
+     "fromBase": {
+      "walk": {
+       "m": 753,
+       "min": 10
+      },
+      "transit": {
+       "min": 9,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Kéthly Anna tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "jardin",
@@ -55,7 +107,33 @@
       "courtyard"
      ],
      "lat": 47.498088,
-     "lng": 19.059967
+     "lng": 19.059967,
+     "fromBase": {
+      "walk": {
+       "m": 1129,
+       "min": 15
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "eleszto",
@@ -69,7 +147,33 @@
      ],
      "illustrative": true,
      "lat": 47.48361,
-     "lng": 19.072567
+     "lng": 19.072567,
+     "fromBase": {
+      "walk": {
+       "m": 2405,
+       "min": 32
+      },
+      "transit": {
+       "min": 19,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 6 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Corvin-negyed M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 7 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "hops",
@@ -82,7 +186,33 @@
      ],
      "illustrative": true,
      "lat": 47.497239,
-     "lng": 19.062778
+     "lng": 19.062778,
+     "fromBase": {
+      "walk": {
+       "m": 856,
+       "min": 11
+      },
+      "transit": {
+       "min": 9,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 2 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "bar360",
@@ -96,7 +226,33 @@
      ],
      "illustrative": true,
      "lat": 47.503737,
-     "lng": 19.061436
+     "lng": 19.061436,
+     "fromBase": {
+      "walk": {
+       "m": 1079,
+       "min": 14
+      },
+      "transit": {
+       "min": 14,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Oktogon M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 6 min"
+        }
+       ]
+      }
+     }
     }
    ]
   },
@@ -119,7 +275,33 @@
      "key_fact": "Sat 29 Aug 2026 is a confirmed Sparty date. Runs Saturdays only, Feb–Dec.",
      "requirements": "Swimwear worn underneath, flip-flops, towel. Drinks run on a Recup deposit cup. Waterproof phone pouch recommended.",
      "lat": 47.518435,
-     "lng": 19.082522
+     "lng": 19.082522,
+     "fromBase": {
+      "walk": {
+       "m": 2589,
+       "min": 35
+      },
+      "transit": {
+       "min": 24,
+       "changes": 0,
+       "summary": "metro M1",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 13 min to Vörösmarty utca"
+        },
+        {
+         "mode": "metro",
+         "line": "M1",
+         "text": "metro M1 from Vörösmarty utca to Széchenyi fürdő"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 7 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "fogas",
@@ -133,7 +315,33 @@
      ],
      "illustrative": true,
      "lat": 47.500648,
-     "lng": 19.065417
+     "lng": 19.065417,
+     "fromBase": {
+      "walk": {
+       "m": 667,
+       "min": 9
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Kéthly Anna tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 5 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "a38",
@@ -147,7 +355,33 @@
       "live music"
      ],
      "lat": 47.476531,
-     "lng": 19.062938
+     "lng": 19.062938,
+     "fromBase": {
+      "walk": {
+       "m": 3639,
+       "min": 49
+      },
+      "transit": {
+       "min": 24,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 6 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Petőfi híd, budai hídfő"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 8 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "boatparty",
@@ -161,7 +395,33 @@
      ],
      "illustrative": true,
      "lat": 47.500536,
-     "lng": 19.046842
+     "lng": 19.046842,
+     "fromBase": {
+      "walk": {
+       "m": 2432,
+       "min": 33
+      },
+      "transit": {
+       "min": 32,
+       "changes": 0,
+       "summary": "metro M1",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 12 min to Vörösmarty utca"
+        },
+        {
+         "mode": "metro",
+         "line": "M1",
+         "text": "metro M1 from Vörösmarty utca to Vörösmarty tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 14 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "doboz",
@@ -174,7 +434,33 @@
      ],
      "illustrative": true,
      "lat": 47.497795,
-     "lng": 19.06675
+     "lng": 19.06675,
+     "fromBase": {
+      "walk": {
+       "m": 697,
+       "min": 9
+      },
+      "transit": {
+       "min": 9,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Kéthly Anna tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "bppark",
@@ -189,7 +475,42 @@
      "key_fact": "Sat 29 Aug: Remember Parade — ATB, Ferry Corsten, Umek, Da Hool, Brooklyn Bounce. Directly clashes with Sparty.",
      "illustrative": true,
      "lat": 47.466753,
-     "lng": 19.077579
+     "lng": 19.077579,
+     "fromBase": {
+      "walk": {
+       "m": 4334,
+       "min": 58
+      },
+      "transit": {
+       "min": 25,
+       "changes": 1,
+       "summary": "tram 4 → tram 2",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 6 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Boráros tér H"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Boráros tér H"
+        },
+        {
+         "mode": "tram",
+         "line": "2",
+         "text": "tram 2 from Boráros tér H to Közvágóhíd H"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "akvarium",
@@ -203,7 +524,33 @@
      ],
      "illustrative": true,
      "lat": 47.498484,
-     "lng": 19.054203
+     "lng": 19.054203,
+     "fromBase": {
+      "walk": {
+       "m": 1693,
+       "min": 23
+      },
+      "transit": {
+       "min": 17,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Astoria M (Dohány utca)"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 9 min"
+        }
+       ]
+      }
+     }
     }
    ]
   },
@@ -223,7 +570,33 @@
       "landmark"
      ],
      "lat": 47.518435,
-     "lng": 19.082522
+     "lng": 19.082522,
+     "fromBase": {
+      "walk": {
+       "m": 2589,
+       "min": 35
+      },
+      "transit": {
+       "min": 24,
+       "changes": 0,
+       "summary": "metro M1",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 13 min to Vörösmarty utca"
+        },
+        {
+         "mode": "metro",
+         "line": "M1",
+         "text": "metro M1 from Vörösmarty utca to Széchenyi fürdő"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 7 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "rudas",
@@ -238,7 +611,33 @@
      ],
      "key_fact": "Co-ed Sat–Sun. On weekdays the Turkish section splits by gender: men Mon/Wed/Thu/Fri, women Tue.",
      "lat": 47.489066,
-     "lng": 19.0478
+     "lng": 19.0478,
+     "fromBase": {
+      "walk": {
+       "m": 2666,
+       "min": 36
+      },
+      "transit": {
+       "min": 24,
+       "changes": 0,
+       "summary": "bus 107",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 11 min to Blaha Lujza tér M"
+        },
+        {
+         "mode": "bus",
+         "line": "107",
+         "text": "bus 107 from Blaha Lujza tér M to Rudas Gyógyfürdő"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 6 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "beerspa",
@@ -252,7 +651,33 @@
      ],
      "illustrative": true,
      "lat": 47.518435,
-     "lng": 19.082522
+     "lng": 19.082522,
+     "fromBase": {
+      "walk": {
+       "m": 2589,
+       "min": 35
+      },
+      "transit": {
+       "min": 24,
+       "changes": 0,
+       "summary": "metro M1",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 13 min to Vörösmarty utca"
+        },
+        {
+         "mode": "metro",
+         "line": "M1",
+         "text": "metro M1 from Vörösmarty utca to Széchenyi fürdő"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 7 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "lukacs",
@@ -266,7 +691,42 @@
       "local"
      ],
      "lat": 47.516702,
-     "lng": 19.036836
+     "lng": 19.036836,
+     "fromBase": {
+      "walk": {
+       "m": 3575,
+       "min": 48
+      },
+      "transit": {
+       "min": 22,
+       "changes": 1,
+       "summary": "tram 4 → bus 9",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Jászai Mari tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Jászai Mari tér"
+        },
+        {
+         "mode": "bus",
+         "line": "9",
+         "text": "bus 9 from Jászai Mari tér to Margit híd, budai hídfő H"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 5 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "palatinus",
@@ -279,7 +739,42 @@
       "summer only"
      ],
      "lat": 47.527643,
-     "lng": 19.045805
+     "lng": 19.045805,
+     "fromBase": {
+      "walk": {
+       "m": 4438,
+       "min": 59
+      },
+      "transit": {
+       "min": 24,
+       "changes": 1,
+       "summary": "tram 4 → bus 226",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Nyugati pályaudvar M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Nyugati pályaudvar M"
+        },
+        {
+         "mode": "bus",
+         "line": "226",
+         "text": "bus 226 from Nyugati pályaudvar M to Palatinus fürdő"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
+        }
+       ]
+      }
+     }
     }
    ]
   },
@@ -300,7 +795,33 @@
      ],
      "illustrative": true,
      "lat": 47.497509,
-     "lng": 19.062699
+     "lng": 19.062699,
+     "fromBase": {
+      "walk": {
+       "m": 848,
+       "min": 11
+      },
+      "transit": {
+       "min": 9,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 2 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "fatmama",
@@ -314,7 +835,33 @@
      ],
      "illustrative": true,
      "lat": 47.497759,
-     "lng": 19.062846
+     "lng": 19.062846,
+     "fromBase": {
+      "walk": {
+       "m": 854,
+       "min": 11
+      },
+      "transit": {
+       "min": 10,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "vakvarju",
@@ -328,7 +875,33 @@
      ],
      "illustrative": true,
      "lat": 47.49954,
-     "lng": 19.056161
+     "lng": 19.056161,
+     "fromBase": {
+      "walk": {
+       "m": 1557,
+       "min": 21
+      },
+      "transit": {
+       "min": 16,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 9 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "aranybastya",
@@ -342,7 +915,33 @@
       "booking required"
      ],
      "lat": 47.502012,
-     "lng": 19.034211
+     "lng": 19.034211,
+     "fromBase": {
+      "walk": {
+       "m": 3658,
+       "min": 49
+      },
+      "transit": {
+       "min": 34,
+       "changes": 0,
+       "summary": "bus 5",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 11 min to Blaha Lujza tér M"
+        },
+        {
+         "mode": "bus",
+         "line": "5",
+         "text": "bus 5 from Blaha Lujza tér M to Alagút utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 10 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "market",
@@ -356,7 +955,33 @@
      ],
      "key_fact": "Avoid the lángos stall at the Vámház körút entrance — poorly rated, hidden topping charges. Best Langos at Hunyadi tér market is the better call (closed Mondays).",
      "lat": 47.486575,
-     "lng": 19.058994
+     "lng": 19.058994,
+     "fromBase": {
+      "walk": {
+       "m": 2454,
+       "min": 33
+      },
+      "transit": {
+       "min": 27,
+       "changes": 0,
+       "summary": "metro M4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 15 min to II. János Pál pápa tér"
+        },
+        {
+         "mode": "metro",
+         "line": "M4",
+         "text": "metro M4 from II. János Pál pápa tér to Fővám tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 8 min"
+        }
+       ]
+      }
+     }
     }
    ]
   },
@@ -377,7 +1002,33 @@
      ],
      "illustrative": true,
      "lat": 47.498409,
-     "lng": 19.059985
+     "lng": 19.059985,
+     "fromBase": {
+      "walk": {
+       "m": 1177,
+       "min": 16
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "karting",
@@ -392,7 +1043,33 @@
      ],
      "illustrative": true,
      "lat": 47.496827,
-     "lng": 19.069753
+     "lng": 19.069753,
+     "fromBase": {
+      "walk": {
+       "m": 757,
+       "min": 10
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 6 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Blaha Lujza tér M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "escape",
@@ -407,7 +1084,33 @@
      ],
      "illustrative": true,
      "lat": 47.512023,
-     "lng": 19.049756
+     "lng": 19.049756,
+     "fromBase": {
+      "walk": {
+       "m": 2288,
+       "min": 31
+      },
+      "transit": {
+       "min": 15,
+       "changes": 0,
+       "summary": "tram 4",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Jászai Mari tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "bastion",
@@ -421,7 +1124,33 @@
       "sunset"
      ],
      "lat": 47.502305,
-     "lng": 19.0347
+     "lng": 19.0347,
+     "fromBase": {
+      "walk": {
+       "m": 3615,
+       "min": 48
+      },
+      "transit": {
+       "min": 36,
+       "changes": 0,
+       "summary": "bus 5",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 11 min to Blaha Lujza tér M"
+        },
+        {
+         "mode": "bus",
+         "line": "5",
+         "text": "bus 5 from Blaha Lujza tér M to Alagút utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 12 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "margaret",
@@ -435,7 +1164,42 @@
       "near accommodation"
      ],
      "lat": 47.527293,
-     "lng": 19.047867
+     "lng": 19.047867,
+     "fromBase": {
+      "walk": {
+       "m": 4390,
+       "min": 59
+      },
+      "transit": {
+       "min": 23,
+       "changes": 1,
+       "summary": "tram 4 → bus 226",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
+        },
+        {
+         "mode": "tram",
+         "line": "4",
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Nyugati pályaudvar M"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Nyugati pályaudvar M"
+        },
+        {
+         "mode": "bus",
+         "line": "226",
+         "text": "bus 226 from Nyugati pályaudvar M to Palatinus fürdő"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "heroes",
@@ -448,7 +1212,33 @@
       "free"
      ],
      "lat": 47.514747,
-     "lng": 19.078718
+     "lng": 19.078718,
+     "fromBase": {
+      "walk": {
+       "m": 2060,
+       "min": 28
+      },
+      "transit": {
+       "min": 19,
+       "changes": 0,
+       "summary": "metro M1",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 13 min to Vörösmarty utca"
+        },
+        {
+         "mode": "metro",
+         "line": "M1",
+         "text": "metro M1 from Vörösmarty utca to Hősök tere"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
     }
    ]
   },
@@ -469,7 +1259,33 @@
      ],
      "illustrative": true,
      "lat": 47.498088,
-     "lng": 19.059967
+     "lng": 19.059967,
+     "fromBase": {
+      "walk": {
+       "m": 1129,
+       "min": 15
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "mynt",
@@ -483,7 +1299,33 @@
      ],
      "illustrative": true,
      "lat": 47.498333,
-     "lng": 19.059658
+     "lng": 19.059658,
+     "fromBase": {
+      "walk": {
+       "m": 1167,
+       "min": 16
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "bluebird",
@@ -499,7 +1341,33 @@
      "key_fact": "This is the private-rooms venue, distinct from Blue Bird Karaoke Club nearby, which is open-mic.",
      "illustrative": true,
      "lat": 47.498088,
-     "lng": 19.059967
+     "lng": 19.059967,
+     "fromBase": {
+      "walk": {
+       "m": 1129,
+       "min": 15
+      },
+      "transit": {
+       "min": 11,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 4 min"
+        }
+       ]
+      }
+     }
     },
     {
      "id": "lasiesta",
@@ -512,7 +1380,33 @@
      ],
      "illustrative": true,
      "lat": 47.499508,
-     "lng": 19.060473
+     "lng": 19.060473,
+     "fromBase": {
+      "walk": {
+       "m": 1125,
+       "min": 15
+      },
+      "transit": {
+       "min": 13,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Síp utca"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 6 min"
+        }
+       ]
+      }
+     }
     }
    ]
   }
