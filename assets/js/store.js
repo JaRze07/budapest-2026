@@ -15,7 +15,7 @@ BP.store = (function () {
   var LS_ME = "bp26.me";
   var LS_PENDING = "bp26.pending";
 
-  var state = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, customs: [] };
+  var state = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, customs: [] };
   var online = false;
   var listeners = [];
   var es = null;
@@ -31,7 +31,7 @@ BP.store = (function () {
   /* ---------- shape ---------- */
 
   function normalise(raw) {
-    var s = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, customs: [] };
+    var s = { picks: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, customs: [] };
     if (!raw || typeof raw !== "object") return s;
     s.picks = raw.picks || {};
     s.stay = raw.stay || {};
@@ -39,6 +39,7 @@ BP.store = (function () {
     s.files = raw.files || {};
     s.assign = raw.assign || {};
     s.final = raw.final || {};
+    s.expenses = raw.expenses || {};
     // Customs are an object keyed by id in the database, an array in the file.
     var c = raw.customs;
     s.customs = Array.isArray(c) ? c.slice()
@@ -127,7 +128,7 @@ BP.store = (function () {
   function setPath(path, data) {
     var parts = path.split("/").filter(Boolean);
     if (!parts.length) { state = overlay(normalise(data)); return; }
-    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, files: state.files, assign: state.assign, final: state.final, customs: {} };
+    var raw = { picks: state.picks, stay: state.stay, hype: state.hype, files: state.files, assign: state.assign, final: state.final, expenses: state.expenses, customs: {} };
     state.customs.forEach(function (c) { raw.customs[c.id] = c; });
     var node = raw;
     for (var i = 0; i < parts.length - 1; i++) {
@@ -209,6 +210,28 @@ BP.store = (function () {
     return { synced: ok };
   }
 
+  /* Expenses are keyed by id like files are, so the id is carried onto the
+     object when reading rather than stored twice. */
+  async function saveExpense(rec) {
+    var id = rec.id;
+    var body = {
+      title: rec.title, amount: rec.amount, currency: rec.currency || "EUR",
+      paidBy: rec.paidBy, date: rec.date || "", mode: rec.mode,
+      by: rec.by || {}, note: rec.note || "", when: new Date().toISOString()
+    };
+    state.expenses[id] = Object.assign({ id: id }, body);
+    var ok = await put("expenses/" + id, body);
+    return { synced: ok };
+  }
+
+  async function deleteExpense(id) {
+    delete state.expenses[id];
+    try {
+      var r = await fetch(CFG.db + "/expenses/" + id + ".json", { method: "DELETE" });
+      return { synced: r.ok };
+    } catch (e) { return { synced: false }; }
+  }
+
   function saveVote(kind, name, ids) {
     return saveRecord(kind, name, { ids: ids.slice() });
   }
@@ -253,6 +276,8 @@ BP.store = (function () {
     assignSlot: assignSlot,
     saveHype: saveHype,
     saveFinal: saveFinal,
+    saveExpense: saveExpense,
+    deleteExpense: deleteExpense,
     addCustom: addCustom,
     me: function () { return lsGet(LS_ME, null); },
     setMe: function (n) { lsSet(LS_ME, n); },

@@ -197,7 +197,7 @@
   }
  ],
  "stay": {
-  "chosen": null,
+  "chosen": "wlgoldcentralapartment",
   "vote": {
    "open": true,
    "status": "open",
@@ -371,14 +371,14 @@
      "id": "wlgoldcentralapartment",
      "source": "wishlist",
      "name": "Goldcentral Apartment Danube-Private Terrace-Convenient Location",
-     "area": "District VII · 1.3 km from centre",
+     "area": "17 Almássy tér · District VII",
      "score": 9.4,
      "reviews": 158,
      "est": "€344 for 3 nights",
      "price_note": "Booking quote for 4 people, our dates",
-     "lat": 47.502225,
-     "lng": 19.071278,
-     "full_address": "47.502225, 19.071278",
+     "lat": 47.502266,
+     "lng": 19.071362,
+     "full_address": "17 Almássy tér, 1077 Budapest, Hungary",
      "image": "https://cf.bstatic.com/xdata/images/hotel/square600/678543709.webp?k=bc42bd3e5828db6c1087b9a53eb7a3a02684098919b071637248ded585b2abe0&o=",
      "link": "https://www.booking.com/hotel/hu/goldcentral-apartment-danube.en-gb.html?aid=337862&checkin=2026-08-28&checkout=2026-08-31&group_adults=4&no_rooms=1&group_children=0",
      "nearby": "The Jewish Quarter itself — Szimpla, Gozsdu Court and most of the picks board are on the doorstep.",
@@ -392,7 +392,10 @@
      "cons": [
       "You're sleeping over the bar strip — it's loud at 2am"
      ],
-     "suits": 4
+     "suits": 4,
+     "checkin": "15:00, Fri 28 Aug",
+     "checkout": "10:00, Mon 31 Aug",
+     "booking_ref": "6236545494"
     },
     {
      "id": "wlacmeapartments",
@@ -970,6 +973,41 @@
     "key": "nhiAfter",
     "label": "After — the Sparty one",
     "src": "images/nhi-after.jpg"
+   }
+  ]
+ },
+ "split": {
+  "currency": "EUR",
+  "nights": {
+   "Areeb": 3,
+   "Jacek": 3,
+   "Nhi": 2,
+   "Phuong": 0
+  },
+  "receipt": {
+   "endpoint": "https://winyle-api.winyle-jr.workers.dev/api/receipt",
+   "note": "Reads a receipt and fills the form in. Needs a /api/receipt route on the Worker; until that exists the button says so and you type it in instead."
+  },
+  "modes": [
+   {
+    "id": "equal",
+    "label": "Equally",
+    "hint": "Straight down the middle between whoever is in."
+   },
+   {
+    "id": "units",
+    "label": "By nights or units",
+    "hint": "Weight each person. Three nights each, two for Nhi."
+   },
+   {
+    "id": "share",
+    "label": "By percentage",
+    "hint": "Give everyone a percentage. They need not add to 100 — it is the ratio that counts."
+   },
+   {
+    "id": "fixed",
+    "label": "Exact amounts",
+    "hint": "Type what each person owes. Must add up to the total."
    }
   ]
  }

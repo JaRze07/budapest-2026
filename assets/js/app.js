@@ -33,7 +33,7 @@ window.BPmissing = function (img, label) {
   var me = null;
   var view = "home";
   var showResults = false;
-  var sel = { picks: {}, stay: {} };
+  var sel = { picks: {} };
   var byId = {};       // venue id -> {item, catIndex}
 
   /* ================= tiny helpers ================= */
@@ -383,8 +383,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=msxp3d7k").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=msxp3d7k").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt08zkd8").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt08zkd8").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -434,7 +434,7 @@ window.BPmissing = function (img, label) {
     el("swapBtn").addEventListener("click", function () {
       store.clearMe();
       me = null;
-      sel = { picks: {}, stay: {} };
+      sel = { picks: {} };
       openGate();
     });
 
@@ -508,14 +508,35 @@ window.BPmissing = function (img, label) {
       if (e.target.id === "pCancel") { toggleProposeForm(false); return; }
       if (e.target.id === "pSave") { saveCustom(); return; }
 
+      if (e.target.id === "addExpense") { editing = "new"; el("moneyAdd")._draft = null; el("moneyAdd")._mode = null; el("moneyAdd")._payer = null; renderAddForm(); return; }
+      if (e.target.id === "exCancel") { editing = null; el("moneyAdd")._mode = null; el("moneyAdd")._payer = null; el("moneyAdd")._draft = null; renderMoney(); return; }
+      if (e.target.id === "exSave") { saveExpenseForm(); return; }
+      if (e.target.id === "exDelete") { deleteExpenseForm(); return; }
+
+      var ed = e.target.closest("[data-editex]");
+      if (ed) {
+        editing = ed.getAttribute("data-editex");
+        var box = el("moneyAdd"); box._mode = null; box._payer = null; box._draft = null;
+        renderAddForm();
+        return;
+      }
+      var pay = e.target.closest("[data-payer]");
+      if (pay) {
+        captureDraft();
+        el("moneyAdd")._payer = pay.getAttribute("data-payer");
+        renderAddForm();
+        return;
+      }
+      var md = e.target.closest("[data-mode]");
+      if (md) {
+        captureDraft();
+        el("moneyAdd")._mode = md.getAttribute("data-mode");
+        renderAddForm();
+        return;
+      }
+
       var hy = e.target.closest("[data-hype]");
       if (hy) { setHype(+hy.getAttribute("data-hype")); return; }
-
-      var fin = e.target.closest("[data-final]");
-      if (fin) { setFinal(fin.getAttribute("data-final")); return; }
-
-      var sr = e.target.closest("[data-rate]");
-      if (sr) { setStay(sr.getAttribute("data-opt"), sr.getAttribute("data-rate")); return; }
 
       var jump = e.target.closest("[data-jump]");
       if (jump) { scrollToCard(jump.getAttribute("data-jump")); return; }
@@ -536,6 +557,14 @@ window.BPmissing = function (img, label) {
     window.addEventListener("hashchange", function () {
       var v = (location.hash || "").replace("#/", "");
       if (v && v !== view) go(v, true);
+    });
+
+    document.addEventListener("input", function (e) {
+      if (e.target.closest && e.target.closest(".expform")) updatePreview();
+    });
+    document.addEventListener("change", function (e) {
+      var f = e.target.id === "receiptFile" && e.target.files && e.target.files[0];
+      if (f) { readReceipt(f); e.target.value = ""; }
     });
 
     document.addEventListener("keydown", function (e) {
@@ -600,11 +629,9 @@ window.BPmissing = function (img, label) {
     el("topDays").textContent = "28–31 Aug";
 
     // Pre-tick whatever this person already has on record.
-    sel = { picks: {}, stay: {} };
+    sel = { picks: {} };
     var pk = store.state.picks[name];
     if (pk && pk.ids) pk.ids.forEach(function (id) { sel.picks[id] = true; });
-    var st = store.state.stay[name];
-    if (st && st.r) Object.keys(st.r).forEach(function (id) { sel.stay[id] = st.r[id]; });
 
     renderAll();
     var v = (location.hash || "").replace("#/", "");
@@ -646,7 +673,7 @@ window.BPmissing = function (img, label) {
   function renderAll() {
     renderHome();
     renderPicks();
-    renderStay();
+    renderMoney();
     renderInfo();
     paintWho();
     renderSummary();
@@ -663,13 +690,14 @@ window.BPmissing = function (img, label) {
       customCount = store.state.customs.length;
       renderPicks();
     }
-    renderStay();
+    renderMoney();
     renderClash();
     renderArrivals();
     renderHypeOthers();
     renderTransformation();
     renderUpload();
     renderProposed();
+    renderMoney();
     // After renderStay — it rebuilds the cards, which would wipe the chips.
     paintWho();
     renderSummary();
@@ -1187,9 +1215,7 @@ window.BPmissing = function (img, label) {
     while (dirty) {
       dirty = false;
       setSaveState("saving");
-      var res = savingKind === "stay"
-        ? await store.saveStay(me, sel.stay)
-        : await store.saveVote("picks", me, Object.keys(sel.picks));
+      var res = await store.saveVote("picks", me, Object.keys(sel.picks));
       if (!res.synced) {
         saveInFlight = false;
         setSaveState("failed");
@@ -1219,25 +1245,6 @@ window.BPmissing = function (img, label) {
         if (e.textContent === "Saved") { e.className = "savestate"; e.textContent = "Saved as you go"; }
       }, 2200);
     }
-  }
-
-  /** Accommodation is a three-way call, not a tick: No / Can do / I like this. */
-  function setStay(id, val) {
-    if (!me || !id) return;
-    if (sel.stay[id] === val) delete sel.stay[id]; else sel.stay[id] = val;
-    var cur = sel.stay[id];
-    var card = el("c-" + id);
-    if (card) {
-      card.classList.toggle("on", cur === "yes");
-      card.classList.toggle("rated-ok", cur === "ok");
-      card.classList.toggle("rated-no", cur === "no");
-      Array.prototype.forEach.call(card.querySelectorAll("[data-rate]"), function (b) {
-        b.classList.toggle("on", b.getAttribute("data-rate") === cur);
-      });
-    }
-    updateBar();
-    renderShortlist();
-    queueSave("stay");
   }
 
   async function saveCustom() {
@@ -1294,27 +1301,8 @@ window.BPmissing = function (img, label) {
     });
   }
 
-  /** Who said what about each place — always visible, no toggle over there. */
-  function stayChips() {
-    var word = { yes: "likes it", ok: "can do", no: "no" };
-    (TRIP.stay.vote.options || []).forEach(function (o) {
-      var w = el("w-" + o.id);
-      if (!w) return;
-      w.innerHTML = CFG.names.map(function (n) {
-        var rec = store.state.stay[n];
-        var v = rec && rec.r && rec.r[o.id];
-        if (!v) return "";
-        var cls = v === "yes" ? "n" : v === "no" ? "nay" : "";
-        return '<span class="' + cls + '">' + esc(n) + " · " + word[v] + "</span>";
-      }).join("");
-    });
-  }
-
-  /* Who's in shows on every tile, always, and repaints whenever a vote lands.
-     The toggle below only controls the ranked tally at the top. */
   function paintWho() {
     document.querySelectorAll(".who").forEach(function (w) { w.innerHTML = ""; });
-    stayChips();
     chips(Object.keys(byId).concat(store.state.customs.map(function (c) { return c.id; })), "picks");
   }
 
@@ -1376,214 +1364,364 @@ window.BPmissing = function (img, label) {
 
   /* ================= STAY ================= */
 
-  /* Anything one person has vetoed is out, however much everyone else likes it.
-     What's left gets one final choice each. Recomputed from whatever is in the
-     store, so it follows every rating change without being told. */
-  function shortlist() {
-    var stay = store.state.stay || {};
-    // Your own verdicts come from what's on screen, not from what's saved —
-    // otherwise the shortlist lags your taps by the length of the save debounce.
-    var verdict = function (id, n) {
-      if (n === me) return sel.stay[id] || null;
-      return (stay[n] && stay[n].r && stay[n].r[id]) || null;
-    };
-    var raters = CFG.names.filter(function (n) {
-      return n === me ? Object.keys(sel.stay).length : (stay[n] && stay[n].r);
+  /* ================= money ================= */
+
+  /* Everything is held in whole cents. Splitting by largest remainder means
+     the shares always add back to the total — no stray cent, ever. */
+  function splitCents(total, weights) {
+    var names = Object.keys(weights || {}).filter(function (n) { return weights[n] > 0; });
+    var sum = names.reduce(function (a, n) { return a + weights[n]; }, 0);
+    if (!names.length || sum <= 0) return {};
+    var parts = names.map(function (n) { return { n: n, exact: total * weights[n] / sum }; });
+    var out = {}, given = 0;
+    parts.forEach(function (p) { out[p.n] = Math.floor(p.exact); given += out[p.n]; });
+    parts.sort(function (a, b) {
+      return (b.exact - Math.floor(b.exact)) - (a.exact - Math.floor(a.exact));
     });
-
-    var alive = (TRIP.stay.vote.options || [])
-      .filter(function (o) {
-        return !raters.some(function (n) { return verdict(o.id, n) === "no"; });
-      })
-      .map(function (o) {
-        return {
-          o: o,
-          yes: raters.filter(function (n) { return verdict(o.id, n) === "yes"; }),
-          ok: raters.filter(function (n) { return verdict(o.id, n) === "ok"; })
-        };
-      })
-      .sort(function (a, b) { return (b.yes.length - a.yes.length) || (b.ok.length - a.ok.length); });
-
-    return { alive: alive, raters: raters, out: (TRIP.stay.vote.options || []).length - alive.length };
+    for (var i = 0; i < total - given; i++) out[parts[i % parts.length].n] += 1;
+    return out;
   }
 
-  function renderShortlist() {
-    var box = el("stayTop");
-    if (!box) return;
-    var s = shortlist();
-    var finals = store.state.final || {};
-
-    if (!s.raters.length) {
-      box.innerHTML = "<section>" +
-        '<div class="cathead"><h3>The shortlist</h3><span>waiting on votes</span></div>' +
-        '<p class="catnote">Once anyone rates the places below, everything with a ' +
-        "<b>No</b> against it drops out and the survivors appear here to choose between.</p></section>";
-      return;
+  /** What each person owes on one expense, whichever way it was split. */
+  function shareOf(e) {
+    if (e.mode === "fixed") {
+      var f = {};
+      Object.keys(e.by || {}).forEach(function (n) { f[n] = Math.round(e.by[n]); });
+      return f;
     }
+    if (e.mode === "equal") {
+      var w = {}, who = Object.keys(e.by || {});
+      (who.length ? who : CFG.names).forEach(function (n) { w[n] = 1; });
+      return splitCents(e.amount, w);
+    }
+    return splitCents(e.amount, e.by || {});   // units and share are both ratios
+  }
 
-    var rows = s.alive.map(function (x) {
-      var pickedBy = CFG.names.filter(function (n) { return finals[n] && finals[n].id === x.o.id; });
-      var mine = finals[me] && finals[me].id === x.o.id;
-      var o = x.o;
-      // The row itself opens the listing, with our dates already on it.
-      var open = o.link
-        ? '<a class="sname" href="' + esc(o.link) + '" target="_blank" rel="noopener">'
-        : '<div class="sname">';
+  function expenses() {
+    var x = store.state.expenses || {};
+    return Object.keys(x).filter(function (k) { return x[k]; })
+      .map(function (k) { return Object.assign({}, x[k], { id: k }); })
+      .sort(function (a, b) { return String(b.date || b.when).localeCompare(String(a.date || a.when)); });
+  }
 
-      return '<div class="srow' + (mine ? " mine" : "") + '">' +
-        open +
-          (o.score ? '<span class="sscore">' + esc(o.score.toFixed(1)) + "</span>" : "") +
-          "<b>" + esc(o.name) + (o.link ? '<i class="ext">↗</i>' : "") + "</b>" +
-          "<small>" + esc(o.area) + " · " + esc(o.est || "") +
-            (o.suits ? " · priced for " + o.suits : "") +
-            (o.walk ? " · " + o.walk + " min walk" : (o.transit ? " · " + esc(o.transit) : "")) + "</small>" +
-        (o.link ? "</a>" : "</div>") +
+  function eur(c) { return "€" + (c / 100).toFixed(2); }
 
-        '<button type="button" class="pickone' + (mine ? " on" : "") +
-          '" data-final="' + esc(o.id) + '" title="Make this my one pick">' +
-          (mine ? "★" : "☆") + "</button>" +
+  /** Net position per person: what they paid, minus what they owe. */
+  function balances() {
+    var net = {}, paid = {}, owed = {};
+    CFG.names.forEach(function (n) { net[n] = 0; paid[n] = 0; owed[n] = 0; });
+    expenses().forEach(function (e) {
+      if (paid[e.paidBy] === undefined) return;
+      paid[e.paidBy] += e.amount;
+      var sh = shareOf(e);
+      Object.keys(sh).forEach(function (n) { if (owed[n] !== undefined) owed[n] += sh[n]; });
+    });
+    CFG.names.forEach(function (n) { net[n] = paid[n] - owed[n]; });
+    return { net: net, paid: paid, owed: owed };
+  }
 
-        '<div class="sdetail">' +
-          '<div class="verdicts">' +
-            x.yes.map(function (n) { return '<span class="v yes">' + esc(n) + "</span>"; }).join("") +
-            x.ok.map(function (n) { return '<span class="v ok">' + esc(n) + "</span>"; }).join("") +
-          "</div>" +
-          (o.nearby ? '<p class="desc">' + esc(o.nearby) + "</p>" : "") +
-          (o.pros ? '<ul class="pc pros">' + o.pros.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "") +
-          (o.cons ? '<ul class="pc cons">' + o.cons.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "") +
-          (pickedBy.length
-            ? '<div class="pickedby">Picked by <b>' + esc(pickedBy.join(", ")) + "</b></div>"
-            : "") +
+  /** Fewest transfers that clear the board: biggest debtor pays biggest creditor. */
+  function settleUp(net) {
+    var owe = [], get = [];
+    Object.keys(net).forEach(function (n) {
+      if (net[n] < 0) owe.push({ n: n, v: -net[n] });
+      else if (net[n] > 0) get.push({ n: n, v: net[n] });
+    });
+    owe.sort(function (a, b) { return b.v - a.v; });
+    get.sort(function (a, b) { return b.v - a.v; });
+    var out = [], i = 0, j = 0;
+    while (i < owe.length && j < get.length) {
+      var amt = Math.min(owe[i].v, get[j].v);
+      if (amt > 0) out.push({ from: owe[i].n, to: get[j].n, amount: amt });
+      owe[i].v -= amt; get[j].v -= amt;
+      if (owe[i].v === 0) i++;
+      if (get[j].v === 0) j++;
+    }
+    return out;
+  }
+
+  var editing = null;      // expense id being edited, or "new", or null
+
+  function renderMoney() {
+    renderBase();
+    renderBalances();
+    renderAddForm();
+    renderExpenseList();
+  }
+
+  /** Where we ended up, in one line — the voting is over. */
+  function renderBase() {
+    var box = el("moneyBase"), p = ourPlace();
+    if (!box) return;
+    if (!p) { box.innerHTML = ""; return; }
+    var r = (p.lat && p.lng) ? rideTo(pt(p), null) : null;
+    box.innerHTML =
+      '<div class="basecard">' +
+        '<div class="kick">Booked</div>' +
+        "<b>" + esc(p.name) + "</b>" +
+        '<div class="baseaddr">' + esc(p.full_address || p.area) + "</div>" +
+        '<div class="basemeta">' + esc(p.checkin || "") +
+          (p.checkout ? " → " + esc(p.checkout) : "") +
+          (p.booking_ref ? " · booking " + esc(p.booking_ref) : "") + "</div>" +
+        '<div class="links">' +
+          '<button type="button" class="gotolink" data-goto="' + esc(p.id) + '">Get there</button>' +
+          (r ? '<a href="' + r.maps + '" target="_blank" rel="noopener">Map</a>' : "") +
         "</div>" +
       "</div>";
-    }).join("");
-
-    /* A pick only counts while the place is still on the shortlist. Somebody
-       vetoing your choice after you made it has to put you back in the
-       undecided pile, or you'd sit there thinking you'd chosen. */
-    var alive = {};
-    s.alive.forEach(function (x) { alive[x.o.id] = true; });
-    var undecided = CFG.names.filter(function (n) {
-      return !(finals[n] && finals[n].id && alive[finals[n].id]);
-    });
-
-    var myId = finals[me] && finals[me].id;
-    var killed = myId && !alive[myId]
-      ? (TRIP.stay.vote.options.filter(function (o) { return o.id === myId; })[0] || {}).name
-      : null;
-
-    box.innerHTML = "<section>" +
-      '<div class="cathead"><h3>The shortlist</h3><span>' +
-        s.alive.length + " left · " + s.out + " vetoed</span></div>" +
-      '<p class="catnote">Nobody has said <b>No</b> to these. ' +
-        '<span class="v yes">green</span> likes it, <span class="v ok">amber</span> can do. ' +
-        "Tap a star to make one of them your single pick" +
-        (undecided.length ? " — still to choose: " + esc(undecided.join(", ")) : " — everyone has chosen") +
-      ".</p>" +
-      (killed
-        ? '<div class="callout"><b>Your pick got vetoed</b><p>You had chosen <b>' + esc(killed) +
-          "</b>, but somebody has said No to it since. Star another one.</p></div>"
-        : "") +
-      (s.alive.length ? '<div class="short">' + rows + "</div>"
-        : '<p class="sec-note">Everything has a No against it. Somebody needs to soften.</p>') +
-    "</section>";
   }
 
-  async function setFinal(id) {
-    if (!me) return;
-    var cur = store.state.final[me] && store.state.final[me].id;
-    await store.saveFinal(me, cur === id ? "" : id);
-    renderShortlist();
-  }
+  function renderBalances() {
+    var box = el("moneyBalances");
+    if (!box) return;
+    var b = balances(), list = expenses();
+    var total = list.reduce(function (a, e) { return a + e.amount; }, 0);
 
-  function renderStay() {
-    renderShortlist();
-    var S = TRIP.stay;
-    el("stayBlurb").textContent = S.vote.blurb;
-
-    var vbox = el("stayVote");
-    if (!S.vote.options.length) {
-      vbox.innerHTML =
-        '<div class="pending"><b>Options land here</b>' +
-        "<p>Nothing to vote on yet.</p></div>";
-    } else {
-      // One merged list unless the data explicitly groups them.
-      var groups = S.vote.groups || [{ id: null, title: "", note: "" }];
-      vbox.innerHTML =
-        (S.vote.note ? '<p class="sec-note" style="margin-top:14px">' + esc(S.vote.note) + "</p>" : "") +
-        groups.map(function (g) {
-          var opts = S.vote.options.filter(function (o) { return !g.id || o.group === g.id; });
-          if (!opts.length) return "";
-          return (g.title ? '<div class="sec-title">' + esc(g.title) + "</div>" : "") +
-            (g.note ? '<p class="sec-note">' + esc(g.note) + "</p>" : "") +
-            '<div class="grid">' + opts.map(stayCard).join("") + "</div>";
-        }).join("");
-    }
-
-    // Only once something has actually won — until then there is no "our place".
-    var s = ourPlace();
-    if (!s) {
-      el("stayCurrent").innerHTML =
-        '<p class="sec-note" style="margin-top:22px">Nothing is booked, and nothing else on the site ' +
-        "assumes a winner — the airport routes and the from-our-place option on every venue stay " +
-        "switched off until this is settled.</p>";
+    if (!list.length) {
+      box.innerHTML = '<div class="sec-title">Where everyone stands</div>' +
+        '<p class="sec-note">Nothing logged yet.</p>';
       return;
     }
+    var rows = CFG.names.map(function (n) {
+      var v = b.net[n];
+      var state = v > 0 ? "up" : v < 0 ? "down" : "level";
+      var says = v > 0 ? "is owed " + eur(v) : v < 0 ? "owes " + eur(-v) : "square";
+      return '<div class="brow ' + state + (n === me ? " mine" : "") + '">' +
+        '<span class="bwho"><b>' + esc(n) + "</b><small>paid " + eur(b.paid[n]) + " · share " + eur(b.owed[n]) + "</small></span>" +
+        '<span class="bnet">' + esc(says) + "</span></div>";
+    }).join("");
 
-    el("stayCurrent").innerHTML =
-      '<div class="stay-hero">' +
-        '<div class="sh"><span>Where we\'re staying</span><b>' + esc(s.name) + "</b></div>" +
-        '<div class="body">' +
-          '<div class="kv"><span class="k">Where</span><span>' + esc(s.full_address || s.area) + "</span></div>" +
-          (s.sleeps ? '<div class="kv"><span class="k">Sleeps</span><span>' + s.sleeps + "</span></div>" : "") +
-          (s.checkin ? '<div class="kv"><span class="k">In / out</span><span>' + esc(s.checkin) +
-            " → " + esc(s.checkout || "") + "</span></div>" : "") +
-          (s.perks ? '<ul class="perks">' + s.perks.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>" : "") +
-          '<div class="links">' +
-            '<button type="button" class="gotolink" data-goto="' + esc(s.id) + '">Get there</button>' +
-            (s.link ? '<a href="' + esc(s.link) + '" target="_blank" rel="noopener">Listing</a>' : "") +
-          "</div>" +
-        "</div></div>";
+    var moves = settleUp(b.net).map(function (t) {
+      return '<div class="settle"><b>' + esc(t.from) + "</b> → <b>" + esc(t.to) +
+        "</b><span>" + eur(t.amount) + "</span></div>";
+    }).join("");
+
+    box.innerHTML =
+      '<div class="sec-title">Where everyone stands</div>' +
+      '<p class="sec-note">' + list.length + (list.length === 1 ? " expense" : " expenses") +
+        ", " + eur(total) + " between us.</p>" +
+      '<div class="balances">' + rows + "</div>" +
+      (moves ? '<div class="sec-title">Settle up</div>' +
+        '<p class="sec-note">Fewest transfers that clear it.</p>' +
+        '<div class="settles">' + moves + "</div>" : "");
   }
 
-  function stayCard(o) {
-    var cur = sel.stay[o.id];
-    var on = cur === "yes" ? " on" : cur === "ok" ? " rated-ok" : cur === "no" ? " rated-no" : "";
-    var reach = o.walk ? o.walk + " min walk to the bars" : (o.transit || "");
-    var letter = esc((o.name || "?").slice(0, 1).toUpperCase());
+  /** Snapshot whatever is typed, so a redraw doesn't lose it. */
+  function captureDraft() {
+    var box = el("moneyAdd");
+    if (!box || !el("exTitle")) return;
+    var d = box._draft || {};
+    d.title = el("exTitle").value;
+    d.amount = el("exAmount").value;
+    d.date = el("exDate").value;
+    d.by = d.by || {};
+    CFG.names.forEach(function (n) {
+      var tick = document.querySelector('.pin[data-who="' + n + '"]');
+      var val = document.querySelector('.pval[data-val="' + n + '"]');
+      if (tick) d.by[n] = { on: tick.checked, v: val ? val.value : (d.by[n] || {}).v };
+    });
+    box._draft = d;
+  }
 
-    return '<div class="card' + on + '" id="c-' + esc(o.id) + '" data-stay="' + esc(o.id) + '">' +
-      (o.image
-        ? '<img src="' + esc(o.image) + '" alt="" loading="lazy" ' +
-          "onerror=\"BPnoPhoto(this,'" + letter + "')\">"
-        : '<div class="ctile">' + letter + "</div>") +
-      '<div class="pad">' +
-      (o.score ? '<div class="score"><b>' + esc(o.score.toFixed(1)) + "</b>" +
-        (o.reviews ? "<span>" + o.reviews + " reviews</span>" : "") + "</div>" : "") +
-      "<h4>" + esc(o.name) + "</h4>" +
-      '<div class="area">' + esc(o.area || "") + "</div>" +
-      '<div class="staytags">' +
-        (reach ? '<span class="dist' + (o.walk ? "" : " far") + '">' + esc(reach) + "</span>" : "") +
-        (o.est ? '<span class="price">' + esc(o.est) + "</span>" : "") +
-        (o.suits ? '<span class="suits">priced for ' + o.suits + "</span>" : "") +
-      "</div>" +
-      '<div class="pricenote' + (o.price_note ? " live" : "") + '">' +
-        esc(o.price_note || "Estimate, not a quote — tap through for the real number") + "</div>" +
-      (o.nearby ? '<p class="desc">' + esc(o.nearby) + "</p>" : "") +
-      (o.desc ? '<p class="desc">' + esc(o.desc) + "</p>" : "") +
-      (o.pros ? '<ul class="pc pros">' + o.pros.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") +
-      (o.cons ? '<ul class="pc cons">' + o.cons.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") +
-      (o.why ? '<p class="keyfact">' + esc(o.why) + "</p>" : "") +
-      (o.link ? '<a class="ride go pricebtn" href="' + esc(o.link) + '" target="_blank" rel="noopener">' +
-        "Check live price</a>" : "") +
-      '<div class="rate">' + (TRIP.stay.vote.scale || []).map(function (s) {
-        return '<button type="button" class="rbtn r-' + s.id + (cur === s.id ? " on" : "") +
-          '" data-opt="' + esc(o.id) + '" data-rate="' + esc(s.id) + '">' + esc(s.label) + "</button>";
-      }).join("") + "</div>" +
-      '<div class="cardfoot">' +
-        (o.lat ? '<button type="button" class="mini" data-goto="' + esc(o.id) + '">Get there</button>' : "") +
-      "</div>" +
-      '<div class="who" id="w-' + esc(o.id) + '"></div></div></div>';
+  function renderAddForm() {
+    var box = el("moneyAdd");
+    if (!box) return;
+    if (!editing) {
+      box.innerHTML = '<button type="button" class="btn big addexp" id="addExpense">+ Add an expense</button>';
+      return;
+    }
+    var e = editing === "new" ? null : (store.state.expenses[editing] || null);
+    var d = box._draft || {};
+    var mode = box._mode || (e && e.mode) || "equal";
+    var by = (e && e.by) || {};
+    var nights = (TRIP.split && TRIP.split.nights) || {};
+
+    var modes = (TRIP.split.modes || []).map(function (m) {
+      return '<button type="button" class="mode' + (m.id === mode ? " on" : "") +
+        '" data-mode="' + m.id + '">' + esc(m.label) + "</button>";
+    }).join("");
+    var hint = (TRIP.split.modes || []).filter(function (m) { return m.id === mode; })[0];
+
+    var people = CFG.names.map(function (n) {
+      var dr = (d.by || {})[n];
+      var on = dr ? dr.on : (e ? (by[n] !== undefined && by[n] !== null) : (nights[n] > 0));
+      var val = by[n] !== undefined ? by[n] : (mode === "units" ? (nights[n] || 0) : 0);
+      if (mode === "fixed" && by[n] !== undefined) val = (by[n] / 100).toFixed(2);
+      if (dr && dr.v !== undefined && dr.v !== null && dr.v !== "") val = dr.v;
+      return '<label class="prow' + (on ? " on" : "") + '">' +
+        '<input type="checkbox" class="pin" data-who="' + esc(n) + '"' + (on ? " checked" : "") + ">" +
+        '<span class="pname">' + esc(n) + "</span>" +
+        (mode === "equal" ? '<span class="pauto">even share</span>'
+          : '<input class="pval" data-val="' + esc(n) + '" inputmode="decimal" value="' + esc(val) + '">' +
+            '<span class="punit">' + (mode === "units" ? "units" : mode === "share" ? "%" : "€") + "</span>") +
+      "</label>";
+    }).join("");
+
+    box.innerHTML =
+      '<div class="expform">' +
+        '<div class="sec-title" style="margin-top:0">' + (e ? "Edit expense" : "New expense") + "</div>" +
+        '<div class="receiptrow">' +
+          '<label class="btn ghost readbtn">Read a receipt' +
+            '<input type="file" id="receiptFile" accept="image/*,application/pdf" hidden></label>' +
+          '<span class="muted" style="font-size:11.5px">or fill it in yourself</span>' +
+        "</div>" +
+        '<input id="exTitle" maxlength="80" placeholder="What was it?" value="' + esc(d.title !== undefined ? d.title : (e ? e.title : "")) + '">' +
+        '<div class="tworow">' +
+          '<input id="exAmount" inputmode="decimal" placeholder="0.00" value="' + esc(d.amount !== undefined ? d.amount : (e ? (e.amount / 100).toFixed(2) : "")) + '">' +
+          '<input id="exDate" type="date" value="' + esc(d.date !== undefined ? d.date : ((e && e.date) || new Date().toISOString().slice(0, 10))) + '">' +
+        "</div>" +
+        '<div class="fieldlabel">Who paid</div>' +
+        '<div class="payers">' + CFG.names.map(function (n) {
+          var on = (box._payer || (e ? e.paidBy : me)) === n;
+          return '<button type="button" class="payer' + (on ? " on" : "") + '" data-payer="' + esc(n) + '">' + esc(n) + "</button>";
+        }).join("") + "</div>" +
+        '<div class="fieldlabel">How to split</div>' +
+        '<div class="modes">' + modes + "</div>" +
+        (hint ? '<p class="modehint">' + esc(hint.hint) + "</p>" : "") +
+        '<div class="people">' + people + "</div>" +
+        '<div class="splitpreview" id="splitPreview"></div>' +
+        '<div class="pfrow">' +
+          '<button type="button" class="btn dim" id="exCancel">Cancel</button>' +
+          (e ? '<button type="button" class="btn dim del" id="exDelete">Delete</button>' : "") +
+          '<button type="button" class="btn" id="exSave">' + (e ? "Save" : "Add it") + "</button>" +
+        "</div>" +
+      "</div>";
+    box._mode = mode;
+    box._payer = box._payer || (e ? e.paidBy : me);
+    updatePreview();
+  }
+
+  /** Read the form back out, in the shape the store wants. */
+  function readForm() {
+    var box = el("moneyAdd");
+    var mode = box._mode || "equal";
+    var amount = Math.round(parseFloat((el("exAmount").value || "0").replace(",", ".")) * 100);
+    var by = {};
+    CFG.names.forEach(function (n) {
+      var tick = document.querySelector('.pin[data-who="' + n + '"]');
+      if (!tick || !tick.checked) return;
+      if (mode === "equal") { by[n] = 1; return; }
+      var f = document.querySelector('.pval[data-val="' + n + '"]');
+      var v = parseFloat(((f && f.value) || "0").replace(",", ".")) || 0;
+      by[n] = mode === "fixed" ? Math.round(v * 100) : v;
+    });
+    return {
+      title: (el("exTitle").value || "").trim().slice(0, 80),
+      amount: isNaN(amount) ? 0 : amount,
+      currency: (TRIP.split && TRIP.split.currency) || "EUR",
+      paidBy: box._payer || me,
+      date: el("exDate").value || "",
+      mode: mode, by: by
+    };
+  }
+
+  function updatePreview() {
+    var box = el("splitPreview");
+    if (!box) return;
+    var f = readForm();
+    if (!f.amount) { box.innerHTML = '<span class="muted">Enter an amount to see the split.</span>'; return; }
+    var sh = shareOf(f);
+    var sum = Object.keys(sh).reduce(function (a, n) { return a + sh[n]; }, 0);
+    var off = sum - f.amount;
+    box.innerHTML = Object.keys(sh).map(function (n) {
+      return '<span class="pv"><b>' + esc(n) + "</b> " + eur(sh[n]) + "</span>";
+    }).join("") +
+      (off ? '<div class="offby">Adds up to ' + eur(sum) + " — that is " +
+        (off > 0 ? eur(off) + " over" : eur(-off) + " short") + " of the total.</div>" : "");
+  }
+
+  async function saveExpenseForm() {
+    var f = readForm();
+    if (!f.title) { toast("Give it a name"); return; }
+    if (!f.amount) { toast("Enter an amount"); return; }
+    if (!Object.keys(f.by).length) { toast("Nobody is on this expense"); return; }
+    if (f.mode === "fixed") {
+      var sum = Object.keys(f.by).reduce(function (a, n) { return a + f.by[n]; }, 0);
+      if (sum !== f.amount) { toast("Exact amounts add up to " + eur(sum) + ", not " + eur(f.amount) + "."); return; }
+    }
+    f.id = editing === "new" ? "e" + Date.now().toString(36) : editing;
+    var res = await store.saveExpense(f);
+    editing = null;
+    el("moneyAdd")._mode = null;
+    el("moneyAdd")._payer = null;
+    el("moneyAdd")._draft = null;
+    renderMoney();
+    toast(res.synced ? "Saved — everyone sees it now." : "Couldn't save. Check you're online.", 3500);
+  }
+
+  async function deleteExpenseForm() {
+    var id = editing;
+    editing = null;
+    el("moneyAdd")._mode = null;
+    el("moneyAdd")._payer = null;
+    el("moneyAdd")._draft = null;
+    if (id && id !== "new") await store.deleteExpense(id);
+    renderMoney();
+    if (id && id !== "new") toast("Deleted.", 2000);
+  }
+
+  function renderExpenseList() {
+    var box = el("moneyList");
+    if (!box) return;
+    var list = expenses();
+    if (!list.length) { box.innerHTML = ""; return; }
+    box.innerHTML = '<div class="sec-title">Everything logged</div>' +
+      '<div class="exlist">' + list.map(function (e) {
+        var sh = shareOf(e);
+        var modeName = ((TRIP.split.modes || []).filter(function (m) { return m.id === e.mode; })[0] || {}).label || e.mode;
+        return '<div class="exrow">' +
+          '<div class="exhead"><b>' + esc(e.title) + "</b><span>" + eur(e.amount) + "</span></div>" +
+          '<div class="exmeta">' + esc(e.paidBy) + " paid · " + esc(modeName) +
+            (e.date ? " · " + esc(e.date) : "") + "</div>" +
+          '<div class="exshares">' + Object.keys(sh).map(function (n) {
+            return '<span class="pv"><b>' + esc(n) + "</b> " + eur(sh[n]) + "</span>";
+          }).join("") + "</div>" +
+          (e.note ? '<div class="exnote">' + esc(e.note) + "</div>" : "") +
+          '<div class="exacts"><button type="button" class="mini" data-editex="' + esc(e.id) + '">Edit</button></div>' +
+        "</div>";
+      }).join("") + "</div>";
+  }
+
+  /* Reads a receipt through the Worker that already holds the API key, the same
+     way Winyle does. That route isn't there yet, so say so rather than fail mutely. */
+  async function readReceipt(file) {
+    var cfg = (TRIP.split && TRIP.split.receipt) || {};
+    if (!cfg.endpoint) { toast("No receipt reader configured."); return; }
+    toast("Reading the receipt…", 20000);
+    var b64;
+    try {
+      b64 = await new Promise(function (res, rej) {
+        var r = new FileReader();
+        r.onerror = rej;
+        r.onload = function () { res(String(r.result).split(",")[1]); };
+        r.readAsDataURL(file);
+      });
+    } catch (err) { toast("Couldn't read that file."); return; }
+
+    var r;
+    try {
+      r = await fetch(cfg.endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.name, mediaType: file.type, data: b64 })
+      });
+    } catch (err) {
+      toast("Couldn't reach the reader. Type it in instead.", 5000);
+      return;
+    }
+    if (r.status === 404) {
+      toast("The reader route isn't on the Worker yet — type it in for now.", 6000);
+      return;
+    }
+    if (!r.ok) { toast("Reader returned " + r.status + ". Type it in instead.", 5000); return; }
+
+    var j = null;
+    try { j = await r.json(); } catch (err) {}
+    if (!j || (!j.amount && !j.title)) { toast("Nothing readable came back. Type it in.", 5000); return; }
+    if (j.title) el("exTitle").value = String(j.title).slice(0, 80);
+    if (j.amount) el("exAmount").value = (Math.round(Number(j.amount) * 100) / 100).toFixed(2);
+    if (j.date && /^\d{4}-\d{2}-\d{2}$/.test(j.date)) el("exDate").value = j.date;
+    updatePreview();
+    toast("Filled in from the receipt — check it before saving.", 5000);
   }
 
   /* ================= INFO ================= */
@@ -1641,9 +1779,7 @@ window.BPmissing = function (img, label) {
   /* ================= submit bar ================= */
 
   function activeKind() {
-    if (view === "picks") return "picks";
-    if (view === "stay" && TRIP && TRIP.stay.vote.options.length) return "stay";
-    return null;
+    return view === "picks" ? "picks" : null;   // money has no running count
   }
 
   function updateBar() {
@@ -1651,23 +1787,12 @@ window.BPmissing = function (img, label) {
     var bar = el("submitbar");
     if (!kind || !me) { bar.classList.remove("on"); return; }
     bar.classList.add("on");
-    var n = Object.keys(sel[kind]).length;
-    var total = kind === "stay" ? TRIP.stay.vote.options.length : 0;
-    el("pickCount").textContent = kind === "stay" ? n + " / " + total : n;
-    el("pickWord").textContent = kind === "stay" ? "rated" : "picked";
+    el("pickCount").textContent = Object.keys(sel[kind]).length;
+    el("pickWord").textContent = "picked";
   }
 
   function labelsFor(kind) {
     var ids = Object.keys(sel[kind]);
-    if (kind === "stay") {
-      var opts = TRIP.stay.vote.options;
-      var scale = {};
-      (TRIP.stay.vote.scale || []).forEach(function (s) { scale[s.id] = s.label; });
-      return ids.map(function (id) {
-        var o = opts.filter(function (x) { return x.id === id; })[0];
-        return (o ? o.name : id) + " — " + (scale[sel.stay[id]] || sel.stay[id]);
-      });
-    }
     return ids.map(function (id) {
       if (byId[id]) return byId[id].item.name;
       var c = store.state.customs.filter(function (x) { return x.id === id; })[0];

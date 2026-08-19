@@ -123,6 +123,44 @@
           ".validate": false
         }
       }
+    },
+    "expenses": {
+      "$id": {
+        ".write": true,
+        ".validate": "newData.hasChildren(['title','amount','paidBy','mode','when'])",
+        "title": {
+          ".validate": "newData.isString() && newData.val().length <= 80"
+        },
+        "amount": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100000000"
+        },
+        "currency": {
+          ".validate": "newData.isString() && newData.val().length <= 4"
+        },
+        "paidBy": {
+          ".validate": "newData.val().matches(/^(Areeb|Nhi|Phuong|Jacek)$/)"
+        },
+        "date": {
+          ".validate": "newData.isString() && newData.val().length <= 12"
+        },
+        "mode": {
+          ".validate": "newData.val().matches(/^(equal|units|share|fixed)$/)"
+        },
+        "by": {
+          "$who": {
+            ".validate": "$who.matches(/^(Areeb|Nhi|Phuong|Jacek)$/) && newData.isNumber() && newData.val() >= 0"
+          }
+        },
+        "note": {
+          ".validate": "newData.isString() && newData.val().length <= 140"
+        },
+        "when": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
     }
   }
 }
