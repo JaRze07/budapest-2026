@@ -55,67 +55,28 @@
      "isNew": true
     },
     {
-     "id": "embassy",
-     "name": "Espresso Embassy",
-     "area": "Arany János u. 15",
-     "desc": "Specialty coffee taken seriously, with pastries to match. A short stop rather than a sit-down breakfast.",
-     "meta": "Weekday mornings from 07:30, later at weekends · coffee ~€3",
+     "id": "newyork",
+     "name": "New York Café",
+     "area": "Erzsébet krt 9–11",
+     "desc": "The most ornate coffee house in Europe, gilt and frescoes floor to ceiling. Overpriced and worth doing once.",
+     "meta": "Daily 08:00–24:00 · coffee ~€8, breakfast ~€25 · queue or book",
      "tags": [
-      "coffee",
-      "quick"
+      "landmark",
+      "splurge",
+      "booking"
      ],
-     "lat": 47.50179,
-     "lng": 19.050048,
+     "lat": 47.498678,
+     "lng": 19.070464,
+     "isNew": true,
      "fromBase": {
       "walk": {
-       "m": 2153,
-       "min": 29
+       "m": 505,
+       "min": 7
       },
       "transit": {
-       "min": 29,
+       "min": 9,
        "changes": 0,
-       "summary": "metro M1",
-       "legs": [
-        {
-         "mode": "walk",
-         "text": "Walk 12 min to Vörösmarty utca"
-        },
-        {
-         "mode": "metro",
-         "line": "M1",
-         "text": "metro M1 from Vörösmarty utca to Bajcsy-Zsilinszky út"
-        },
-        {
-         "mode": "walk",
-         "text": "Walk 13 min"
-        }
-       ]
-      }
-     },
-     "illustrative": true,
-     "isNew": true
-    },
-    {
-     "id": "fruccola",
-     "name": "Fruccola",
-     "area": "Arany János u. 32",
-     "desc": "Fresh juices, big salads and eggs done properly. The one for a morning that needs undoing.",
-     "meta": "From 08:00 weekdays · counter service, no waiting for a table",
-     "tags": [
-      "healthy",
-      "fast"
-     ],
-     "lat": 47.502713,
-     "lng": 19.053383,
-     "fromBase": {
-      "walk": {
-       "m": 1890,
-       "min": 25
-      },
-      "transit": {
-       "min": 21,
-       "changes": 1,
-       "summary": "bus 74 → bus 9",
+       "summary": "bus 74",
        "legs": [
         {
          "mode": "walk",
@@ -124,57 +85,7 @@
         {
          "mode": "bus",
          "line": "74",
-         "text": "bus 74 from Almássy tér to Astoria M (Dohány utca)"
-        },
-        {
-         "mode": "walk",
-         "text": "Walk 4 min to Astoria M"
-        },
-        {
-         "mode": "bus",
-         "line": "9",
-         "text": "bus 9 from Astoria M to Arany János utca M"
-        },
-        {
-         "mode": "walk",
-         "text": "Walk 4 min"
-        }
-       ]
-      }
-     },
-     "illustrative": true,
-     "isNew": true
-    },
-    {
-     "id": "butter",
-     "name": "Butter Brothers",
-     "area": "Szent István krt 22",
-     "desc": "All-day breakfast on the Grand Boulevard — pancakes, benedicts, decent flat whites.",
-     "meta": "From 08:00 · walk-ins usually fine",
-     "tags": [
-      "brunch",
-      "all day"
-     ],
-     "lat": 47.51159,
-     "lng": 19.053079,
-     "fromBase": {
-      "walk": {
-       "m": 2035,
-       "min": 27
-      },
-      "transit": {
-       "min": 15,
-       "changes": 0,
-       "summary": "tram 4",
-       "legs": [
-        {
-         "mode": "walk",
-         "text": "Walk 5 min to Wesselényi utca / Erzsébet körút"
-        },
-        {
-         "mode": "tram",
-         "line": "4",
-         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Nyugati pályaudvar M"
+         "text": "bus 74 from Almássy tér to Wesselényi utca / Erzsébet körút"
         },
         {
          "mode": "walk",
@@ -182,29 +93,173 @@
         }
        ]
       }
-     },
-     "illustrative": true,
-     "isNew": true
+     }
     },
     {
-     "id": "madal",
-     "name": "Madal Cafe",
-     "area": "Hollán Ernő u. 3",
-     "desc": "Quiet Újlipótváros café, good beans, and a room you can actually talk in.",
-     "meta": "From 08:00 · calm, laptops welcome",
+     "id": "horizont",
+     "name": "Horizont",
+     "area": "Erzsébet krt 13",
+     "desc": "Specialty coffee and a short breakfast menu, five minutes from the door. The everyday one.",
+     "meta": "Mon–Sat 08:00–16:00 · coffee ~€3 · small, fills up",
      "tags": [
       "coffee",
-      "quiet"
+      "closest",
+      "quick"
      ],
-     "lat": 47.513327,
-     "lng": 19.049692,
+     "lat": 47.498885,
+     "lng": 19.070279,
+     "isNew": true,
      "fromBase": {
       "walk": {
-       "m": 2450,
-       "min": 33
+       "m": 502,
+       "min": 7
+      }
+     }
+    },
+    {
+     "id": "eggscuse",
+     "name": "Eggscuse Me?",
+     "area": "Klauzál u. 10",
+     "desc": "Eggs done every way there is, and not much else. In and out in half an hour.",
+     "meta": "Daily 09:00–14:00 · ~€10 a head · mornings only",
+     "tags": [
+      "brunch",
+      "eggs",
+      "fast"
+     ],
+     "lat": 47.497715,
+     "lng": 19.06688,
+     "isNew": true,
+     "fromBase": {
+      "walk": {
+       "m": 710,
+       "min": 10
       },
       "transit": {
-       "min": 15,
+       "min": 9,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Kéthly Anna tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "klauzal",
+     "name": "Klauzál Café",
+     "area": "Klauzál u. 23",
+     "desc": "Corner café on the square with pancakes, big breakfasts and a terrace to read the day on.",
+     "meta": "Mon–Thu 08:00–22:00, later Fri–Sat · ~€10 · terrace",
+     "tags": [
+      "brunch",
+      "pancakes",
+      "terrace"
+     ],
+     "lat": 47.498465,
+     "lng": 19.066184,
+     "isNew": true,
+     "fromBase": {
+      "walk": {
+       "m": 612,
+       "min": 8
+      },
+      "transit": {
+       "min": 7,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Kéthly Anna tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 1 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "kadar",
+     "name": "Kádár Étkezde",
+     "area": "Klauzál tér 9",
+     "desc": "A Jewish-Hungarian lunch canteen that has not changed since the sixties. Shared tables, soda siphons, cash only.",
+     "meta": "Tue–Sat 11:00–17:00 · ~€10 · CASH ONLY · closed Sun–Mon",
+     "tags": [
+      "lunch",
+      "hungarian",
+      "cash only"
+     ],
+     "lat": 47.499669,
+     "lng": 19.064733,
+     "isNew": true,
+     "fromBase": {
+      "walk": {
+       "m": 721,
+       "min": 10
+      },
+      "transit": {
+       "min": 9,
+       "changes": 0,
+       "summary": "bus 74",
+       "legs": [
+        {
+         "mode": "walk",
+         "text": "Walk 2 min to Almássy tér"
+        },
+        {
+         "mode": "bus",
+         "line": "74",
+         "text": "bus 74 from Almássy tér to Kéthly Anna tér"
+        },
+        {
+         "mode": "walk",
+         "text": "Walk 3 min"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "fricipapa",
+     "name": "Frici Papa",
+     "area": "Király u. 55",
+     "desc": "The cheap Hungarian lunch everyone ends up at — schnitzel the size of the plate, and you pay for sides separately.",
+     "meta": "Mon–Sat 11:00–23:00 · mains ~€7 · no bookings",
+     "tags": [
+      "lunch",
+      "cheap",
+      "hungarian"
+     ],
+     "lat": 47.50237,
+     "lng": 19.063729,
+     "isNew": true,
+     "fromBase": {
+      "walk": {
+       "m": 814,
+       "min": 11
+      },
+      "transit": {
+       "min": 10,
        "changes": 0,
        "summary": "tram 4",
        "legs": [
@@ -215,21 +270,20 @@
         {
          "mode": "tram",
          "line": "4",
-         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Jászai Mari tér"
+         "text": "tram 4 from Wesselényi utca / Erzsébet körút to Király utca / Erzsébet körút"
         },
         {
          "mode": "walk",
-         "text": "Walk 3 min"
+         "text": "Walk 4 min"
         }
        ]
       }
-     },
-     "isNew": true
+     }
     }
    ],
    "id": "breakfast",
-   "title": "Breakfast & coffee",
-   "note": "Three mornings to fill, and Cirkusz is a quarter of an hour on foot."
+   "title": "Breakfast & lunch",
+   "note": "Everything here is a short walk from Almássy tér — nobody is crossing the city before coffee."
   },
   {
    "id": "bars",
@@ -402,7 +456,6 @@
      "tags": [
       "craft beer"
      ],
-     "illustrative": true,
      "lat": 47.497239,
      "lng": 19.062778,
      "fromBase": {
@@ -510,7 +563,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -552,7 +604,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -1008,7 +1059,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -1821,7 +1871,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -2360,7 +2409,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     }
    ]
@@ -2380,7 +2428,6 @@
       "adult",
       "free entry"
      ],
-     "illustrative": true,
      "lat": 47.498088,
      "lng": 19.059967,
      "fromBase": {
@@ -2420,7 +2467,6 @@
       "adult",
       "free entry"
      ],
-     "illustrative": true,
      "lat": 47.498333,
      "lng": 19.059658,
      "fromBase": {
@@ -2500,7 +2546,6 @@
      "tags": [
       "party bar"
      ],
-     "illustrative": true,
      "lat": 47.499508,
      "lng": 19.060473,
      "fromBase": {
@@ -2590,7 +2635,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -2632,7 +2676,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     }
    ]
@@ -2643,5 +2686,5 @@
   "Strip clubs are the biggest rip-off risk in the city. Ask for a printed price list, pay each round rather than running a tab, agree private-dance prices out loud beforehand. NANA and Mynt were selected specifically because entry is free with no minimum spend.",
   "Decline dynamic currency conversion — always pay in HUF, not euros."
  ],
- "image_credits": "Venue photos come from Wikimedia Commons (CC BY, CC BY-SA, CC0, public domain), except Sparty, which Jacek supplied. Where Commons has never photographed the venue itself, the card shows its street, its building, or the activity, and is flagged illustrative:true."
+ "image_credits": "Venue photos are the places' own Google Maps listing photos, with a few taken from the venues' own websites. This is a private page for four people, not a publication."
 }
