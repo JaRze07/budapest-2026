@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt0oid94").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt0oid94").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt1bktv9").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt1bktv9").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1229,6 +1229,7 @@ window.BPmissing = function (img, label) {
   function venueCard(it) {
     var on = sel.picks[it.id] ? " on" : "";
     return '<div class="card' + on + '" id="c-' + esc(it.id) + '" data-pick="' + esc(it.id) + '">' +
+      (it.isNew ? '<span class="newbadge">New</span>' : "") +
       '<img src="images/' + esc(it.id) + '.jpg" alt="" loading="lazy" ' +
         'onerror="BPnoPhoto(this,\'' + esc((it.name || "?").slice(0, 1).toUpperCase()) + '\')">' +
       '<div class="pad">' +
