@@ -1690,3 +1690,30 @@ button.ptag:hover::after { color: var(--brass); }
 .deadrow:hover { border-color: var(--warn); }
 .deadrow b { display: block; font-size: 12.5px; text-decoration: line-through; color: var(--slate); }
 .deadrow small { display: block; font-size: 10.5px; color: var(--warn); font-weight: 700; margin-top: 2px; }
+
+/* ---------- alternatives: one of these, not all of them ---------- */
+
+.pgroup {
+  border: 1px dashed var(--brass); padding: 6px; margin-bottom: 6px; background: #FBF6E8;
+}
+.pgroup:last-child { margin-bottom: 0; }
+.pgroup .ptag { margin-bottom: 0; }
+.por {
+  text-align: center; font-size: 10px; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--brass-dim); padding: 4px 0;
+}
+
+.altpick { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 14px; }
+.altkick {
+  font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--brass-dim);
+}
+.altnote { font-size: 11.5px; color: var(--slate); margin: 4px 0 10px; line-height: 1.45; }
+.altbtn {
+  display: block; width: 100%; text-align: left; font-family: inherit; cursor: pointer;
+  border: 1px solid var(--line); background: var(--paper); padding: 8px 10px; margin-bottom: 6px;
+}
+.altbtn:hover { border-color: var(--brass); background: #FBF6E8; }
+.altbtn b { display: block; font-size: 13px; }
+.altwhen { display: block; font-size: 11px; color: var(--slate); margin-top: 2px; line-height: 1.4; }
+.altbtn.standalone { text-align: center; margin-top: 10px; color: var(--slate); }

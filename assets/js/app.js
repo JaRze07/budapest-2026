@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt1o1ce7").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt1o1ce7").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt2435im").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt2435im").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -591,6 +591,9 @@ window.BPmissing = function (img, label) {
 
       var pl = e.target.closest("[data-plan]");
       if (pl) { openSlotPicker(pl.getAttribute("data-plan")); return; }
+
+      var al = e.target.closest("[data-alt]");
+      if (al) { setAlt(al.getAttribute("data-for"), al.getAttribute("data-alt")); return; }
 
       var sl = e.target.closest("[data-slot]");
       if (sl) { setSlot(sl.getAttribute("data-for"), sl.getAttribute("data-slot")); return; }
@@ -1156,7 +1159,11 @@ window.BPmissing = function (img, label) {
           /* a hair behind anything fixed at the same time, so 10:00 checkout still leads */
           at: (toMin(s.from) === null ? 24 * 60 : toMin(s.from)) + 0.75,
           html: '<div class="slot planned"><div class="st">' + esc(s.when) + "</div>" +
-            '<div class="sd">' + got.map(plannedItem).join("") + "</div></div>"
+            '<div class="sd">' + groupsIn(s.id).map(function (g) {
+              return g.length === 1
+                ? plannedItem(g[0])
+                : '<div class="pgroup">' + g.map(plannedItem).join('<div class="por">or</div>') + "</div>";
+            }).join("") + "</div></div>"
         });
       });
 
@@ -1512,7 +1519,8 @@ window.BPmissing = function (img, label) {
             '<span class="n">' + (i + 1) + "</span>" +
             '<span class="nm"><b>' + esc(r.name) + "</b>" +
               (r.what ? '<i class="what">' + esc(r.what) + "</i>" : "") +
-              (slot ? '<i class="slotted">' + esc(slot.day) + " · " + esc(slot.when) + "</i>" : "") +
+              (slot ? '<i class="slotted">' + esc(slot.day) + " · " + esc(slot.when) +
+                esc(altSuffix(r.id, slot.id)) + "</i>" : "") +
               "<small>" + esc(r.who.join(", ")) + "</small></span>" +
             '<span class="bars">' + bars + "</span>" +
           "</button>" +
@@ -1527,6 +1535,12 @@ window.BPmissing = function (img, label) {
 
   /* ---- slotting activities into the days ---- */
 
+  /** " · or Blue Bird, Vibe Rooms" for a row that is one of several alternatives. */
+  function altSuffix(id, slotId) {
+    var others = groupOf(anchorOf(id), slotId).filter(function (x) { return x !== id; });
+    return others.length ? " · or " + others.map(nameOf).join(", ") : "";
+  }
+
   function slotById(id) {
     return (TRIP.slots || []).filter(function (s) { return s.id === id; })[0] || null;
   }
@@ -1539,6 +1553,35 @@ window.BPmissing = function (img, label) {
     var c = store.state.customs.filter(function (x) { return x.id === id; })[0];
     return c ? c.name : id;
   }
+  /* ---- alternatives ----
+     alt[x] = y means "x is an alternative to y". y is always a real anchor:
+     nothing points at something that itself points elsewhere. */
+
+  function anchorOf(id) {
+    var alt = store.state.alt || {};
+    var seen = {}, cur = id;
+    while (alt[cur] && !seen[cur]) { seen[cur] = 1; cur = alt[cur]; }
+    return cur;
+  }
+
+  /** Everything grouped with this one, anchor first, in plan order. */
+  function groupOf(anchor, withinSlot) {
+    return plannedIn(withinSlot).filter(function (x) { return anchorOf(x) === anchor; })
+      .sort(function (x, y) { return (x === anchor ? -1 : 0) - (y === anchor ? -1 : 0); });
+  }
+
+  /** The bands' contents as groups: [[a], [b, c, d]] rather than a flat list. */
+  function groupsIn(slotId) {
+    var out = [], seen = {};
+    plannedIn(slotId).forEach(function (id) {
+      var k = anchorOf(id);
+      if (seen[k]) return;
+      seen[k] = 1;
+      out.push(groupOf(k, slotId));
+    });
+    return out;
+  }
+
   /** Everything slotted into one band, in the order the tally ranks them. */
   function plannedIn(slotId) {
     var p = store.state.plan || {};
@@ -1575,14 +1618,72 @@ window.BPmissing = function (img, label) {
             "</button>";
           }).join("") + "</div>";
       }).join("") +
+      "</div>" + altPicker(activityId, cur) +
       (cur ? '<button type="button" class="btn dim clearslot" data-slot="" data-for="' +
-        esc(activityId) + '">Take it off the plan</button>' : "") +
-      "</div>";
+        esc(activityId) + '">Take it off the plan</button>' : "");
     el("sheet").hidden = false;
     document.body.style.overflow = "hidden";
   }
 
+  /* Anything already planned can be the thing this is an alternative to.
+     Pick one and you land in its slot, in its group. */
+  function altPicker(activityId, cur) {
+    var mine = anchorOf(activityId);
+    var options = [];
+    (TRIP.slots || []).forEach(function (s) {
+      groupsIn(s.id).forEach(function (g) {
+        if (g[0] === activityId) return;                  // not an alternative to itself
+        if (activityId !== mine && g[0] === mine) return;  // already in this group
+        options.push({ slot: s, anchor: g[0], with: g.slice(1) });
+      });
+    });
+    if (!options.length && activityId === mine) return "";
+
+    return '<div class="altpick">' +
+      '<div class="altkick">Or make it an alternative</div>' +
+      '<p class="altnote">Group it with something already planned — you do one of them, not both.</p>' +
+      options.map(function (o) {
+        return '<button type="button" class="altbtn" data-alt="' + esc(o.anchor) +
+          '" data-for="' + esc(activityId) + '">' +
+          "<b>or " + esc(nameOf(o.anchor)) + "</b>" +
+          '<span class="altwhen">' + esc(o.slot.day) + " · " + esc(o.slot.when) +
+            (o.with.length ? " · already or " + esc(o.with.map(nameOf).join(", ")) : "") + "</span>" +
+        "</button>";
+      }).join("") +
+      (activityId !== mine
+        ? '<button type="button" class="btn dim altbtn standalone" data-alt="" data-for="' +
+          esc(activityId) + '">Stand on its own instead</button>'
+        : "") +
+      "</div>";
+  }
+
+  /** Make one activity an alternative to another, moving it into that slot. */
+  async function setAlt(activityId, anchorId) {
+    if (anchorId) {
+      var anchor = anchorOf(anchorId);
+      var slot = (store.state.plan || {})[anchor] || "";
+      await store.savePlan(activityId, slot);
+      await store.saveAlt(activityId, anchor);
+    } else {
+      await store.saveAlt(activityId, "");
+    }
+    closeSheet();
+    renderSummary();
+    renderSchedule();
+    toast(anchorId
+      ? nameOf(activityId) + " or " + nameOf(anchorOf(anchorId)) + " — one of them"
+      : nameOf(activityId) + " stands on its own", 3000);
+  }
+
   async function setSlot(activityId, slotId) {
+    var alt = store.state.alt || {};
+    if (alt[activityId]) await store.saveAlt(activityId, "");
+    var kids = Object.keys(alt).filter(function (x) { return alt[x] === activityId; });
+    if (kids.length) {
+      // promote the first one, and hang the rest off it
+      await store.saveAlt(kids[0], "");
+      for (var i = 1; i < kids.length; i++) await store.saveAlt(kids[i], kids[0]);
+    }
     await store.savePlan(activityId, slotId);
     closeSheet();
     renderSummary();

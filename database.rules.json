@@ -184,6 +184,12 @@
           ".validate": false
         }
       }
+    },
+    "alt": {
+      "$activity": {
+        ".write": true,
+        ".validate": "newData.isString() && newData.val().length <= 24"
+      }
     }
   }
 }
