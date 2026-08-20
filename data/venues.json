@@ -9,7 +9,7 @@
    "Jacek"
   ],
   "currency_note": "Hungary uses the forint (HUF). ~390–400 HUF to €1. Cards accepted almost everywhere. Decline euro conversion at card terminals.",
-  "image_credits": "Venue photos in the prototype are embedded base64. Sources: Sparty photo supplied by Jacek; the rest from Wikipedia / Wikimedia Commons (CC BY-SA, CC BY, CC0). Several are illustrative stand-ins, not the venue itself — flagged per item below with illustrative:true."
+  "image_credits": "Venue photos are the places' own Google Maps listing photos, with a few from the venues' own websites. This is a private page for four people, not a publication."
  },
  "categories": [
   {
@@ -732,7 +732,7 @@
   {
    "id": "clubs",
    "title": "Clubs & parties",
-   "note": "Saturday is the decision night — Sparty, the Parade and the clubs all clash.",
+   "note": "Where Saturday night ends up.",
    "items": [
     {
      "id": "sparty",
@@ -745,7 +745,7 @@
       "saturday only",
       "ticketed"
      ],
-     "key_fact": "Sat 29 Aug 2026 is a confirmed Sparty date. Runs Saturdays only, Feb–Dec.",
+     "key_fact": "Runs Saturdays only, February to December — Sat 29 Aug is a confirmed date.",
      "requirements": "Swimwear worn underneath, flip-flops, towel. Drinks run on a Recup deposit cup. Waterproof phone pouch recommended.",
      "lat": 47.518435,
      "lng": 19.082522,
@@ -942,7 +942,7 @@
       "outdoor",
       "ticketed"
      ],
-     "key_fact": "Sat 29 Aug: Remember Parade — ATB, Ferry Corsten, Umek, Da Hool, Brooklyn Bounce. Directly clashes with Sparty.",
+     "key_fact": "Sat 29 Aug: Remember Parade — ATB, Ferry Corsten, Umek, Da Hool, Brooklyn Bounce.",
      "lat": 47.466753,
      "lng": 19.077579,
      "fromBase": {

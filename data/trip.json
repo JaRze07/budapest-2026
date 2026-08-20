@@ -784,8 +784,8 @@
    "d": "BudapestGO (tickets + journey planner), Bolt (taxis), and whatever the group chat is."
   },
   {
-   "t": "Bring for Sparty",
-   "d": "Swimwear worn underneath, flip-flops, a towel and a waterproof phone pouch. Drinks run on a deposit cup. 18+, bring ID."
+   "t": "Bring for the baths",
+   "d": "Swimwear worn underneath, flip-flops, a towel and a waterproof phone pouch. Most baths rent a cabin — take one rather than a locker."
   },
   {
    "t": "Plugs",
@@ -843,16 +843,6 @@
      "time": "Dinner",
      "t": "Book it. District VII fills up on a Saturday.",
      "kind": "todo"
-    },
-    {
-     "time": "21:30",
-     "t": "Sparty at Széchenyi — Saturdays only",
-     "kind": "clash"
-    },
-    {
-     "time": "17:00",
-     "t": "Remember Parade at Budapest Park — same night",
-     "kind": "clash"
     }
    ]
   },
@@ -921,15 +911,6 @@
    ]
   }
  ],
- "clash": {
-  "date": "2026-08-29",
-  "title": "Saturday night collides",
-  "body": "Sparty runs Saturdays only, so Sat 29 Aug is the only shot at it. The Remember Parade at Budapest Park — ATB, Ferry Corsten, Umek, Da Hool, Brooklyn Bounce — is the same evening. You get one. The picks board is currently split.",
-  "ids": [
-   "sparty",
-   "bppark"
-  ]
- },
  "tickets": {
   "airport": {
    "name": "100E airport ticket",
@@ -986,7 +967,7 @@
    },
    {
     "key": "nhiAfter",
-    "label": "After — the Sparty one",
+    "label": "After",
     "src": "images/nhi-after.jpg"
    }
   ]
@@ -1059,7 +1040,7 @@
    "id": "sat-eve",
    "day": "Saturday 29",
    "when": "18:00 → late",
-   "note": "Sparty and the Remember Parade both land here — you get one.",
+   "note": "Clubs, late bars, anything that runs past midnight.",
    "from": "18:00"
   },
   {

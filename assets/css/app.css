@@ -587,7 +587,6 @@ main {
 }
 .slot.fixed .sd { font-weight: 700; }
 .slot.tbd .sd { color: var(--slate); font-style: italic; }
-.slot.clash .sd { color: var(--warn); font-weight: 700; }
 .slot.travel .st { color: var(--brass-dim); }
 .slot.todo .sd::before { content: "☐ "; color: var(--brass); }
 

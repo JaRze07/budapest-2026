@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt1hg76l").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt1hg76l").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt1nuofy").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt1nuofy").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -750,7 +750,6 @@ window.BPmissing = function (img, label) {
       renderPicks();
     }
     renderMoney();
-    renderClash();
     renderArrivals();
     renderHypeOthers();
     renderTransformation();
@@ -770,7 +769,6 @@ window.BPmissing = function (img, label) {
     renderCountdown();
     renderTransformation();
     renderYou();
-    renderClash();
     renderArrivals();
     renderStaySummary();
     renderSchedule();
@@ -1047,19 +1045,6 @@ window.BPmissing = function (img, label) {
       "easiest way to kill a few hours with luggage already off your back.</p></div>";
   }
 
-  function renderClash() {
-    var c = TRIP.clash;
-    if (!c) { el("homeClash").innerHTML = ""; return; }
-    var tally = c.ids.map(function (id) {
-      var v = byId[id];
-      var voters = votersFor(id);
-      return '<div class="side"><b>' + esc(v ? v.item.name : id) + "</b> — " +
-        (voters.length ? esc(voters.join(", ")) : "nobody yet") + "</div>";
-    }).join("");
-    el("homeClash").innerHTML =
-      '<div class="callout"><b>' + esc(c.title) + "</b><p>" + esc(c.body) + "</p>" +
-      '<div class="tally">' + tally + "</div></div>";
-  }
 
   function renderArrivals() {
     var people = (TRIP.people || []).slice();
@@ -1375,7 +1360,6 @@ window.BPmissing = function (img, label) {
 
     paintWho();
     renderSummary();
-    renderClash();
     el("submittedLine").textContent = submittedLine();
   }
 
