@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt1nuofy").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt1nuofy").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt1o1ce7").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt1o1ce7").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];

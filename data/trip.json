@@ -1046,23 +1046,23 @@
   {
    "id": "sun-am",
    "day": "Sunday 30",
-   "when": "Before noon",
-   "note": "",
+   "when": "Morning — all four",
+   "note": "Last morning with everyone here.",
    "from": "09:00"
   },
   {
    "id": "sun-pm",
    "day": "Sunday 30",
-   "when": "Noon → 18:00",
-   "note": "Nhi leaves for the airport at 15:30 — keep this one close to home.",
+   "when": "Before Nhi leaves — till 15:30",
+   "note": "The last window with the four of you. Keep it close to home.",
    "from": "12:00"
   },
   {
    "id": "sun-eve",
    "day": "Sunday 30",
-   "when": "18:00 → late",
-   "note": "Nhi has flown — three of you.",
-   "from": "18:00"
+   "when": "After Nhi leaves — 15:30 → late",
+   "note": "Three of you. She is wheels-up at 18:25.",
+   "from": "15:30"
   },
   {
    "id": "mon",
