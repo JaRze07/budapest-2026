@@ -52,7 +52,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -225,13 +224,12 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     }
    ],
    "id": "breakfast",
    "title": "Breakfast & coffee",
-   "note": "Three mornings to fill, and Cirkusz is eleven minutes away."
+   "note": "Three mornings to fill, and Cirkusz is a quarter of an hour on foot."
   },
   {
    "id": "bars",
@@ -366,7 +364,6 @@
       "craft beer",
       "value"
      ],
-     "illustrative": true,
      "lat": 47.48361,
      "lng": 19.072567,
      "fromBase": {
@@ -445,7 +442,6 @@
       "rooftop",
       "view"
      ],
-     "illustrative": true,
      "lat": 47.503737,
      "lng": 19.061436,
      "fromBase": {
@@ -597,7 +593,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -639,7 +634,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -680,7 +674,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     }
    ]
@@ -742,7 +735,6 @@
       "club",
       "open daily"
      ],
-     "illustrative": true,
      "lat": 47.500648,
      "lng": 19.065417,
      "fromBase": {
@@ -822,7 +814,6 @@
       "boat",
       "party"
      ],
-     "illustrative": true,
      "lat": 47.500536,
      "lng": 19.046842,
      "fromBase": {
@@ -861,7 +852,6 @@
      "tags": [
       "club"
      ],
-     "illustrative": true,
      "lat": 47.497795,
      "lng": 19.06675,
      "fromBase": {
@@ -902,7 +892,6 @@
       "ticketed"
      ],
      "key_fact": "Sat 29 Aug: Remember Parade — ATB, Ferry Corsten, Umek, Da Hool, Brooklyn Bounce. Directly clashes with Sparty.",
-     "illustrative": true,
      "lat": 47.466753,
      "lng": 19.077579,
      "fromBase": {
@@ -985,7 +974,7 @@
      "name": "Corvintető",
      "area": "Blaha Lujza tér 1–2",
      "desc": "Club on the roof of a socialist department store, with the whole of Pest laid out behind the dancefloor.",
-     "meta": "Thu–Sat late · rooftop in season · 8 min walk from the flat",
+     "meta": "Thu–Sat late · rooftop in season",
      "tags": [
       "rooftop",
       "club",
@@ -1240,7 +1229,6 @@
       "novelty",
       "booking required"
      ],
-     "illustrative": true,
      "lat": 47.518435,
      "lng": 19.082522,
      "fromBase": {
@@ -1275,7 +1263,7 @@
      "name": "Lukács Baths",
      "area": "Frankel Leó út 25–29 · Buda",
      "desc": "The locals' bath — faintly 1960s, half the price, no queue.",
-     "meta": "Daily 07:00–19:00 · ~7,000 HUF · swim cap mandatory for outdoor lap pools",
+     "meta": "Daily 07:00–19:00 · ~€17.5 · swim cap mandatory for outdoor lap pools",
      "tags": [
       "thermal bath",
       "value",
@@ -1372,7 +1360,7 @@
      "name": "Gellért Baths",
      "area": "Kelenhegyi út 4 · Buda",
      "desc": "The art nouveau one — stained glass, mosaic columns, a vaulted indoor hall that looks like a cathedral.",
-     "meta": "Daily 09:00–19:00 · ~€6,900 HUF · take a cabin",
+     "meta": "Daily 09:00–19:00 · ~€17.5 · take a cabin",
      "tags": [
       "thermal bath",
       "landmark",
@@ -1413,7 +1401,7 @@
      "name": "Király Baths",
      "area": "Fő u. 84 · Buda",
      "desc": "1565 Ottoman dome with shafts of light through the roof. Small, dim and completely unlike the big ones.",
-     "meta": "Daily 09:00–21:00 · ~€4,500 HUF · no outdoor pools",
+     "meta": "Daily 09:00–21:00 · ~€11.5 · no outdoor pools",
      "tags": [
       "thermal bath",
       "historic",
@@ -1463,7 +1451,7 @@
      "name": "Veli Bej",
      "area": "Árpád fejedelem útja 7 · Buda",
      "desc": "The Ottoman bath the tour groups miss — five pools under a restored dome, capped numbers, calm.",
-     "meta": "Daily 06:00–12:00 and 15:00–21:00 · ~€4,900 HUF · book ahead",
+     "meta": "Daily 06:00–12:00 and 15:00–21:00 · ~€12.5 · book ahead",
      "tags": [
       "thermal bath",
       "historic",
@@ -1513,7 +1501,7 @@
      "name": "Dandár Baths",
      "area": "Dandár u. 5–7 · District IX",
      "desc": "A small neighbourhood bath in Ferencváros. No queue, no spectacle, half the price.",
-     "meta": "Daily 06:00–21:00 · ~€3,500 HUF",
+     "meta": "Daily 06:00–21:00 · ~€9",
      "tags": [
       "thermal bath",
       "value",
@@ -1566,7 +1554,6 @@
       "hungarian",
       "booking required"
      ],
-     "illustrative": true,
      "lat": 47.497509,
      "lng": 19.062699,
      "fromBase": {
@@ -1606,7 +1593,6 @@
       "group friendly",
       "live music"
      ],
-     "illustrative": true,
      "lat": 47.497759,
      "lng": 19.062846,
      "fromBase": {
@@ -1646,7 +1632,6 @@
       "hungarian",
       "group friendly"
      ],
-     "illustrative": true,
      "lat": 47.49954,
      "lng": 19.056161,
      "fromBase": {
@@ -1877,7 +1862,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -1918,7 +1902,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -1960,7 +1943,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     }
    ]
@@ -1980,7 +1962,6 @@
       "booking required",
       "group"
      ],
-     "illustrative": true,
      "lat": 47.498409,
      "lng": 19.059985,
      "fromBase": {
@@ -2021,7 +2002,6 @@
       "group",
       "indoor"
      ],
-     "illustrative": true,
      "lat": 47.496827,
      "lng": 19.069753,
      "fromBase": {
@@ -2062,7 +2042,6 @@
       "group",
       "indoor"
      ],
-     "illustrative": true,
      "lat": 47.512023,
      "lng": 19.049756,
      "fromBase": {
@@ -2224,7 +2203,7 @@
      "id": "axe",
      "name": "Axe throwing",
      "area": "Balta Dobálás · Dohány u. 30/a",
-     "desc": "Lanes, hatchets, and someone who shows you how so nobody loses a finger. Ten minutes from the flat.",
+     "desc": "Lanes, hatchets, and someone who shows you how so nobody loses a finger.",
      "meta": "Daily 12:00–20:00, till 22:00 Fri–Sat · ~€12 pp an hour · book a lane",
      "tags": [
       "booking required",
@@ -2259,7 +2238,6 @@
        ]
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {
@@ -2348,7 +2326,7 @@
      "name": "Museum of Illusions",
      "area": "Paulay Ede u. 47",
      "desc": "Tilted rooms and forced perspective. Forty minutes of taking photographs of each other.",
-     "meta": "Daily 10:00–20:00 · ~€10 · nine minutes' walk",
+     "meta": "Daily 10:00–20:00 · ~€10 · about 40 minutes inside",
      "tags": [
       "indoor",
       "quick",
@@ -2484,7 +2462,6 @@
       "booking required"
      ],
      "key_fact": "This is the private-rooms venue, distinct from Blue Bird Karaoke Club nearby, which is open-mic.",
-     "illustrative": true,
      "lat": 47.498088,
      "lng": 19.059967,
      "fromBase": {
@@ -2558,7 +2535,7 @@
      "name": "Vibe Rooms",
      "area": "Wesselényi u. 55",
      "desc": "Private karaoke boxes two minutes from the front door — 80,000 songs, wireless mics, nobody else listening.",
-     "meta": "Wed–Thu 18:00–24:00 · Fri–Sat 17:00–24:00 · closed Sun–Tue · ~2,500 HUF pp an hour",
+     "meta": "Wed–Thu 18:00–24:00 · Fri–Sat 17:00–24:00 · closed Sun–Tue · ~€6.5 pp an hour",
      "tags": [
       "karaoke",
       "private room",
@@ -2572,7 +2549,6 @@
        "min": 2
       }
      },
-     "illustrative": true,
      "isNew": true
     },
     {

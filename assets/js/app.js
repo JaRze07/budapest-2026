@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt1bktv9").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt1bktv9").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt1cic8r").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt1cic8r").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1226,6 +1226,15 @@ window.BPmissing = function (img, label) {
     if (open && el("pName")) el("pName").focus();
   }
 
+  function distLine(it) {
+    var f = it.fromBase || {}, w = f.walk, t = f.transit;
+    if (!w) return "";
+    var km = w.m >= 1000 ? (w.m / 1000).toFixed(1) + " km" : w.m + " m";
+    var s = km + " from the flat · " + w.min + " min walk";
+    if (t && (w.min - t.min) >= 6) s += " · or " + t.min + " min by " + t.summary;
+    return s;
+  }
+
   function venueCard(it) {
     var on = sel.picks[it.id] ? " on" : "";
     return '<div class="card' + on + '" id="c-' + esc(it.id) + '" data-pick="' + esc(it.id) + '">' +
@@ -1235,6 +1244,7 @@ window.BPmissing = function (img, label) {
       '<div class="pad">' +
         "<h4>" + esc(it.name) + "</h4>" +
         '<div class="area">' + esc(it.area) + (it.illustrative ? " · photo illustrative" : "") + "</div>" +
+        (it.fromBase ? '<div class="fromflat">' + esc(distLine(it)) + "</div>" : "") +
         '<p class="desc">' + esc(it.desc) + "</p>" +
         '<p class="meta">' + esc(it.meta) + "</p>" +
         (it.key_fact ? '<p class="keyfact">' + esc(it.key_fact) + "</p>" : "") +

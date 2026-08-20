@@ -1662,3 +1662,9 @@ button.ptag:hover::after { color: var(--brass); }
   padding: 3px 8px; border-radius: 999px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, .4);
 }
+
+/* How far each place is from Almássy tér, on every card. */
+.fromflat {
+  font-size: 11px; font-weight: 700; color: var(--brass-dim);
+  margin: 3px 0 0; line-height: 1.4;
+}
