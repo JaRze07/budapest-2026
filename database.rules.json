@@ -167,6 +167,23 @@
         ".write": true,
         ".validate": "newData.isString() && newData.val().matches(/^(fri-pm|fri-eve|sat-am|sat-pm|sat-eve|sun-am|sun-pm|sun-eve|mon)?$/)"
       }
+    },
+    "vetoes": {
+      "$name": {
+        ".write": "newData.exists() && $name.matches(/^(Areeb|Nhi|Phuong|Jacek)$/)",
+        ".validate": "newData.hasChildren(['when'])",
+        "ids": {
+          "$i": {
+            ".validate": "newData.isString() && newData.val().length <= 24"
+          }
+        },
+        "when": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
     }
   }
 }

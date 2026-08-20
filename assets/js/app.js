@@ -33,7 +33,7 @@ window.BPmissing = function (img, label) {
   var me = null;
   var view = "home";
   var showResults = false;
-  var sel = { picks: {} };
+  var sel = { picks: {}, vetoes: {} };
   var byId = {};       // venue id -> {item, catIndex}
 
   /* ================= tiny helpers ================= */
@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt1gf1vr").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt1gf1vr").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt1gwyfb").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt1gwyfb").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -485,7 +485,7 @@ window.BPmissing = function (img, label) {
     el("swapBtn").addEventListener("click", function () {
       store.clearMe();
       me = null;
-      sel = { picks: {} };
+      sel = { picks: {}, vetoes: {} };
       openGate();
     });
 
@@ -686,9 +686,11 @@ window.BPmissing = function (img, label) {
     el("topDays").textContent = "28–31 Aug";
 
     // Pre-tick whatever this person already has on record.
-    sel = { picks: {} };
+    sel = { picks: {}, vetoes: {} };
     var pk = store.state.picks[name];
     if (pk && pk.ids) pk.ids.forEach(function (id) { sel.picks[id] = true; });
+    var vt = store.state.vetoes[name];
+    if (vt && vt.ids) vt.ids.forEach(function (id) { sel.vetoes[id] = true; });
 
     renderAll();
     var v = (location.hash || "").replace("#/", "");
@@ -1243,8 +1245,14 @@ window.BPmissing = function (img, label) {
     return s;
   }
 
+  function vetoBtn(id) {
+    var no = !!sel.vetoes[id];
+    return '<button type="button" class="veto' + (no ? " on" : "") + '" data-veto="' + esc(id) + '">' +
+      (no ? "✕ Ruled out" : "Hard no") + "</button>";
+  }
+
   function venueCard(it) {
-    var on = sel.picks[it.id] ? " on" : "";
+    var on = (sel.picks[it.id] ? " on" : "") + (sel.vetoes[it.id] ? " vetoed" : "");
     return '<div class="card' + on + '" id="c-' + esc(it.id) + '" data-pick="' + esc(it.id) + '">' +
       (it.isNew ? '<span class="newbadge">New</span>' : "") +
       '<img src="images/' + esc(it.id) + '.jpg" alt="" loading="lazy" ' +
@@ -1258,6 +1266,7 @@ window.BPmissing = function (img, label) {
         (it.key_fact ? '<p class="keyfact">' + esc(it.key_fact) + "</p>" : "") +
         '<div class="cardfoot">' +
           '<span class="pick" id="p-' + esc(it.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
+          vetoBtn(it.id) +
           (it.lat ? '<button type="button" class="mini" data-goto="' + esc(it.id) + '">Get there</button>' : "") +
         "</div>" +
         '<div class="who" id="w-' + esc(it.id) + '"></div>' +
@@ -1265,7 +1274,7 @@ window.BPmissing = function (img, label) {
   }
 
   function customCard(c) {
-    var on = sel.picks[c.id] ? " on" : "";
+    var on = (sel.picks[c.id] ? " on" : "") + (sel.vetoes[c.id] ? " vetoed" : "");
     return '<div class="card' + on + '" id="c-' + esc(c.id) + '" data-pick="' + esc(c.id) + '">' +
       '<div class="ctile">' + esc((c.name || "?").slice(0, 1).toUpperCase()) + "</div>" +
       '<div class="pad">' +
@@ -1274,6 +1283,7 @@ window.BPmissing = function (img, label) {
       (c.note ? '<p class="desc">' + esc(c.note) + "</p>" : "") +
       '<div class="cardfoot">' +
         '<span class="pick" id="p-' + esc(c.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
+        vetoBtn(c.id) +
       "</div>" +
       '<div class="who" id="w-' + esc(c.id) + '"></div></div></div>';
   }
@@ -1281,13 +1291,41 @@ window.BPmissing = function (img, label) {
   function onBoardClick(e) {
     // The ride links sit inside a card that toggles on click — don't also vote.
     if (e.target.closest("a, .mini")) return;
+    var v = e.target.closest("[data-veto]");
+    if (v) { toggleVeto(v.getAttribute("data-veto")); return; }
     var card = e.target.closest("[data-pick]");
     if (card) { toggle("picks", card.getAttribute("data-pick")); return; }
+  }
+
+  /* In and hard-no are opposites — saying one clears the other. */
+  function toggleVeto(id) {
+    if (!me) return;
+    var now = !sel.vetoes[id];
+    if (now) { sel.vetoes[id] = true; delete sel.picks[id]; }
+    else delete sel.vetoes[id];
+    paintCard(id);
+    updateBar();
+    queueSave("picks");
+  }
+
+  function paintCard(id) {
+    var c = el("c-" + id), p = el("p-" + id);
+    if (c) {
+      c.classList.toggle("on", !!sel.picks[id]);
+      c.classList.toggle("vetoed", !!sel.vetoes[id]);
+      var b = c.querySelector("[data-veto]");
+      if (b) {
+        b.classList.toggle("on", !!sel.vetoes[id]);
+        b.textContent = sel.vetoes[id] ? "✕ Ruled out" : "Hard no";
+      }
+    }
+    if (p) p.textContent = sel.picks[id] ? "✓ In" : "+ I'm in";
   }
 
   function toggle(kind, id) {
     if (!me) return;
     if (sel[kind][id]) delete sel[kind][id]; else sel[kind][id] = true;
+    if (kind === "picks" && sel.picks[id]) delete sel.vetoes[id];
     var c = el("c-" + id), p = el("p-" + id);
     if (c) c.classList.toggle("on", !!sel[kind][id]);
     if (p) p.textContent = sel[kind][id] ? "✓ In" : "+ I'm in";
@@ -1319,6 +1357,7 @@ window.BPmissing = function (img, label) {
       dirty = false;
       setSaveState("saving");
       var res = await store.saveVote("picks", me, Object.keys(sel.picks));
+      if (res.synced) res = await store.saveVote("vetoes", me, Object.keys(sel.vetoes));
       if (!res.synced) {
         saveInFlight = false;
         setSaveState("failed");
@@ -1397,16 +1436,22 @@ window.BPmissing = function (img, label) {
       if (!w) return;
       var v = votersFor(id, kind);
       if (!v.length) return;
-      var all = voted.length > 1 && v.length === voted.length;
-      w.innerHTML = v.map(function (n) {
-        return '<span class="' + (all ? "all" : (n === me ? "n" : "")) + '">' + esc(n) + "</span>";
+      var all = kind === "picks" && voted.length > 1 && v.length === voted.length;
+      w.innerHTML += v.map(function (n) {
+        return '<span class="' + (kind === "vetoes" ? "no" : (all ? "all" : (n === me ? "n" : ""))) + '">' +
+          (kind === "vetoes" ? "✕ " : "") + esc(n) + "</span>";
       }).join("");
     });
   }
 
+  /** Anyone at all saying no is enough to take it off the table. */
+  function vetoedBy(id) { return votersFor(id, "vetoes"); }
+
   function paintWho() {
     document.querySelectorAll(".who").forEach(function (w) { w.innerHTML = ""; });
-    chips(Object.keys(byId).concat(store.state.customs.map(function (c) { return c.id; })), "picks");
+    var all = Object.keys(byId).concat(store.state.customs.map(function (c) { return c.id; }));
+    chips(all, "picks");
+    chips(all, "vetoes");
   }
 
   function submittedLine() {
@@ -1433,13 +1478,37 @@ window.BPmissing = function (img, label) {
       var v = votersFor(c.id);
       if (v.length) rows.push({ id: c.id, name: c.name, what: c.note || "Suggested by " + c.by, n: v.length, who: v });
     });
+    /* One hard no is enough — it comes out of the ranking and goes in its own list. */
+    var dead = rows.filter(function (r) { return vetoedBy(r.id).length; })
+      .map(function (r) { return { id: r.id, name: r.name, by: vetoedBy(r.id) }; });
+    Object.keys(byId).concat(store.state.customs.map(function (c) { return c.id; }))
+      .forEach(function (id) {
+        if (dead.some(function (d) { return d.id === id; })) return;
+        var v = vetoedBy(id);
+        if (v.length) dead.push({ id: id, name: nameOf(id), by: v });
+      });
+    rows = rows.filter(function (r) { return !vetoedBy(r.id).length; });
     rows.sort(function (a, b) { return b.n - a.n || a.name.localeCompare(b.name); });
 
-    if (!rows.length) { box.innerHTML = '<p class="sec-note">No votes in yet.</p>'; return; }
+    var ruled = dead.length
+      ? "<section>" +
+        '<div class="cathead"><h3>Ruled out</h3><span>' + dead.length + " off the table</span></div>" +
+        '<p class="catnote">One hard no is enough. These are out of the tally — tap to change your mind.</p>' +
+        '<div class="dead">' + dead.sort(function (a, b) { return a.name.localeCompare(b.name); })
+          .map(function (d) {
+            return '<button type="button" class="deadrow" data-jump="' + esc(d.id) + '">' +
+              "<b>" + esc(d.name) + "</b><small>✕ " + esc(d.by.join(", ")) + "</small></button>";
+          }).join("") + "</div></section>"
+      : "";
+
+    if (!rows.length) {
+      box.innerHTML = ruled || '<p class="sec-note">No votes in yet.</p>';
+      return;
+    }
 
     // Built like the other sections so it doesn't read as an orphan block.
     box.innerHTML = "<section>" +
-      '<div class="cathead"><h3>The tally</h3><span>' + rows.length + " with votes</span></div>" +
+      '<div class="cathead"><h3>The tally</h3><span>' + rows.length + " still standing</span></div>" +
       '<p class="catnote">★ = everyone who has voted so far picked it. Tap any row to jump to it.</p>' +
       '<div class="rank">' + rows.map(function (r, i) {
         var bars = CFG.names.map(function (n) {
@@ -1461,7 +1530,7 @@ window.BPmissing = function (img, label) {
               '" data-plan="' + esc(r.id) + '" title="Put this in a slot">' + (slot ? "✎" : "+") + "</button>"
             : "") +
         "</div>";
-      }).join("") + "</div></section>";
+      }).join("") + "</div></section>" + ruled;
   }
 
 

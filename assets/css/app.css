@@ -1668,3 +1668,26 @@ button.ptag:hover::after { color: var(--brass); }
   font-size: 11px; font-weight: 700; color: var(--brass-dim);
   margin: 3px 0 0; line-height: 1.4;
 }
+
+/* ---------- hard no ---------- */
+
+.veto {
+  border: 1px solid var(--line); background: transparent; color: var(--slate);
+  font-family: inherit; font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 999px; cursor: pointer; margin-left: 6px;
+}
+.veto:hover { border-color: var(--warn); color: var(--warn); }
+.veto.on { background: var(--warn); border-color: var(--warn); color: #fff; }
+.card.vetoed { opacity: .55; }
+.card.vetoed img { filter: grayscale(1); }
+.card.vetoed h4 { text-decoration: line-through; }
+.who span.no { background: transparent; border: 1px solid var(--warn); color: var(--warn); }
+
+.dead { display: flex; flex-wrap: wrap; gap: 6px; }
+.deadrow {
+  flex: 1 1 200px; text-align: left; font-family: inherit; cursor: pointer;
+  border: 1px solid var(--line); background: var(--paper); padding: 7px 10px;
+}
+.deadrow:hover { border-color: var(--warn); }
+.deadrow b { display: block; font-size: 12.5px; text-decoration: line-through; color: var(--slate); }
+.deadrow small { display: block; font-size: 10.5px; color: var(--warn); font-weight: 700; margin-top: 2px; }
