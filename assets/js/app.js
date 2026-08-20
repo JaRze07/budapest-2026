@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt1fn4ma").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt1fn4ma").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt1gf1vr").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt1gf1vr").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1120,16 +1120,24 @@ window.BPmissing = function (img, label) {
         '">Get there</button><a href="#/stay">Details</a></div>';
   }
 
+  var WORD_TIME = {
+    morning: 8 * 60, day: 10 * 60, noon: 12 * 60, afternoon: 14 * 60,
+    dinner: 19 * 60, evening: 19 * 60, night: 22 * 60, late: 23 * 60
+  };
+  function slotMin(time) {
+    var m = toMin(time);
+    if (m !== null) return m;
+    var w = WORD_TIME[String(time || "").trim().toLowerCase()];
+    /* half a minute later, so a real clock time always wins the tie */
+    return (w === undefined ? 24 * 60 : w) + 0.5;
+  }
+
   function renderSchedule() {
     var html = '<div class="sec-title">The shape of it</div>' +
       '<p class="sec-note">Only the fixed points are here. Everything else comes out of the picks.</p>';
     html += (TRIP.schedule || []).map(function (d) {
       var slots = d.slots.slice().sort(function (a, b) {
-        var am = toMin(a.time), bm = toMin(b.time);
-        if (am === null && bm === null) return 0;
-        if (am === null) return 1;
-        if (bm === null) return -1;
-        return am - bm;
+        return slotMin(a.time) - slotMin(b.time);
       }).map(function (s) {
         return '<div class="slot ' + esc(s.kind) + '"><div class="st">' + esc(s.time) +
           '</div><div class="sd">' + esc(s.t) + "</div></div>";

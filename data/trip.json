@@ -814,7 +814,7 @@
     },
     {
      "time": "15:00",
-     "t": "Check in wherever we land",
+     "t": "Check in at Goldcentral, 17 Almássy tér",
      "kind": "fixed"
     },
     {
@@ -875,6 +875,11 @@
      "time": "Evening",
      "t": "Open",
      "kind": "open"
+    },
+    {
+     "time": "15:30",
+     "kind": "travel",
+     "t": "Nhi leaves for the airport — 100E from Deák, or share a car for ~€30"
     }
    ]
   },
@@ -883,11 +888,6 @@
    "day": "Monday",
    "label": "Out",
    "slots": [
-    {
-     "time": "11:00",
-     "t": "Checkout",
-     "kind": "fixed"
-    },
     {
      "time": "Day",
      "t": "Bags down, one last thing — Central Market is open till 18:00 on a Monday",
@@ -902,6 +902,21 @@
      "time": "18:25",
      "t": "Areeb flies home",
      "kind": "travel"
+    },
+    {
+     "time": "10:00",
+     "t": "Checkout — bags stay at the flat or in a Keleti locker",
+     "kind": "fixed"
+    },
+    {
+     "time": "14:40",
+     "kind": "travel",
+     "t": "Jacek leaves for the airport"
+    },
+    {
+     "time": "15:30",
+     "kind": "travel",
+     "t": "Areeb leaves for the airport"
     }
    ]
   }
@@ -1052,7 +1067,7 @@
    "id": "sun-pm",
    "day": "Sunday 30",
    "when": "Noon → 18:00",
-   "note": "Nhi leaves for the airport in this window."
+   "note": "Nhi leaves for the airport at 15:30 — keep this one close to home."
   },
   {
    "id": "sun-eve",
@@ -1063,8 +1078,8 @@
   {
    "id": "mon",
    "day": "Monday 31",
-   "when": "Checkout → 15:00",
-   "note": "Bags down, one last thing, then out."
+   "when": "10:00 → 14:30",
+   "note": "Bags down, one last thing. Jacek leaves for the airport at 14:40."
   }
  ]
 }
