@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt1h9cb6").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt1h9cb6").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt1hg76l").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt1hg76l").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1134,45 +1134,52 @@ window.BPmissing = function (img, label) {
     return (w === undefined ? 24 * 60 : w) + 0.5;
   }
 
+  function plannedItem(id) {
+    var v = byId[id] ? byId[id].item : customById(id);
+    var w = v && v.fromBase && v.fromBase.walk;
+    var t = v && v.fromBase && v.fromBase.transit;
+    /* transit only earns its place when it saves a real walk */
+    var how = w ? (t && (w.min - t.min) >= 6
+      ? t.min + " min · " + t.summary
+      : w.min + " min walk") : "";
+    var line = (v && (v.meta || v.note)) || "";
+    var open = v && v.lat;                  /* customs have no pin to open */
+    return (open ? '<button type="button" class="ptag pitem" data-goto="' + esc(id) + '">'
+                 : '<span class="ptag pitem plain">') +
+      "<b>" + esc(nameOf(id)) + "</b>" +
+      (line ? "<small>" + esc(line) + "</small>" : "") +
+      (how ? '<span class="phow">' + esc(how) + "</span>" : "") +
+    (open ? "</button>" : "</span>");
+  }
+
   function renderSchedule() {
     var html = '<div class="sec-title">The shape of it</div>' +
-      '<p class="sec-note">Only the fixed points are here. Everything else comes out of the picks.</p>';
+      '<p class="sec-note">The fixed points, with whatever has been slotted in sitting where it falls in the day.</p>';
     html += (TRIP.schedule || []).map(function (d) {
-      var slots = d.slots.slice().sort(function (a, b) {
-        return slotMin(a.time) - slotMin(b.time);
-      }).map(function (s) {
-        return '<div class="slot ' + esc(s.kind) + '"><div class="st">' + esc(s.time) +
-          '</div><div class="sd">' + esc(s.t) + "</div></div>";
-      }).join("");
-      // Anything slotted into one of this day's bands, under the fixed points.
       var dayName = d.day + " " + parseInt(d.date.slice(8), 10);
-      var bands = (TRIP.slots || []).filter(function (s) { return s.day === dayName; })
-        .map(function (s) {
-          var got = plannedIn(s.id);
-          if (!got.length) return "";
-          return '<div class="slot planned"><div class="st">' + esc(s.when) + "</div>" +
-            '<div class="sd">' + got.map(function (id) {
-              var v = byId[id] ? byId[id].item : customById(id);
-              var w = v && v.fromBase && v.fromBase.walk;
-              var t = v && v.fromBase && v.fromBase.transit;
-              /* transit only earns its place when it saves a real walk */
-              var how = w ? (t && (w.min - t.min) >= 6
-                ? t.min + " min · " + t.summary
-                : w.min + " min walk") : "";
-              var line = (v && (v.meta || v.note)) || "";
-              var open = v && v.lat;                  /* customs have no pin to open */
-              return (open ? '<button type="button" class="ptag pitem" data-goto="' + esc(id) + '">'
-                           : '<span class="ptag pitem plain">') +
-                "<b>" + esc(nameOf(id)) + "</b>" +
-                (line ? "<small>" + esc(line) + "</small>" : "") +
-                (how ? '<span class="phow">' + esc(how) + "</span>" : "") +
-              (open ? "</button>" : "</span>");
-            }).join("") + "</div></div>";
-        }).join("");
+
+      /* Fixed points and slotted activities are one timeline, not two lists. */
+      var rows = d.slots.map(function (s) {
+        return { at: slotMin(s.time), html: '<div class="slot ' + esc(s.kind) + '"><div class="st">' +
+          esc(s.time) + '</div><div class="sd">' + esc(s.t) + "</div></div>" };
+      });
+
+      (TRIP.slots || []).filter(function (s) { return s.day === dayName; }).forEach(function (s) {
+        var got = plannedIn(s.id);
+        if (!got.length) return;
+        rows.push({
+          /* a hair behind anything fixed at the same time, so 10:00 checkout still leads */
+          at: (toMin(s.from) === null ? 24 * 60 : toMin(s.from)) + 0.75,
+          html: '<div class="slot planned"><div class="st">' + esc(s.when) + "</div>" +
+            '<div class="sd">' + got.map(plannedItem).join("") + "</div></div>"
+        });
+      });
+
+      rows.sort(function (a, b) { return a.at - b.at; });
 
       return '<div class="day"><div class="dhead"><b>' + esc(d.day) + " " +
         esc(d.date.slice(8)) + " Aug</b><span>" + esc(d.label) + "</span></div>" +
-        slots + bands + "</div>";
+        rows.map(function (r) { return r.html; }).join("") + "</div>";
     }).join("");
     el("homeSchedule").innerHTML = html;
   }
