@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt1gwyfb").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt1gwyfb").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt1h9cb6").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt1h9cb6").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1274,7 +1274,7 @@ window.BPmissing = function (img, label) {
   }
 
   function customCard(c) {
-    var on = (sel.picks[c.id] ? " on" : "") + (sel.vetoes[c.id] ? " vetoed" : "");
+    var on = sel.picks[c.id] ? " on" : "";
     return '<div class="card' + on + '" id="c-' + esc(c.id) + '" data-pick="' + esc(c.id) + '">' +
       '<div class="ctile">' + esc((c.name || "?").slice(0, 1).toUpperCase()) + "</div>" +
       '<div class="pad">' +
@@ -1283,7 +1283,6 @@ window.BPmissing = function (img, label) {
       (c.note ? '<p class="desc">' + esc(c.note) + "</p>" : "") +
       '<div class="cardfoot">' +
         '<span class="pick" id="p-' + esc(c.id) + '">' + (on ? "✓ In" : "+ I'm in") + "</span>" +
-        vetoBtn(c.id) +
       "</div>" +
       '<div class="who" id="w-' + esc(c.id) + '"></div></div></div>';
   }
@@ -1444,8 +1443,9 @@ window.BPmissing = function (img, label) {
     });
   }
 
-  /** Anyone at all saying no is enough to take it off the table. */
-  function vetoedBy(id) { return votersFor(id, "vetoes"); }
+  /** Anyone at all saying no is enough to take it off the table — but only for
+      the listed venues. Whatever we put forward ourselves is not up for veto. */
+  function vetoedBy(id) { return byId[id] ? votersFor(id, "vetoes") : []; }
 
   function paintWho() {
     document.querySelectorAll(".who").forEach(function (w) { w.innerHTML = ""; });
