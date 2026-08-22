@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt2435im").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt2435im").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt4xba11").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt4xba11").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1112,7 +1112,8 @@ window.BPmissing = function (img, label) {
 
   var WORD_TIME = {
     morning: 8 * 60, day: 10 * 60, noon: 12 * 60, afternoon: 14 * 60,
-    dinner: 19 * 60, evening: 19 * 60, night: 22 * 60, late: 23 * 60
+    /* evening is a catch-all block, so it sits after the last arrival of the day */
+    dinner: 19 * 60, evening: 20 * 60, night: 22 * 60, late: 23 * 60
   };
   function slotMin(time) {
     var m = toMin(time);

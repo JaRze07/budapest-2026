@@ -115,9 +115,50 @@
    "short": "Phuong",
    "initial": "P",
    "status": "coming",
-   "flight_status": "pending",
-   "note": "Flight still to come.",
-   "flights": []
+   "flight_status": "confirmed",
+   "note": "In last on Friday, out first on Monday — she flies at 12:40.",
+   "flights": [
+    {
+     "dir": "out",
+     "date": "2026-08-28",
+     "legs": [
+      {
+       "from": "GOT",
+       "from_city": "Gothenburg",
+       "to": "BUD",
+       "to_city": "Budapest",
+       "dep": "17:20",
+       "dep_tz": "+02:00",
+       "arr": "19:25",
+       "arr_tz": "+02:00",
+       "duration": "2 h 5 min",
+       "carrier": "Ryanair FR6749",
+       "direct": true
+      }
+     ],
+     "connection": "Departs Gothenburg Landvetter."
+    },
+    {
+     "dir": "back",
+     "date": "2026-08-31",
+     "legs": [
+      {
+       "from": "BUD",
+       "from_city": "Budapest",
+       "to": "GOT",
+       "to_city": "Gothenburg",
+       "dep": "12:40",
+       "dep_tz": "+02:00",
+       "arr": "14:50",
+       "arr_tz": "+02:00",
+       "duration": "2 h 10 min",
+       "carrier": "Ryanair FR6748",
+       "direct": true
+      }
+     ],
+     "connection": "Into Gothenburg Landvetter."
+    }
+   ]
   },
   {
    "name": "Jacek",
@@ -826,6 +867,11 @@
      "time": "11:20",
      "t": "Areeb lands",
      "kind": "travel"
+    },
+    {
+     "time": "19:25",
+     "t": "Phuong lands",
+     "kind": "travel"
     }
    ]
   },
@@ -907,6 +953,16 @@
      "time": "15:30",
      "kind": "travel",
      "t": "Areeb leaves for the airport"
+    },
+    {
+     "time": "09:45",
+     "kind": "travel",
+     "t": "Phuong leaves for the airport — before checkout, so bags go with her"
+    },
+    {
+     "time": "12:40",
+     "t": "Phuong flies home",
+     "kind": "travel"
     }
    ]
   }
@@ -1019,7 +1075,7 @@
    "id": "fri-eve",
    "day": "Friday 28",
    "when": "17:40 → late",
-   "note": "First night, all of us in town.",
+   "note": "Nhi is in at 17:40, Phuong at 19:25 — all four from then on.",
    "from": "17:40"
   },
   {
@@ -1068,7 +1124,7 @@
    "id": "mon",
    "day": "Monday 31",
    "when": "10:00 → 14:30",
-   "note": "Bags down, one last thing. Jacek leaves for the airport at 14:40.",
+   "note": "Bags down, one last thing. Phuong has already gone at 09:45; Jacek leaves at 14:40.",
    "from": "10:00"
   }
  ]
