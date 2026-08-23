@@ -874,13 +874,7 @@
    "date": "2026-08-29",
    "day": "Saturday",
    "label": "The big one",
-   "slots": [
-    {
-     "time": "Day",
-     "t": "Open — baths, action, whatever wins the vote",
-     "kind": "open"
-    }
-   ]
+   "slots": []
   },
   {
    "date": "2026-08-30",
@@ -888,19 +882,9 @@
    "label": "Last full day together",
    "slots": [
     {
-     "time": "Day",
-     "t": "Open — last thing the four of you do together",
-     "kind": "open"
-    },
-    {
      "time": "18:25",
      "t": "Nhi flies home",
      "kind": "travel"
-    },
-    {
-     "time": "Evening",
-     "t": "Open",
-     "kind": "open"
     },
     {
      "time": "15:30",
@@ -914,11 +898,6 @@
    "day": "Monday",
    "label": "Out",
    "slots": [
-    {
-     "time": "Day",
-     "t": "Bags down, one last thing — Central Market is open till 18:00 on a Monday",
-     "kind": "open"
-    },
     {
      "time": "17:35",
      "t": "Jacek flies home",
@@ -1064,36 +1043,36 @@
   {
    "id": "fri-pm",
    "day": "Friday 28",
-   "when": "After lunch → 17:40",
-   "note": "Jacek and Areeb only. Check-in at 15:00 gets the bags off your hands.",
+   "when": "13:30 → 17:40",
+   "note": "Check-in at 15:00 gets the bags off your hands.",
    "from": "13:30"
   },
   {
    "id": "fri-eve",
    "day": "Friday 28",
-   "when": "17:40 → 19:25",
-   "note": "Three of you. Phuong lands at 19:25, so keep this one near the flat.",
+   "when": "17:40 → 20:45",
+   "note": "Nhi is in. Phuong lands 19:25 and needs about an hour from the airport, so keep this near the flat.",
    "from": "17:40"
   },
   {
    "id": "fri-dinner",
    "day": "Friday 28",
-   "when": "Dinner · 19:45 → late",
-   "note": "Phuong is in at 19:25. First meal with everyone.",
-   "from": "19:45"
+   "when": "Dinner · 20:45 → 22:15",
+   "note": "Late, because Phuong only reaches town around 20:30. First meal with everyone.",
+   "from": "20:45"
   },
   {
    "id": "fri-late",
    "day": "Friday 28",
-   "when": "After dinner → late",
-   "from": "21:30",
-   "note": "First night, everyone in. Nothing starts before 22:00 anyway."
+   "when": "22:15 → late",
+   "from": "22:15",
+   "note": "First night, everyone in. Nothing worth going to starts much before this anyway."
   },
   {
    "id": "sat-am",
    "day": "Saturday 29",
-   "when": "Before noon",
-   "note": "",
+   "when": "09:00 → 12:00",
+   "note": "Baths are emptiest first thing.",
    "from": "09:00"
   },
   {
@@ -1106,9 +1085,9 @@
   {
    "id": "sat-pm",
    "day": "Saturday 29",
-   "when": "Noon → 18:00",
-   "note": "",
-   "from": "12:00"
+   "when": "13:30 → 18:00",
+   "note": "The long open stretch of the trip. Storms forecast — an indoor pick may age better.",
+   "from": "13:30"
   },
   {
    "id": "sat-dinner",
@@ -1120,14 +1099,14 @@
   {
    "id": "sat-eve",
    "day": "Saturday 29",
-   "when": "18:00 → late",
+   "when": "19:30 → late",
    "note": "Clubs, late bars, anything that runs past midnight.",
-   "from": "18:00"
+   "from": "19:30"
   },
   {
    "id": "sun-am",
    "day": "Sunday 30",
-   "when": "Morning",
+   "when": "09:00 → 12:00",
    "note": "Last morning with everyone here.",
    "from": "09:00"
   },
@@ -1141,15 +1120,15 @@
   {
    "id": "sun-pm",
    "day": "Sunday 30",
-   "when": "Before Nhi leaves — till 15:30",
+   "when": "13:30 → 15:30",
    "note": "The last window with the four of you. Keep it close to home.",
-   "from": "12:00"
+   "from": "13:30"
   },
   {
    "id": "sun-eve",
    "day": "Sunday 30",
-   "when": "After Nhi leaves — 15:30 → late",
-   "note": "Three of you. She is wheels-up at 18:25.",
+   "when": "15:30 → 18:00",
+   "note": "Nhi is on her way to the airport.",
    "from": "15:30"
   },
   {
@@ -1160,17 +1139,24 @@
    "from": "18:00"
   },
   {
+   "id": "sun-late",
+   "day": "Sunday 30",
+   "when": "19:30 → late",
+   "note": "Last proper night out.",
+   "from": "19:30"
+  },
+  {
    "id": "mon",
    "day": "Monday 31",
-   "when": "10:00 → 14:30",
-   "note": "Bags down, one last thing. Phuong has already gone at 09:45; Jacek leaves at 14:40.",
+   "when": "10:00 → 12:00",
+   "note": "Checkout is 10:00. Bags at the flat or in a Keleti locker.",
    "from": "10:00"
   },
   {
    "id": "mon-lunch",
    "day": "Monday 31",
-   "when": "Lunch · 12:00 → 13:30",
-   "note": "Jacek and Areeb only. Jacek leaves for the airport at 14:40.",
+   "when": "Lunch · 12:00 → 14:30",
+   "note": "The last thing. Central Market is open till 18:00 on a Monday; Jacek leaves for the airport at 14:40.",
    "from": "12:00"
   }
  ]
