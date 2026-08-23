@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt5uf8v7").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt5uf8v7").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt64ml5l").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt64ml5l").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -600,6 +600,9 @@ window.BPmissing = function (img, label) {
 
       var jump = e.target.closest("[data-jump]");
       if (jump) { scrollToCard(jump.getAttribute("data-jump")); return; }
+
+      var mv = e.target.closest("[data-move]");
+      if (mv) { moveActivity(mv.getAttribute("data-for"), mv.getAttribute("data-move")); return; }
 
       var g = e.target.closest("[data-goto]");
       if (g) { openSheet(g.getAttribute("data-goto")); return; }
@@ -1134,13 +1137,22 @@ window.BPmissing = function (img, label) {
       : w.min + " min walk") : "";
     var line = (v && (v.meta || v.note)) || "";
     var open = v && v.lat;                  /* customs have no pin to open */
-    return (open ? '<button type="button" class="ptag pitem" data-goto="' + esc(id) + '">'
-                 : '<span class="ptag pitem plain">') +
-      "<b>" + esc(nameOf(id)) +
-        (catOf(id) ? ' <i class="cat">(' + esc(catOf(id)) + ")</i>" : "") + "</b>" +
-      (line ? "<small>" + esc(line) + "</small>" : "") +
-      (how ? '<span class="phow">' + esc(how) + "</span>" : "") +
-    (open ? "</button>" : "</span>");
+    /* the arrows have to be siblings of the row button, not inside it */
+    return '<div class="prow">' +
+      (open ? '<button type="button" class="ptag pitem" data-goto="' + esc(id) + '">'
+            : '<span class="ptag pitem plain">') +
+        "<b>" + esc(nameOf(id)) +
+          (catOf(id) ? ' <i class="cat">(' + esc(catOf(id)) + ")</i>" : "") + "</b>" +
+        (line ? "<small>" + esc(line) + "</small>" : "") +
+        (how ? '<span class="phow">' + esc(how) + "</span>" : "") +
+      (open ? "</button>" : "</span>") +
+      (canPlan()
+        ? '<span class="pmove">' +
+            '<button type="button" data-move="up" data-for="' + esc(id) + '" title="Move up">▲</button>' +
+            '<button type="button" data-move="down" data-for="' + esc(id) + '" title="Move down">▼</button>' +
+          "</span>"
+        : "") +
+    "</div>";
   }
 
   function renderSchedule() {
@@ -1724,13 +1736,23 @@ window.BPmissing = function (img, label) {
       seen[k] = 1;
       out.push(groupOf(k, slotId));
     });
-    return out;
+    /* a group takes the position of its anchor, so an "or" block moves as one */
+    return out.sort(function (x, y) { return byOrd(x[0], y[0]); });
   }
 
   /** Everything slotted into one band, in the order the tally ranks them. */
   function plannedIn(slotId) {
     var p = store.state.plan || {};
-    return Object.keys(p).filter(function (id) { return p[id] === slotId; });
+    return Object.keys(p).filter(function (id) { return p[id] === slotId; }).sort(byOrd);
+  }
+
+  /** Slotted-in order. Anything from before this existed sorts last, alphabetically. */
+  function ordOf(id) {
+    var o = (store.state.ord || {})[id];
+    return typeof o === "number" ? o : Infinity;
+  }
+  function byOrd(x, y) {
+    return ordOf(x) - ordOf(y) || nameOf(x).localeCompare(nameOf(y));
   }
 
   /* Only the planner gets to move things about — everyone else just sees where
@@ -1809,6 +1831,7 @@ window.BPmissing = function (img, label) {
       var slot = (store.state.plan || {})[anchor] || "";
       await store.savePlan(activityId, slot);
       await store.saveAlt(activityId, anchor);
+      if (ordOf(activityId) === Infinity) await store.saveOrd(activityId, nextOrd(slot));
     } else {
       await store.saveAlt(activityId, "");
     }
@@ -1818,6 +1841,41 @@ window.BPmissing = function (img, label) {
     toast(anchorId
       ? nameOf(activityId) + " or " + nameOf(anchorOf(anchorId)) + " — one of them"
       : nameOf(activityId) + " stands on its own", 3000);
+  }
+
+  /** One past whatever is already in the band. */
+  function nextOrd(slotId) {
+    var here = plannedIn(slotId).map(ordOf).filter(function (n) { return isFinite(n); });
+    return (here.length ? Math.max.apply(null, here) : 0) + 1;
+  }
+
+  /* Moving swaps positions with the neighbour in the same scope: inside its own
+     "or" group if it is grouped, otherwise among the blocks of the band. */
+  async function moveActivity(id, dir) {
+    if (!canPlan()) return;
+    var slotId = (store.state.plan || {})[id];
+    if (!slotId) return;
+    var anchor = anchorOf(id);
+    var grouped = groupOf(anchor, slotId);
+    /* The anchor represents its whole block, so moving it moves the block among
+       the other blocks. Moving one of its alternatives reorders inside the block. */
+    var inGroup = grouped.length > 1 && id !== anchor;
+    var list = inGroup ? grouped.slice() : groupsIn(slotId).map(function (g) { return g[0]; });
+    var me2 = list.indexOf(id) > -1 ? id : anchor;
+    var i = list.indexOf(me2);
+    var j = dir === "up" ? i - 1 : i + 1;
+    if (i < 0 || j < 0 || j >= list.length) return;
+
+    /* give both ends real numbers before swapping, or Infinity swaps with Infinity */
+    var a1 = ordOf(list[i]), b1 = ordOf(list[j]);
+    if (!isFinite(a1) || !isFinite(b1)) {
+      for (var k = 0; k < list.length; k++) await store.saveOrd(list[k], k + 1);
+      a1 = ordOf(list[i]); b1 = ordOf(list[j]);
+    }
+    await store.saveOrd(list[i], b1);
+    await store.saveOrd(list[j], a1);
+    renderSchedule();
+    renderSummary();
   }
 
   async function setSlot(activityId, slotId) {
@@ -1830,6 +1888,8 @@ window.BPmissing = function (img, label) {
       for (var i = 1; i < kids.length; i++) await store.saveAlt(kids[i], kids[0]);
     }
     await store.savePlan(activityId, slotId);
+    /* newly slotted things go to the end of the band */
+    if (slotId) await store.saveOrd(activityId, nextOrd(slotId));
     closeSheet();
     renderSummary();
     renderSchedule();

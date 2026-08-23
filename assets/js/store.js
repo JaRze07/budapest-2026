@@ -15,7 +15,7 @@ BP.store = (function () {
   var LS_ME = "bp26.me";
   var LS_PENDING = "bp26.pending";
 
-  var state = { picks: {}, vetoes: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, plan: {}, alt: {}, customs: [] };
+  var state = { picks: {}, vetoes: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, plan: {}, alt: {}, ord: {}, customs: [] };
   var online = false;
   var listeners = [];
   var es = null;
@@ -31,7 +31,7 @@ BP.store = (function () {
   /* ---------- shape ---------- */
 
   function normalise(raw) {
-    var s = { picks: {}, vetoes: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, plan: {}, alt: {}, customs: [] };
+    var s = { picks: {}, vetoes: {}, stay: {}, hype: {}, files: {}, assign: {}, final: {}, expenses: {}, plan: {}, alt: {}, ord: {}, customs: [] };
     if (!raw || typeof raw !== "object") return s;
     s.picks = raw.picks || {};
     s.vetoes = raw.vetoes || {};
@@ -43,6 +43,7 @@ BP.store = (function () {
     s.expenses = raw.expenses || {};
     s.plan = raw.plan || {};
     s.alt = raw.alt || {};
+    s.ord = raw.ord || {};
     // Customs are an object keyed by id in the database, an array in the file.
     var c = raw.customs;
     s.customs = Array.isArray(c) ? c.slice()
@@ -131,7 +132,7 @@ BP.store = (function () {
   function setPath(path, data) {
     var parts = path.split("/").filter(Boolean);
     if (!parts.length) { state = overlay(normalise(data)); return; }
-    var raw = { picks: state.picks, vetoes: state.vetoes, stay: state.stay, hype: state.hype, files: state.files, assign: state.assign, final: state.final, expenses: state.expenses, plan: state.plan, alt: state.alt, customs: {} };
+    var raw = { picks: state.picks, vetoes: state.vetoes, stay: state.stay, hype: state.hype, files: state.files, assign: state.assign, final: state.final, expenses: state.expenses, plan: state.plan, alt: state.alt, ord: state.ord, customs: {} };
     state.customs.forEach(function (c) { raw.customs[c.id] = c; });
     var node = raw;
     for (var i = 0; i < parts.length - 1; i++) {
@@ -241,6 +242,13 @@ BP.store = (function () {
     return { synced: ok };
   }
 
+  /** Where an activity sits inside its band. Lower sorts first. */
+  async function saveOrd(activityId, n) {
+    state.ord[activityId] = n;
+    var ok = await put("ord/" + activityId, n);
+    return { synced: ok };
+  }
+
   async function deleteExpense(id) {
     delete state.expenses[id];
     try {
@@ -296,6 +304,7 @@ BP.store = (function () {
     saveExpense: saveExpense,
     savePlan: savePlan,
     saveAlt: saveAlt,
+    saveOrd: saveOrd,
     deleteExpense: deleteExpense,
     addCustom: addCustom,
     me: function () { return lsGet(LS_ME, null); },

@@ -190,6 +190,12 @@
         ".write": true,
         ".validate": "newData.isString() && newData.val().length <= 24"
       }
+    },
+    "ord": {
+      "$activity": {
+        ".write": true,
+        ".validate": "newData.isNumber()"
+      }
     }
   }
 }

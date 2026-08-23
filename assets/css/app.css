@@ -1755,3 +1755,16 @@ button.ptag:hover::after { color: var(--brass); }
 .wxpack li { font-size: 12px; line-height: 1.5; color: var(--ink); margin-bottom: 3px; }
 .wxpack li:last-child { margin-bottom: 0; }
 @media (max-width: 360px) { .wico { width: 28px; height: 32px; } .wxt em { font-size: 14px; } }
+
+/* ---------- reordering a band ---------- */
+
+.prow { display: flex; align-items: stretch; gap: 5px; margin-bottom: 6px; }
+.prow:last-child { margin-bottom: 0; }
+.prow .ptag { margin-bottom: 0; flex: 1 1 auto; min-width: 0; }
+.pgroup .prow:last-child { margin-bottom: 0; }
+.pmove { display: flex; flex-direction: column; gap: 3px; flex: 0 0 auto; }
+.pmove button {
+  flex: 1 1 0; width: 26px; cursor: pointer; font-family: inherit; font-size: 10px;
+  line-height: 1; border: 1px solid var(--line); background: var(--paper); color: var(--slate);
+}
+.pmove button:hover { border-color: var(--brass); color: var(--brass); background: #FBF6E8; }
