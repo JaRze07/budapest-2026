@@ -1034,7 +1034,7 @@
    "Areeb": 3,
    "Jacek": 3,
    "Nhi": 2,
-   "Phuong": 0
+   "Phuong": 3
   },
   "receipt": {
    "endpoint": "https://winyle-api.winyle-jr.workers.dev/api/receipt",
@@ -1049,7 +1049,7 @@
    {
     "id": "units",
     "label": "By nights or units",
-    "hint": "Weight each person. Three nights each, two for Nhi."
+    "hint": "Weight each person. Three nights each, two for Nhi — she flies home on the Sunday."
    },
    {
     "id": "share",
