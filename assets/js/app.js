@@ -457,8 +457,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt6a503f").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt6a503f").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt6afqqs").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt6afqqs").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -807,10 +807,7 @@ window.BPmissing = function (img, label) {
   function renderHome() {
     renderCountdown();
     renderTransformation();
-    renderYou();
     renderArrivals();
-    renderWeather();
-    renderStaySummary();
     renderSchedule();
   }
 
@@ -930,7 +927,7 @@ window.BPmissing = function (img, label) {
   /** Your flight, your route from the airport — or the nudge if we don't have it. */
   function renderYou() {
     var p = person(me);
-    var box = el("homeYou");
+    var box = el("infoYou");
     if (!p) { box.innerHTML = ""; return; }
 
     if (p.flight_status !== "confirmed") {
@@ -981,13 +978,20 @@ window.BPmissing = function (img, label) {
         "and a car straight to the front door.</p>" +
         '<a class="btn gobtn" href="#/stay">Go and vote</a></div>';
     }
-    return '<div class="sec-title">Airport → ' + esc(place.name) + "</div>" +
+    /* three long route cards — folded away, since you read them once */
+    return '<details class="foldout"><summary>' +
+        '<span class="foldtitle">Airport → the flat</span>' +
+        '<span class="foldhint">' + (arr
+          ? "you land " + esc(arr.time) + " · three ways in"
+          : "three ways in") + "</span>" +
+      "</summary><div class=\"foldbody\">" +
       (arr
         ? '<p class="sec-note">You land at ' + esc(arr.time) + " on " + esc(dayLong(arr.date)) +
           ". " + esc(TRIP.airport.buffer_note) + "</p>"
         : '<p class="sec-note">Timings fill in with real clock times once your flight is in here.</p>') +
       renderRoutes(arr, place) +
-      earlyNote(arr, place);
+      earlyNote(arr, place) +
+      "</div></details>";
   }
 
   function flightCard(f, label) {
@@ -1124,7 +1128,7 @@ window.BPmissing = function (img, label) {
     var voted = CFG.names.filter(function (n) { return store.state.stay[n]; });
 
     if (!place) {
-      el("homeStay").innerHTML =
+      el("infoStay").innerHTML =
         '<div class="sec-title">Where we sleep</div>' +
         '<div class="pending"><b>Not decided</b>' +
         "<p>Five options are up. " + voted.length + " of " + CFG.names.length +
@@ -1133,7 +1137,7 @@ window.BPmissing = function (img, label) {
       return;
     }
 
-    el("homeStay").innerHTML =
+    el("infoStay").innerHTML =
       '<div class="sec-title">Where we sleep</div>' +
       '<div class="board">' +
         '<div class="row"><div class="av">⌂</div><div class="nm"><b>' + esc(place.name) +
@@ -1350,7 +1354,7 @@ window.BPmissing = function (img, label) {
   }
 
   async function renderWeather() {
-    var box = el("homeWeather");
+    var box = el("infoWeather");
     if (!box) return;
     var stay = TRIP.stay && TRIP.stay.vote && TRIP.stay.vote.options
       ? TRIP.stay.vote.options.filter(function (o) { return o.id === TRIP.stay.chosen; })[0] : null;
@@ -2491,6 +2495,9 @@ window.BPmissing = function (img, label) {
       }).join("") + "</div>";
     };
 
+    renderWeather();
+    renderYou();
+    renderStaySummary();
     renderUpload();
     renderApps();
     var place = ourPlace();

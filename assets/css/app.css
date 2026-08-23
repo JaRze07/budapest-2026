@@ -1849,3 +1849,20 @@ button.ptag:hover::after { color: var(--brass); }
 .altrow:last-child { border-bottom: none; }
 .altrow:hover { background: #FBF6E8; color: var(--brass); }
 .altrow[hidden] { display: none; }
+
+/* the airport routes, folded away by default */
+.foldout { border: 1px solid var(--line); background: var(--white); margin-top: 14px; }
+.foldout > summary {
+  list-style: none; cursor: pointer; padding: 11px 13px;
+  display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  background: var(--paper);
+}
+.foldout > summary::-webkit-details-marker { display: none; }
+.foldout > summary::after { content: "▾"; color: var(--brass); font-size: 12px; }
+.foldout[open] > summary::after { content: "▴"; }
+.foldtitle {
+  font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--brass-dim);
+}
+.foldhint { font-size: 11px; color: var(--slate); margin-left: auto; margin-right: 8px; }
+.foldbody { padding: 0 13px 13px; }
