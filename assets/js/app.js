@@ -166,6 +166,7 @@ window.BPmissing = function (img, label) {
   }
 
   function closeSheet() {
+    sheetFor = null;
     el("sheet").hidden = true;
     document.body.style.overflow = "";
   }
@@ -456,8 +457,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt67q5zh").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt67q5zh").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt6a503f").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt6a503f").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -613,6 +614,8 @@ window.BPmissing = function (img, label) {
 
       var pl = e.target.closest("[data-plan]");
       if (pl) { openSlotPicker(pl.getAttribute("data-plan")); return; }
+
+      if (e.target && e.target.id === "altFilter") return;
 
       var al = e.target.closest("[data-alt]");
       if (al) {
@@ -1854,7 +1857,10 @@ window.BPmissing = function (img, label) {
      rather than a lock. */
   function canPlan() { return me === (CFG.planner || CFG.uploader); }
 
+  var sheetFor = null;
+
   function openSlotPicker(activityId) {
+    sheetFor = activityId;
     var cur = {};
     slotsOf(activityId).forEach(function (s) { cur[s] = true; });
     var inAny = Object.keys(cur).length;
@@ -1889,57 +1895,136 @@ window.BPmissing = function (img, label) {
         esc(activityId) + '">Take it off the plan entirely</button>' : "");
     el("sheet").hidden = false;
     document.body.style.overflow = "hidden";
+    var f = el("altFilter");
+    if (f) f.addEventListener("input", function () {
+      var q = f.value.trim().toLowerCase();
+      Array.prototype.forEach.call(el("altList").children, function (b) {
+        b.hidden = q && b.getAttribute("data-name").indexOf(q) < 0;
+      });
+    });
   }
 
   /* Anything already planned can be the thing this is an alternative to.
      Pick one and you land in its slot, in its group. */
+  /** Every member of the group, whether or not it is currently planned. */
+  function groupMembers(id) {
+    var anchor = anchorOf(id);
+    return [anchor].concat(Object.keys(store.state.alt || {}).filter(function (x) {
+      return x !== anchor && anchorOf(x) === anchor;
+    }));
+  }
+
+  /** Everything grouped with this one, wherever it is planned. */
+  function myGroup(activityId) {
+    var anchor = anchorOf(activityId);
+    var all = [anchor].concat(Object.keys(store.state.alt || {}).filter(function (x) {
+      return anchorOf(x) === anchor && x !== anchor;
+    }));
+    return all.filter(function (x) { return slotsOf(x).length; });
+  }
+
   function altPicker(activityId, cur) {
     var mine = anchorOf(activityId);
+    var group = myGroup(activityId);
+    var planned = slotsOf(activityId).length;
+
+    /* other groups this one could join */
     var options = [];
     (TRIP.slots || []).forEach(function (s) {
       groupsIn(s.id).forEach(function (g) {
-        if (g[0] === activityId) return;                  // not an alternative to itself
-        if (activityId !== mine && g[0] === mine) return;  // already in this group
+        if (g[0] === activityId) return;                   // not an alternative to itself
+        if (g[0] === mine) return;                         // already in this group
         options.push({ slot: s, anchor: g[0], with: g.slice(1) });
       });
     });
-    if (!options.length && activityId === mine) return "";
 
-    return '<div class="altpick">' +
-      '<div class="altkick">Or make it an alternative</div>' +
-      '<p class="altnote">Group it with something already planned — you do one of them, not both.</p>' +
-      options.map(function (o) {
-        return '<button type="button" class="altbtn" data-alt="' + esc(o.anchor) +
-          '" data-slotfor="' + esc(o.slot.id) + '" data-for="' + esc(activityId) + '">' +
-          "<b>or " + esc(nameOf(o.anchor)) + "</b>" +
-          '<span class="altwhen">' + esc(o.slot.day) + " · " + esc(o.slot.when) +
-            (o.with.length ? " · already or " + esc(o.with.map(nameOf).join(", ")) : "") + "</span>" +
-        "</button>";
-      }).join("") +
-      (activityId !== mine
-        ? '<button type="button" class="btn dim altbtn standalone" data-alt="" data-for="' +
-          esc(activityId) + '">Stand on its own instead</button>'
-        : "") +
-      "</div>";
+    /* anything anyone has picked that is not already in this group */
+    var candidates = [];
+    if (planned) {
+      var votedFor = {};
+      CFG.names.forEach(function (n) {
+        var rec = (store.state.picks || {})[n];
+        (rec && rec.ids ? rec.ids : []).forEach(function (id) { votedFor[id] = true; });
+      });
+      candidates = Object.keys(votedFor)
+        .filter(function (id) { return group.indexOf(id) < 0 && id !== activityId; })
+        .filter(function (id) { return byId[id] || customById(id); })
+        .sort(function (x, y) { return nameOf(x).localeCompare(nameOf(y)); });
+    }
+
+    if (!options.length && !planned) return "";
+
+    var html = '<div class="altpick">';
+
+    if (group.length > 1) {
+      html += '<div class="altkick">One of these</div>' +
+        '<p class="altnote">You are doing one of them, not all. Drop any with the ✕.</p>' +
+        '<div class="altgroup">' + group.map(function (id) {
+          return '<span class="altchip' + (id === mine ? " anchor" : "") + '">' + esc(nameOf(id)) +
+            (id === mine ? "" : '<button type="button" data-alt="" data-for="' + esc(id) +
+              '" title="Take it out of the group">✕</button>') + "</span>";
+        }).join("") + "</div>";
+    }
+
+    if (candidates.length) {
+      html += '<div class="altkick">Add another alternative</div>' +
+        '<p class="altnote">As many as you like. They join ' + esc(nameOf(mine)) +
+          ' in ' + esc(slotsOf(mine).map(function (s) { return (slotById(s) || {}).when; }).join(" and ")) +
+          '.</p>' +
+        '<input id="altFilter" class="altfilter" placeholder="Type to narrow the list">' +
+        '<div class="altlist" id="altList">' + candidates.map(function (id) {
+          return '<button type="button" class="altrow" data-alt="' + esc(mine) +
+            '" data-slotfor="' + esc(slotsOf(mine)[0] || "") + '" data-for="' + esc(id) +
+            '" data-name="' + esc(nameOf(id).toLowerCase()) + '">' + esc(nameOf(id)) + "</button>";
+        }).join("") + "</div>";
+    }
+
+    if (options.length) {
+      html += '<div class="altkick">Or join something else</div>' +
+        options.map(function (o) {
+          return '<button type="button" class="altbtn" data-alt="' + esc(o.anchor) +
+            '" data-slotfor="' + esc(o.slot.id) + '" data-for="' + esc(activityId) + '">' +
+            "<b>or " + esc(nameOf(o.anchor)) + "</b>" +
+            '<span class="altwhen">' + esc(o.slot.day) + " · " + esc(o.slot.when) +
+              (o.with.length ? " · already or " + esc(o.with.map(nameOf).join(", ")) : "") + "</span>" +
+          "</button>";
+        }).join("");
+    }
+
+    if (activityId !== mine) {
+      html += '<button type="button" class="btn dim altbtn standalone" data-alt="" data-for="' +
+        esc(activityId) + '">Stand on its own instead</button>';
+    }
+    return html + "</div>";
   }
 
   /** Make one activity an alternative to another, moving it into that slot. */
   async function setAlt(activityId, anchorId, slotId) {
     if (anchorId) {
       var anchor = anchorOf(anchorId);
-      var slot = slotId || slotsOf(anchor)[0] || "";
-      if (slot) await store.savePlan(activityId, slot, true);
       await store.saveAlt(activityId, anchor);
-      if (ordOf(activityId) === Infinity) await store.saveOrd(activityId, nextOrd(slot));
+      /* match the anchor exactly: every band it is in, and none it is not */
+      var want = slotsOf(anchor);
+      if (!want.length && slotId) want = [slotId];
+      var had = slotsOf(activityId);
+      for (var i2 = 0; i2 < had.length; i2++) {
+        if (want.indexOf(had[i2]) < 0) await store.savePlan(activityId, had[i2], false);
+      }
+      for (var j2 = 0; j2 < want.length; j2++) {
+        await store.savePlan(activityId, want[j2], true);
+        if (ordOf(activityId) === Infinity) await store.saveOrd(activityId, nextOrd(want[j2]));
+      }
     } else {
       await store.saveAlt(activityId, "");
     }
-    closeSheet();
     renderSummary();
     renderSchedule();
+    /* stay on whichever activity's sheet is open, so several can be added */
+    if (sheetFor) openSlotPicker(sheetFor);
+    else closeSheet();
     toast(anchorId
       ? nameOf(activityId) + " or " + nameOf(anchorOf(anchorId)) + " — one of them"
-      : nameOf(activityId) + " stands on its own", 3000);
+      : nameOf(activityId) + " stands on its own", 2600);
   }
 
   /** One past whatever is already in the band. */
@@ -1976,11 +2061,11 @@ window.BPmissing = function (img, label) {
   }
 
   async function setSlot(activityId, slotId) {
-    var alt = store.state.alt || {};
     /* no slot id means the clear-all button */
     if (!slotId) return clearFromPlan(activityId);
+    var team = groupMembers(activityId);
     if ((store.state.plan || {})[activityId] && store.state.plan[activityId][slotId]) {
-      await store.savePlan(activityId, slotId, false);
+      for (var r = 0; r < team.length; r++) await store.savePlan(team[r], slotId, false);
       if (!slotsOf(activityId).length) await detachAlt(activityId);
       openSlotPicker(activityId);
       renderSummary();
@@ -1988,10 +2073,14 @@ window.BPmissing = function (img, label) {
       toast(nameOf(activityId) + " out of " + (slotById(slotId) || {}).when, 2600);
       return;
     }
-    if (alt[activityId]) await store.saveAlt(activityId, "");
-    await store.savePlan(activityId, slotId, true);
-    /* newly slotted things go to the end of the band */
-    if (ordOf(activityId) === Infinity) await store.saveOrd(activityId, nextOrd(slotId));
+    /* Adding a band used to drop the activity out of its group. That was right
+       when a thing could only be in one band; now it just means the group gains
+       a band, so leave the grouping alone — "Stand on its own" is the way out. */
+    /* the group moves together, so it never appears split across bands */
+    for (var q = 0; q < team.length; q++) {
+      await store.savePlan(team[q], slotId, true);
+      if (ordOf(team[q]) === Infinity) await store.saveOrd(team[q], nextOrd(slotId));
+    }
     openSlotPicker(activityId);                 /* stays open, so you can add another */
     renderSummary();
     renderSchedule();

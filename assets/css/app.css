@@ -1823,3 +1823,29 @@ button.ptag:hover::after { color: var(--brass); }
 .slotoff { display: block; color: var(--warn); font-size: 11px; font-weight: 700; margin-top: 4px; }
 .slothint { font-size: 11.5px; color: var(--slate); line-height: 1.5; margin: 10px 0 0; }
 .rank .r .nm .slotted + .slotted { margin-top: 1px; }
+
+/* the alternatives group inside the picker */
+.altgroup { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.altchip {
+  display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid var(--brass); background: #FBF6E8;
+  font-size: 11.5px; padding: 3px 5px 3px 9px; border-radius: 999px;
+}
+.altchip.anchor { font-weight: 800; padding-right: 9px; }
+.altchip button {
+  border: none; background: transparent; cursor: pointer; color: var(--warn);
+  font-size: 12px; font-weight: 800; line-height: 1; padding: 0 2px;
+}
+.altfilter {
+  width: 100%; font-family: inherit; font-size: 13px; padding: 7px 9px;
+  border: 1px solid var(--line); background: var(--white); margin-bottom: 6px;
+}
+.altlist { max-height: 232px; overflow-y: auto; border: 1px solid var(--line); }
+.altrow {
+  display: block; width: 100%; text-align: left; font-family: inherit; font-size: 12.5px;
+  padding: 7px 10px; border: none; border-bottom: 1px solid var(--line);
+  background: var(--paper); cursor: pointer;
+}
+.altrow:last-child { border-bottom: none; }
+.altrow:hover { background: #FBF6E8; color: var(--brass); }
+.altrow[hidden] { display: none; }
