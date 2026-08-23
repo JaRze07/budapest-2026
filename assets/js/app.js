@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt5u599k").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt5u599k").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt5uf8v7").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt5uf8v7").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -773,6 +773,7 @@ window.BPmissing = function (img, label) {
     renderTransformation();
     renderYou();
     renderArrivals();
+    renderWeather();
     renderStaySummary();
     renderSchedule();
   }
@@ -1176,6 +1177,150 @@ window.BPmissing = function (img, label) {
         rows.map(function (r) { return r.html; }).join("") + "</div>";
     }).join("");
     el("homeSchedule").innerHTML = html;
+  }
+
+
+  /* ================= WEATHER =================
+     WMO codes, grouped into the only distinctions that change what you pack. */
+
+  var SKY = {
+    clear:  { d: "M12 4V2M12 22v-2M4 12H2m20 0h-2M6 6L4.5 4.5M19.5 19.5 18 18M18 6l1.5-1.5M4.5 19.5 6 18", c: 8, label: "Clear" },
+    part:   { label: "Some cloud" },
+    cloud:  { label: "Cloudy" },
+    fog:    { label: "Fog" },
+    drizzle:{ label: "Drizzle" },
+    rain:   { label: "Rain" },
+    storm:  { label: "Storms" }
+  };
+
+  function skyOf(c) {
+    if (c === 0) return "clear";
+    if (c <= 2) return "part";
+    if (c === 3) return "cloud";
+    if (c === 45 || c === 48) return "fog";
+    if (c >= 51 && c <= 57) return "drizzle";
+    if (c >= 95) return "storm";
+    if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return "rain";
+    return "cloud";
+  }
+
+  /* Small inline icons — no image requests, and they read at 34 px. */
+  function skyIcon(kind) {
+    var sun = '<circle cx="12" cy="9" r="4.2" fill="var(--brass)"/>';
+    var rays = '<g stroke="var(--brass)" stroke-width="1.6" stroke-linecap="round">' +
+      '<path d="M12 1.6v1.8M12 14.6v1.8M4.6 9H2.8m18.4 0h-1.8M6.7 3.7 5.4 2.4m11.9 1.3 1.3-1.3M6.7 14.3l-1.3 1.3m11.9-1.3 1.3 1.3"/></g>';
+    var cloud = '<path d="M7.5 19h9.2a3.4 3.4 0 0 0 .3-6.8 5 5 0 0 0-9.6-1A3.4 3.4 0 0 0 7.5 19z" ' +
+      'fill="#fff" stroke="var(--slate)" stroke-width="1.4" stroke-linejoin="round"/>';
+    var drops = '<g stroke="var(--laser)" stroke-width="1.8" stroke-linecap="round">' +
+      '<path d="M9 21v1.6M12.5 21v2.2M16 21v1.6"/></g>';
+    var bolt = '<path d="M12.6 20.4 10 24l4.6-1.2L12.9 26" fill="none" stroke="var(--brass)" ' +
+      'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>';
+    var body = {
+      clear:   rays + sun,
+      part:    rays + sun + cloud,
+      cloud:   cloud,
+      fog:     cloud + '<g stroke="var(--slate)" stroke-width="1.4" stroke-linecap="round" opacity=".7">' +
+                 '<path d="M6 21h12M8 23.4h8"/></g>',
+      drizzle: cloud + '<g stroke="var(--laser)" stroke-width="1.6" stroke-linecap="round" opacity=".85">' +
+                 '<path d="M10 21v1.2M13.5 21v1.6M17 21v1.2"/></g>',
+      rain:    cloud + drops,
+      storm:   cloud + bolt
+    }[kind] || cloud;
+    return '<svg class="wico" viewBox="0 0 24 27" aria-hidden="true">' + body + "</svg>";
+  }
+
+  /** What the four days together mean for the bag. */
+  function packingFor(days) {
+    var tips = [];
+    var hot = days.filter(function (d) { return d.max >= 30; });
+    var wet = days.filter(function (d) { return d.pop >= 40 || d.sky === "storm"; });
+    var cool = days.filter(function (d) { return d.min <= 15; });
+    var breezy = days.filter(function (d) { return d.wind >= 30; });
+    var names = function (list) {
+      var n = list.map(function (d) { return d.name; });
+      return n.length === 1 ? n[0] : n.slice(0, -1).join(", ") + " and " + n[n.length - 1];
+    };
+
+    if (hot.length) {
+      var peak = hot.slice().sort(function (x, y) { return y.max - x.max; })[0];
+      tips.push("Sun cream and a refillable bottle — " + peak.name + " hits " + peak.max + "°" +
+        (hot.length > 1 ? ", and " + (hot.length - 1) + " other day" + (hot.length > 2 ? "s are" : " is") +
+          " over 30°." : "."));
+    }
+    if (wet.length) {
+      tips.push("A small umbrella for " + names(wet) +
+        (wet.some(function (d) { return d.sky === "storm"; }) ? " — thunderstorms, not drizzle." : "."));
+    }
+    if (cool.length) tips.push("Something with sleeves for the evenings; " + names(cool) + " drops to " +
+      Math.min.apply(null, cool.map(function (d) { return d.min; })) + "° overnight.");
+    if (breezy.length) tips.push("Windy on " + names(breezy) + " — not a night for a hat.");
+    tips.push("Swimwear worn underneath on bath days, and shoes you can walk 10 km in.");
+    return tips;
+  }
+
+  async function renderWeather() {
+    var box = el("homeWeather");
+    if (!box) return;
+    var stay = TRIP.stay && TRIP.stay.vote && TRIP.stay.vote.options
+      ? TRIP.stay.vote.options.filter(function (o) { return o.id === TRIP.stay.chosen; })[0] : null;
+    var lat = (stay && stay.lat) || 47.4979, lng = (stay && stay.lng) || 19.0402;
+    var first = (TRIP.schedule || [])[0], last = (TRIP.schedule || [])[(TRIP.schedule || []).length - 1];
+    if (!first || !last) return;
+
+    var key = "bp_wx_" + first.date + "_" + last.date;
+    var data = null;
+    try {
+      var cached = JSON.parse(localStorage.getItem(key) || "null");
+      if (cached && Date.now() - cached.at < 3 * 3600 * 1000) data = cached.d;
+    } catch (e) {}
+
+    if (!data) {
+      try {
+        var r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lng +
+          "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max," +
+          "precipitation_sum,wind_speed_10m_max&timezone=Europe%2FBudapest" +
+          "&start_date=" + first.date + "&end_date=" + last.date);
+        if (!r.ok) return;
+        var j = await r.json();
+        if (!j.daily || !j.daily.time || !j.daily.time.length) return;
+        data = j.daily;
+        try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), d: data })); } catch (e) {}
+      } catch (e) { return; }
+    }
+
+    var days = data.time.map(function (t, i) {
+      var d = (TRIP.schedule || []).filter(function (x) { return x.date === t; })[0];
+      return {
+        date: t,
+        name: d ? d.day : new Date(t).toDateString().slice(0, 3),
+        num: parseInt(t.slice(8), 10),
+        sky: skyOf(data.weather_code[i]),
+        max: Math.round(data.temperature_2m_max[i]),
+        min: Math.round(data.temperature_2m_min[i]),
+        pop: data.precipitation_probability_max[i],
+        mm: data.precipitation_sum[i],
+        wind: Math.round(data.wind_speed_10m_max[i])
+      };
+    });
+    if (!days.length) return;
+
+    box.innerHTML =
+      '<div class="wx">' +
+        '<div class="wxhead"><span>The forecast</span><small>updated from Open-Meteo</small></div>' +
+        '<div class="wxdays">' + days.map(function (d) {
+          return '<div class="wxday' + (d.pop >= 40 || d.sky === "storm" ? " wet" : "") + '">' +
+            '<b>' + esc(d.name.slice(0, 3)) + " " + d.num + "</b>" +
+            skyIcon(d.sky) +
+            '<span class="wxt"><em>' + d.max + "°</em> " + d.min + "°</span>" +
+            '<span class="wxr">' + (d.pop == null ? "—" : d.pop + "%") +
+              (d.mm >= 1 ? " · " + d.mm.toFixed(0) + "mm" : "") + "</span>" +
+            '<span class="wxs">' + esc(SKY[d.sky].label) + "</span>" +
+          "</div>";
+        }).join("") + "</div>" +
+        '<ul class="wxpack">' + packingFor(days).map(function (t) {
+          return "<li>" + esc(t) + "</li>";
+        }).join("") + "</ul>" +
+      "</div>";
   }
 
   /* ================= PICKS ================= */

@@ -1727,3 +1727,31 @@ button.ptag:hover::after { color: var(--brass); }
   color: var(--brass-dim); margin-left: 5px; white-space: nowrap;
 }
 .rank .r .nm .cat { display: inline; }
+
+/* ---------- forecast ---------- */
+
+.wx { border: 1px solid var(--line); background: var(--white); margin-top: 14px; }
+.wxhead {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 9px 12px; border-bottom: 1px solid var(--line); background: var(--paper);
+}
+.wxhead span { font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--brass-dim); }
+.wxhead small { font-size: 10px; color: var(--slate); }
+.wxdays { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.wxday {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 10px 4px; border-right: 1px solid var(--line); text-align: center;
+}
+.wxday:last-child { border-right: none; }
+.wxday.wet { background: #FBF6E8; }
+.wxday b { font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--slate); }
+.wico { width: 34px; height: 38px; display: block; }
+.wxt { font-size: 13px; color: var(--slate); }
+.wxt em { font-style: normal; font-size: 16px; font-weight: 700; color: var(--ink); }
+.wxr { font-size: 10.5px; font-weight: 700; color: var(--laser-dim, #1E9E56); }
+.wxday.wet .wxr { color: var(--warn); }
+.wxs { font-size: 10px; color: var(--slate); }
+.wxpack { margin: 0; padding: 10px 12px 12px 26px; border-top: 1px solid var(--line); }
+.wxpack li { font-size: 12px; line-height: 1.5; color: var(--ink); margin-bottom: 3px; }
+.wxpack li:last-child { margin-bottom: 0; }
+@media (max-width: 360px) { .wico { width: 28px; height: 32px; } .wxt em { font-size: 14px; } }
