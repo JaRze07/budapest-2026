@@ -104,6 +104,52 @@ window.BPmissing = function (img, label) {
       esc(t.where) + "</span></div>";
   }
 
+  /** The venue's photos, swipeable. Nothing for anything without a set. */
+  function shotStrip(src) {
+    var n = src.shots || 0;
+    /* three venues expose no gallery on Maps — show their tile photo rather than nothing */
+    if (!n) {
+      return byId[src.id]
+        ? '<div class="shots"><div class="shotstrip" id="shotStrip">' +
+            '<img src="images/' + esc(src.id) + '.jpg" alt="" onerror="this.remove()">' +
+          "</div></div>"
+        : "";
+    }
+    var frames = "", dots = "";
+    for (var i = 1; i <= n; i++) {
+      frames += '<img src="images/g/' + esc(src.id) + "-" + i + '.jpg" loading="lazy" alt="" ' +
+        'onerror="this.remove()">';
+      dots += '<i' + (i === 1 ? ' class="on"' : "") + "></i>";
+    }
+    return '<div class="shots">' +
+      '<div class="shotstrip" id="shotStrip">' + frames + "</div>" +
+      (n > 1
+        ? '<button type="button" class="shotnav prev" data-shot="-1" aria-label="Previous photo">‹</button>' +
+          '<button type="button" class="shotnav next" data-shot="1" aria-label="Next photo">›</button>' +
+          '<div class="shotdots" id="shotDots">' + dots + "</div>"
+        : "") +
+    "</div>";
+  }
+
+  /* Wire the strip up once it is in the DOM. */
+  function wireShots() {
+    var strip = el("shotStrip");
+    if (!strip) return;
+    var dots = el("shotDots");
+    var paint = function () {
+      if (!dots) return;
+      var i = Math.round(strip.scrollLeft / Math.max(1, strip.clientWidth));
+      Array.prototype.forEach.call(dots.children, function (d, k) {
+        d.className = k === i ? "on" : "";
+      });
+    };
+    strip.addEventListener("scroll", paint, { passive: true });
+    strip._shotStep = function (dir) {
+      strip.scrollBy({ left: dir * strip.clientWidth, behavior: "smooth" });
+    };
+    paint();
+  }
+
   /** Who is in for this, and who has ruled it out. Empty for the stay options,
       which are voted on somewhere else entirely. */
   function whoWants(id) {
@@ -138,6 +184,7 @@ window.BPmissing = function (img, label) {
       "<h3>" + esc(src.name) + "</h3>" +
       '<div class="sheetarea">' + esc(src.area || "") +
         (fb.walk ? " · " + fb.walk.min + " min walk" : "") + "</div>" +
+      shotStrip(src) +
       (src.desc ? '<p class="sheetdesc">' + esc(src.desc) + "</p>" : "") +
       (src.hours ? '<p class="sheethours">' + esc(src.hours) + "</p>" : "") +
       (src.meta ? '<p class="sheetmeta">' + esc(src.meta) + "</p>" : "") +
@@ -161,6 +208,7 @@ window.BPmissing = function (img, label) {
       ticketBlock("single") + ticketBlock("travelcard") + "</div>";
 
     el("sheetBody").innerHTML = html;
+    wireShots();
     el("sheet").hidden = false;
     document.body.style.overflow = "hidden";
   }
@@ -457,8 +505,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt6afqqs").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt6afqqs").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt6borb2").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt6borb2").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -629,6 +677,13 @@ window.BPmissing = function (img, label) {
 
       var jump = e.target.closest("[data-jump]");
       if (jump) { scrollToCard(jump.getAttribute("data-jump")); return; }
+
+      var sn = e.target.closest("[data-shot]");
+      if (sn) {
+        var strip = el("shotStrip");
+        if (strip && strip._shotStep) strip._shotStep(+sn.getAttribute("data-shot"));
+        return;
+      }
 
       var mv = e.target.closest("[data-move]");
       if (mv) {

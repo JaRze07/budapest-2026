@@ -53,7 +53,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 07:30–16:00"
+     "hours": "Daily 07:30–16:00",
+     "shots": 5
     },
     {
      "id": "newyork",
@@ -95,7 +96,8 @@
        ]
       }
      },
-     "hours": "Mon–Wed 07:00–00:00 · Thu–Sun 07:00–01:00"
+     "hours": "Mon–Wed 07:00–00:00 · Thu–Sun 07:00–01:00",
+     "shots": 5
     },
     {
      "id": "horizont",
@@ -117,7 +119,8 @@
        "min": 7
       }
      },
-     "hours": "Mon–Fri 09:00–15:30 · Sat 09:00–15:00 · closed Sun"
+     "hours": "Mon–Fri 09:00–15:30 · Sat 09:00–15:00 · closed Sun",
+     "shots": 5
     },
     {
      "id": "eggscuse",
@@ -159,7 +162,8 @@
        ]
       }
      },
-     "hours": "Mon 09:00–14:00 · closed Tue–Wed · Thu–Sun 09:00–14:00"
+     "hours": "Mon 09:00–14:00 · closed Tue–Wed · Thu–Sun 09:00–14:00",
+     "shots": 5
     },
     {
      "id": "klauzal",
@@ -201,7 +205,8 @@
        ]
       }
      },
-     "hours": "Daily 11:00–15:00"
+     "hours": "Daily 11:00–15:00",
+     "shots": 5
     },
     {
      "id": "kadar",
@@ -243,7 +248,8 @@
        ]
       }
      },
-     "hours": "closed Mon · Tue–Sat 11:00–16:30 · closed Sun"
+     "hours": "closed Mon · Tue–Sat 11:00–16:30 · closed Sun",
+     "shots": 5
     },
     {
      "id": "fricipapa",
@@ -285,7 +291,8 @@
        ]
       }
      },
-     "hours": "Mon–Sat 11:00–22:00 · closed Sun"
+     "hours": "Mon–Sat 11:00–22:00 · closed Sun",
+     "shots": 5
     }
    ],
    "id": "breakfast",
@@ -337,7 +344,8 @@
        ]
       }
      },
-     "hours": "Mon–Fri 15:00–04:00 · Sat 12:00–04:00 · Sun 09:00–04:00"
+     "hours": "Mon–Fri 15:00–04:00 · Sat 12:00–04:00 · Sun 09:00–04:00",
+     "shots": 5
     },
     {
      "id": "warmup",
@@ -377,7 +385,8 @@
        ]
       }
      },
-     "hours": "Mon–Wed 19:00–01:00 · Thu–Sat 19:00–02:00 · Sun 19:00–01:00"
+     "hours": "Mon–Wed 19:00–01:00 · Thu–Sat 19:00–02:00 · Sun 19:00–01:00",
+     "shots": 5
     },
     {
      "id": "jardin",
@@ -417,7 +426,8 @@
        ]
       }
      },
-     "hours": "Mon–Thu 18:00–01:00 · Fri–Sat 18:00–02:00 · Sun 18:00–01:00"
+     "hours": "Mon–Thu 18:00–01:00 · Fri–Sat 18:00–02:00 · Sun 18:00–01:00",
+     "shots": 5
     },
     {
      "id": "eleszto",
@@ -457,7 +467,8 @@
        ]
       }
      },
-     "hours": "Mon 15:00–01:00 · Tue–Wed 15:00–02:00 · Thu–Sat 15:00–03:00 · Sun 15:00–01:00"
+     "hours": "Mon 15:00–01:00 · Tue–Wed 15:00–02:00 · Thu–Sat 15:00–03:00 · Sun 15:00–01:00",
+     "shots": 5
     },
     {
      "id": "hops",
@@ -496,7 +507,8 @@
        ]
       }
      },
-     "hours": "Mon–Tue 14:30–01:00 · Wed–Thu 14:30–02:00 · Fri–Sat 14:30–03:00 · Sun 14:30–00:00"
+     "hours": "Mon–Tue 14:30–01:00 · Wed–Thu 14:30–02:00 · Fri–Sat 14:30–03:00 · Sun 14:30–00:00",
+     "shots": 5
     },
     {
      "id": "bar360",
@@ -536,7 +548,8 @@
        ]
       }
      },
-     "hours": "Mon–Tue 17:00–00:00 · Wed 14:00–00:00 · Thu–Sat 14:00–02:00 · Sun 14:00–00:00"
+     "hours": "Mon–Tue 17:00–00:00 · Wed 14:00–00:00 · Thu–Sat 14:00–02:00 · Sun 14:00–00:00",
+     "shots": 5
     },
     {
      "id": "ankert",
@@ -578,7 +591,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily till late in season · hours vary"
+     "hours": "Daily till late in season · hours vary",
+     "shots": 5
     },
     {
      "id": "kisuzem",
@@ -620,7 +634,8 @@
       }
      },
      "isNew": true,
-     "hours": "Mon–Wed 12:00–01:00 · Thu–Sat 12:00–02:00 · Sun 12:00–01:00"
+     "hours": "Mon–Wed 12:00–01:00 · Thu–Sat 12:00–02:00 · Sun 12:00–01:00",
+     "shots": 5
     },
     {
      "id": "mikativadar",
@@ -661,7 +676,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily till ~02:00 · opening time not published"
+     "hours": "Daily till ~02:00 · opening time not published",
+     "shots": 5
     },
     {
      "id": "highnote",
@@ -703,7 +719,8 @@
       }
      },
      "isNew": true,
-     "hours": "Mon–Thu 16:00–00:00 · Fri–Sun 14:00–00:00"
+     "hours": "Mon–Thu 16:00–00:00 · Fri–Sun 14:00–00:00",
+     "shots": 5
     },
     {
      "id": "csendes",
@@ -744,7 +761,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 18:00–00:00"
+     "hours": "Daily 18:00–00:00",
+     "shots": 5
     }
    ],
    "short": "Bars"
@@ -795,7 +813,8 @@
        ]
       }
      },
-     "hours": "Mon–Thu 07:00–20:00 · Fri 07:00–22:00 · Sat–Sun 08:00–20:00"
+     "hours": "Mon–Thu 07:00–20:00 · Fri 07:00–22:00 · Sat–Sun 08:00–20:00",
+     "shots": 5
     },
     {
      "id": "fogas",
@@ -835,7 +854,8 @@
        ]
       }
      },
-     "hours": "Daily 18:00–06:00"
+     "hours": "Daily 18:00–06:00",
+     "shots": 5
     },
     {
      "id": "a38",
@@ -876,7 +896,8 @@
        ]
       }
      },
-     "hours": "Mon–Fri 10:00–22:00 · Sat 16:00–22:00 · closed Sun"
+     "hours": "Mon–Fri 10:00–22:00 · Sat 16:00–22:00 · closed Sun",
+     "shots": 5
     },
     {
      "id": "boatparty",
@@ -916,7 +937,8 @@
        ]
       }
      },
-     "hours": "Fri–Sat evenings · by sailing time"
+     "hours": "Fri–Sat evenings · by sailing time",
+     "shots": 5
     },
     {
      "id": "doboz",
@@ -955,7 +977,8 @@
        ]
       }
      },
-     "hours": "closed Mon–Tue · Wed 18:00–00:00 · Thu–Sat 18:00–06:00 · Sun 00:00–06:00"
+     "hours": "closed Mon–Tue · Wed 18:00–00:00 · Thu–Sat 18:00–06:00 · Sun 00:00–06:00",
+     "shots": 5
     },
     {
      "id": "bppark",
@@ -1005,7 +1028,8 @@
        ]
       }
      },
-     "hours": "closed Mon–Wed · Thu 18:00–02:00 · Fri–Sat 18:00–04:00 · closed Sun"
+     "hours": "closed Mon–Wed · Thu 18:00–02:00 · Fri–Sat 18:00–04:00 · closed Sun",
+     "shots": 5
     },
     {
      "id": "akvarium",
@@ -1045,7 +1069,8 @@
        ]
       }
      },
-     "hours": "Terrace daily · club nights Thu–Sat"
+     "hours": "Terrace daily · club nights Thu–Sat",
+     "shots": 5
     },
     {
      "id": "corvinteto",
@@ -1087,7 +1112,8 @@
       }
      },
      "isNew": true,
-     "hours": "Thu–Sat, late · rooftop in season"
+     "hours": "Thu–Sat, late · rooftop in season",
+     "shots": 5
     },
     {
      "id": "otkert",
@@ -1128,7 +1154,8 @@
       }
      },
      "isNew": true,
-     "hours": "closed Mon–Tue · Wed–Sat 23:00–05:00 · closed Sun"
+     "hours": "closed Mon–Tue · Wed–Sat 23:00–05:00 · closed Sun",
+     "shots": 5
     },
     {
      "id": "toldi",
@@ -1169,7 +1196,8 @@
       }
      },
      "isNew": true,
-     "hours": "Mon–Thu 12:00–00:00 · Fri–Sat 14:00–18:00 · Sun 14:00–00:00"
+     "hours": "Mon–Thu 12:00–00:00 · Fri–Sat 14:00–18:00 · Sun 14:00–00:00",
+     "shots": 5
     },
     {
      "id": "morrisons",
@@ -1211,7 +1239,8 @@
       }
      },
      "isNew": true,
-     "hours": "Mon–Sat 18:00–05:00 · closed Sun"
+     "hours": "Mon–Sat 18:00–05:00 · closed Sun",
+     "shots": 5
     }
    ],
    "short": "Clubs"
@@ -1301,7 +1330,8 @@
        ]
       }
      },
-     "hours": "Mon 06:00–22:00 · Tue–Thu 06:00–20:00 · Fri–Sat 06:00–20:00, 22:00–03:00 · Sun 06:00–20:00"
+     "hours": "Mon 06:00–22:00 · Tue–Thu 06:00–20:00 · Fri–Sat 06:00–20:00, 22:00–03:00 · Sun 06:00–20:00",
+     "shots": 5
     },
     {
      "id": "beerspa",
@@ -1341,7 +1371,8 @@
        ]
       }
      },
-     "hours": "Daily 10:00–19:00"
+     "hours": "Daily 10:00–19:00",
+     "shots": 5
     },
     {
      "id": "lukacs",
@@ -1391,7 +1422,8 @@
        ]
       }
      },
-     "hours": "Mon 07:00–19:00 · Tue 07:00–22:00 · Wed–Sun 07:00–19:00"
+     "hours": "Mon 07:00–19:00 · Tue 07:00–22:00 · Wed–Sun 07:00–19:00",
+     "shots": 5
     },
     {
      "id": "palatinus",
@@ -1440,7 +1472,8 @@
        ]
       }
      },
-     "hours": "Daily 09:00–19:00"
+     "hours": "Daily 09:00–19:00",
+     "shots": 5
     },
     {
      "id": "gellert",
@@ -1482,7 +1515,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 09:00–19:00"
+     "hours": "Daily 09:00–19:00",
+     "shots": 5
     },
     {
      "id": "kiraly",
@@ -1533,7 +1567,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 09:00–21:00"
+     "hours": "Daily 09:00–21:00",
+     "shots": 5
     },
     {
      "id": "velibej",
@@ -1584,7 +1619,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 06:00–12:00 and 15:00–21:00"
+     "hours": "Daily 06:00–12:00 and 15:00–21:00",
+     "shots": 5
     },
     {
      "id": "dandar",
@@ -1626,7 +1662,8 @@
       }
      },
      "isNew": true,
-     "hours": "Mon–Wed 09:00–19:00 · Thu 09:00–22:00 · Fri–Sun 09:00–19:00"
+     "hours": "Mon–Wed 09:00–19:00 · Thu 09:00–22:00 · Fri–Sun 09:00–19:00",
+     "shots": 5
     }
    ],
    "short": "Baths"
@@ -1674,7 +1711,8 @@
        ]
       }
      },
-     "hours": "Daily 12:00–23:00"
+     "hours": "Daily 12:00–23:00",
+     "shots": 5
     },
     {
      "id": "fatmama",
@@ -1714,7 +1752,8 @@
        ]
       }
      },
-     "hours": "Mon–Thu 17:00–22:45 · Fri–Sat 17:00–23:45 · Sun 17:00–22:45"
+     "hours": "Mon–Thu 17:00–22:45 · Fri–Sat 17:00–23:45 · Sun 17:00–22:45",
+     "shots": 5
     },
     {
      "id": "vakvarju",
@@ -1754,7 +1793,8 @@
        ]
       }
      },
-     "hours": "Daily 11:30–23:30"
+     "hours": "Daily 11:30–23:30",
+     "shots": 5
     },
     {
      "id": "aranybastya",
@@ -1795,7 +1835,8 @@
        ]
       }
      },
-     "hours": "closed Mon · Tue–Thu 12:00–22:00 · closed Fri–Sat · Sun 12:00–22:00"
+     "hours": "closed Mon · Tue–Thu 12:00–22:00 · closed Fri–Sat · Sun 12:00–22:00",
+     "shots": 5
     },
     {
      "id": "market",
@@ -1836,7 +1877,8 @@
        ]
       }
      },
-     "hours": "Mon–Fri 06:00–18:00 · Sat 06:00–16:00 · Sun 10:00–16:00"
+     "hours": "Mon–Fri 06:00–18:00 · Sat 06:00–16:00 · Sun 10:00–16:00",
+     "shots": 5
     },
     {
      "id": "menza",
@@ -1878,7 +1920,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 11:30–22:30"
+     "hours": "Daily 11:30–22:30",
+     "shots": 5
     },
     {
      "id": "koleves",
@@ -1920,7 +1963,8 @@
       }
      },
      "isNew": true,
-     "hours": "closed Mon · Tue–Wed 11:00–22:00 · Thu–Sat 11:00–23:00 · Sun 11:00–22:00"
+     "hours": "closed Mon · Tue–Wed 11:00–22:00 · Thu–Sat 11:00–23:00 · Sun 11:00–22:00",
+     "shots": 5
     },
     {
      "id": "rosenstein",
@@ -1961,7 +2005,8 @@
       }
      },
      "isNew": true,
-     "hours": "Mon–Sat, evenings · opening time not published"
+     "hours": "Mon–Sat, evenings · opening time not published",
+     "shots": 5
     },
     {
      "id": "pestidiszno",
@@ -2044,7 +2089,8 @@
       }
      },
      "isNew": true,
-     "hours": "Mon–Thu 11:30–21:00 · Fri–Sat 11:30–22:00 · Sun 11:30–21:00"
+     "hours": "Mon–Thu 11:30–21:00 · Fri–Sat 11:30–22:00 · Sun 11:30–21:00",
+     "shots": 5
     }
    ],
    "short": "Food"
@@ -2092,7 +2138,8 @@
        ]
       }
      },
-     "hours": "Daily 10:00–19:00"
+     "hours": "Daily 10:00–19:00",
+     "shots": 5
     },
     {
      "id": "karting",
@@ -2133,7 +2180,8 @@
        ]
       }
      },
-     "hours": "Fri 15:00–22:00 · Sat 10:00–22:00 · Sun 10:00–21:00"
+     "hours": "Fri 15:00–22:00 · Sat 10:00–22:00 · Sun 10:00–21:00",
+     "shots": 5
     },
     {
      "id": "escape",
@@ -2174,7 +2222,8 @@
        ]
       }
      },
-     "hours": "Daily 09:00–21:00"
+     "hours": "Daily 09:00–21:00",
+     "shots": 5
     },
     {
      "id": "bastion",
@@ -2215,7 +2264,8 @@
        ]
       }
      },
-     "hours": "Open all the time"
+     "hours": "Open all the time",
+     "shots": 5
     },
     {
      "id": "margaret",
@@ -2265,7 +2315,8 @@
        ]
       }
      },
-     "hours": "Open all the time"
+     "hours": "Open all the time",
+     "shots": 5
     },
     {
      "id": "heroes",
@@ -2347,7 +2398,8 @@
       }
      },
      "isNew": true,
-     "hours": "Mon–Tue 12:00–20:00 · Wed–Sat 12:00–22:00 · Sun 12:00–20:00"
+     "hours": "Mon–Tue 12:00–20:00 · Wed–Sat 12:00–22:00 · Sun 12:00–20:00",
+     "shots": 5
     },
     {
      "id": "pinball",
@@ -2389,7 +2441,8 @@
       }
      },
      "isNew": true,
-     "hours": "closed Mon–Tue · Wed–Fri 16:00–00:00 · Sat 13:00–00:00 · Sun 11:00–22:00"
+     "hours": "closed Mon–Tue · Wed–Fri 16:00–00:00 · Sat 13:00–00:00 · Sun 11:00–22:00",
+     "shots": 5
     },
     {
      "id": "labyrinth",
@@ -2430,7 +2483,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 11:00–18:00"
+     "hours": "Daily 11:00–18:00",
+     "shots": 5
     },
     {
      "id": "illusions",
@@ -2472,7 +2526,8 @@
       }
      },
      "isNew": true,
-     "hours": "Mon–Thu 10:00–19:00 · Fri–Sat 10:00–20:00 · Sun 10:00–19:00"
+     "hours": "Mon–Thu 10:00–19:00 · Fri–Sat 10:00–20:00 · Sun 10:00–19:00",
+     "shots": 5
     }
    ],
    "short": "Daytime"
@@ -2520,7 +2575,8 @@
        ]
       }
      },
-     "hours": "Mon–Thu 22:00–04:00 · Fri–Sat 22:00–05:00 · Sun 22:00–04:00"
+     "hours": "Mon–Thu 22:00–04:00 · Fri–Sat 22:00–05:00 · Sun 22:00–04:00",
+     "shots": 5
     },
     {
      "id": "mynt",
@@ -2560,7 +2616,8 @@
        ]
       }
      },
-     "hours": "Mon–Thu 22:00–04:00 · Fri–Sat 22:00–05:00 · Sun 22:00–04:00"
+     "hours": "Mon–Thu 22:00–04:00 · Fri–Sat 22:00–05:00 · Sun 22:00–04:00",
+     "shots": 5
     },
     {
      "id": "bluebird",
@@ -2602,7 +2659,8 @@
        ]
       }
      },
-     "hours": "closed Mon–Wed · Thu–Sun 18:00–04:00"
+     "hours": "closed Mon–Wed · Thu–Sun 18:00–04:00",
+     "shots": 5
     },
     {
      "id": "lasiesta",
@@ -2641,7 +2699,8 @@
        ]
       }
      },
-     "hours": "Mon–Wed 20:00–05:00 · Thu 19:00–05:00 · Fri–Sat 18:00–05:00 · Sun 20:00–05:00"
+     "hours": "Mon–Wed 20:00–05:00 · Thu 19:00–05:00 · Fri–Sat 18:00–05:00 · Sun 20:00–05:00",
+     "shots": 5
     },
     {
      "id": "viberooms",
@@ -2663,7 +2722,8 @@
       }
      },
      "isNew": true,
-     "hours": "closed Mon–Tue · Wed–Thu 18:00–00:00 · Fri–Sat 17:00–00:00 · closed Sun"
+     "hours": "closed Mon–Tue · Wed–Thu 18:00–00:00 · Fri–Sat 17:00–00:00 · closed Sun",
+     "shots": 5
     },
     {
      "id": "stifler",
@@ -2705,7 +2765,8 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 16:00–04:00"
+     "hours": "Daily 16:00–04:00",
+     "shots": 5
     },
     {
      "id": "kazinczykocsma",
@@ -2747,7 +2808,8 @@
       }
      },
      "isNew": true,
-     "hours": "closed Mon–Tue · Wed–Thu 18:00–02:00 · Fri–Sat 18:00–04:00 · closed Sun"
+     "hours": "closed Mon–Tue · Wed–Thu 18:00–02:00 · Fri–Sat 18:00–04:00 · closed Sun",
+     "shots": 5
     }
    ],
    "short": "Late & private"

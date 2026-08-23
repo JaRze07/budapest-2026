@@ -1866,3 +1866,32 @@ button.ptag:hover::after { color: var(--brass); }
 }
 .foldhint { font-size: 11px; color: var(--slate); margin-left: auto; margin-right: 8px; }
 .foldbody { padding: 0 13px 13px; }
+
+/* ---------- venue photo carousel ---------- */
+
+.shots { position: relative; margin: 12px 0 0; background: var(--ink); }
+.shotstrip {
+  display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+.shotstrip::-webkit-scrollbar { display: none; }
+.shotstrip img {
+  flex: 0 0 100%; width: 100%; aspect-ratio: 4/3; object-fit: cover;
+  scroll-snap-align: center; display: block; background: var(--ink);
+}
+.shotnav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 32px; height: 44px; border: none; cursor: pointer;
+  background: rgba(11, 20, 30, .55); color: #fff; font-size: 20px; line-height: 1;
+}
+.shotnav:hover { background: rgba(11, 20, 30, .8); }
+.shotnav.prev { left: 0; }
+.shotnav.next { right: 0; }
+.shotdots {
+  position: absolute; left: 0; right: 0; bottom: 7px;
+  display: flex; justify-content: center; gap: 5px; pointer-events: none;
+}
+.shotdots i {
+  width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.45);
+}
+.shotdots i.on { background: #fff; }
