@@ -139,6 +139,7 @@ window.BPmissing = function (img, label) {
       '<div class="sheetarea">' + esc(src.area || "") +
         (fb.walk ? " · " + fb.walk.min + " min walk" : "") + "</div>" +
       (src.desc ? '<p class="sheetdesc">' + esc(src.desc) + "</p>" : "") +
+      (src.hours ? '<p class="sheethours">' + esc(src.hours) + "</p>" : "") +
       (src.meta ? '<p class="sheetmeta">' + esc(src.meta) + "</p>" : "") +
       (src.key_fact ? '<p class="keyfact">' + esc(src.key_fact) + "</p>" : "") +
       whoWants(id);
@@ -455,8 +456,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt66g834").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt66g834").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt67iy7e").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt67iy7e").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1156,7 +1157,7 @@ window.BPmissing = function (img, label) {
     var how = w ? (t && (w.min - t.min) >= 6
       ? t.min + " min · " + t.summary
       : w.min + " min walk") : "";
-    var line = (v && (v.meta || v.note)) || "";
+    var line = (v && (metaLine(v) || v.note)) || "";
     var open = v && v.lat;                  /* customs have no pin to open */
     /* the arrows have to be siblings of the row button, not inside it */
     return '<div class="prow">' +
@@ -1467,6 +1468,12 @@ window.BPmissing = function (img, label) {
     return s;
   }
 
+  /** Opening hours plus whatever else the card says, as one line. */
+  function metaLine(v) {
+    if (!v) return "";
+    return [v.hours, v.meta].filter(Boolean).join(" · ");
+  }
+
   function vetoBtn(id) {
     var no = !!sel.vetoes[id];
     return '<button type="button" class="veto' + (no ? " on" : "") + '" data-veto="' + esc(id) + '">' +
@@ -1483,6 +1490,7 @@ window.BPmissing = function (img, label) {
         "<h4>" + esc(it.name) + "</h4>" +
         '<div class="area">' + esc(it.area) + (it.illustrative ? " · photo illustrative" : "") + "</div>" +
         (it.fromBase ? '<div class="fromflat">' + esc(distLine(it)) + "</div>" : "") +
+        (it.hours ? '<div class="hours">' + esc(it.hours) + "</div>" : "") +
         '<p class="desc">' + esc(it.desc) + "</p>" +
         '<p class="meta">' + esc(it.meta) + "</p>" +
         (it.key_fact ? '<p class="keyfact">' + esc(it.key_fact) + "</p>" : "") +
@@ -1731,6 +1739,8 @@ window.BPmissing = function (img, label) {
             '<span class="nm"><b>' + esc(r.name) + "</b>" +
               (catOf(r.id) ? '<i class="cat">(' + esc(catOf(r.id)) + ")</i>" : "") +
               (r.what ? '<i class="what">' + esc(r.what) + "</i>" : "") +
+              (byId[r.id] && byId[r.id].item.hours
+                ? '<i class="rhours">' + esc(byId[r.id].item.hours) + "</i>" : "") +
               (slot ? '<i class="slotted">' + esc(slot.day) + " · " + esc(slot.when) +
                 esc(altSuffix(r.id, slot.id)) + "</i>" : "") +
               "<small>" + esc(r.who.join(", ")) + "</small>" +

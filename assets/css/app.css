@@ -1804,3 +1804,18 @@ button.ptag:hover::after { color: var(--brass); }
 .svchips span.no { background: transparent; border-color: var(--warn); color: var(--warn); font-weight: 700; }
 .svchips span.me { box-shadow: 0 0 0 2px var(--brass); }
 .svnone { font-size: 11.5px; color: var(--slate); font-style: italic; }
+
+/* opening hours — the half that used to be missing */
+.hours {
+  font-size: 11px; font-weight: 700; line-height: 1.45;
+  color: var(--ink); background: var(--paper);
+  border-left: 3px solid var(--brass); padding: 3px 7px; margin: 6px 0 0;
+}
+.rank .r .nm .rhours {
+  display: block; font-style: normal; font-size: 10.5px; font-weight: 700;
+  color: var(--brass-dim); line-height: 1.4; margin-top: 2px;
+}
+.sheethours {
+  font-size: 12.5px; font-weight: 700; margin: 10px 0 0; line-height: 1.5;
+  color: var(--ink); border-left: 3px solid var(--brass); padding-left: 8px;
+}

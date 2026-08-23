@@ -19,7 +19,7 @@
      "name": "Cirkusz",
      "area": "Dob u. 25",
      "desc": "The brunch everyone names first — eggs benedict, French toast towers, coffee roasted in house.",
-     "meta": "Opens 07:30 · no bookings, expect to queue · ~€12 a head",
+     "meta": "no bookings, expect to queue · ~€12 a head",
      "tags": [
       "brunch",
       "no bookings"
@@ -52,14 +52,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily 07:30–16:00"
     },
     {
      "id": "newyork",
      "name": "New York Café",
      "area": "Erzsébet krt 9–11",
      "desc": "The most ornate coffee house in Europe, gilt and frescoes floor to ceiling. Overpriced and worth doing once.",
-     "meta": "Daily 08:00–24:00 · coffee ~€8, breakfast ~€25 · queue or book",
+     "meta": "coffee ~€8, breakfast ~€25 · queue or book",
      "tags": [
       "landmark",
       "splurge",
@@ -93,14 +94,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Wed 07:00–00:00 · Thu–Sun 07:00–01:00"
     },
     {
      "id": "horizont",
      "name": "Horizont",
      "area": "Erzsébet krt 13",
      "desc": "Specialty coffee and a short breakfast menu, five minutes from the door. The everyday one.",
-     "meta": "Mon–Sat 08:00–16:00 · coffee ~€3 · small, fills up",
+     "meta": "coffee ~€3 · small, fills up",
      "tags": [
       "coffee",
       "closest",
@@ -114,14 +116,15 @@
        "m": 502,
        "min": 7
       }
-     }
+     },
+     "hours": "Mon–Fri 09:00–15:30 · Sat 09:00–15:00 · closed Sun"
     },
     {
      "id": "eggscuse",
      "name": "Eggscuse Me?",
      "area": "Klauzál u. 10",
      "desc": "Eggs done every way there is, and not much else. In and out in half an hour.",
-     "meta": "Daily 09:00–14:00 · ~€10 a head · mornings only",
+     "meta": "~€10 a head · mornings only",
      "tags": [
       "brunch",
       "eggs",
@@ -155,14 +158,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon 09:00–14:00 · closed Tue–Wed · Thu–Sun 09:00–14:00"
     },
     {
      "id": "klauzal",
      "name": "Klauzál Café",
      "area": "Klauzál u. 23",
      "desc": "Corner café on the square with pancakes, big breakfasts and a terrace to read the day on.",
-     "meta": "Mon–Thu 08:00–22:00, later Fri–Sat · ~€10 · terrace",
+     "meta": "~€10 · terrace",
      "tags": [
       "brunch",
       "pancakes",
@@ -196,14 +200,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Daily 11:00–15:00"
     },
     {
      "id": "kadar",
      "name": "Kádár Étkezde",
      "area": "Klauzál tér 9",
      "desc": "A Jewish-Hungarian lunch canteen that has not changed since the sixties. Shared tables, soda siphons, cash only.",
-     "meta": "Tue–Sat 11:00–17:00 · ~€10 · CASH ONLY · closed Sun–Mon",
+     "meta": "~€10 · CASH ONLY",
      "tags": [
       "lunch",
       "hungarian",
@@ -237,14 +242,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "closed Mon · Tue–Sat 11:00–16:30 · closed Sun"
     },
     {
      "id": "fricipapa",
      "name": "Frici Papa",
      "area": "Király u. 55",
      "desc": "The cheap Hungarian lunch everyone ends up at — schnitzel the size of the plate, and you pay for sides separately.",
-     "meta": "Mon–Sat 11:00–23:00 · mains ~€7 · no bookings",
+     "meta": "mains ~€7 · no bookings",
      "tags": [
       "lunch",
       "cheap",
@@ -278,7 +284,8 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Sat 11:00–22:00 · closed Sun"
     }
    ],
    "id": "breakfast",
@@ -296,7 +303,7 @@
      "name": "Szimpla Kert",
      "area": "Kazinczy u. 14",
      "desc": "The original ruin bar — a derelict block, a gutted Trabant, a bar in every room. Farmers' market Sunday morning.",
-     "meta": "Daily till 04:00 · beer ~€3 · before 21:00 for a table",
+     "meta": "beer ~€3",
      "tags": [
       "ruin bar",
       "open daily",
@@ -329,14 +336,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Fri 15:00–04:00 · Sat 12:00–04:00 · Sun 09:00–04:00"
     },
     {
      "id": "warmup",
      "name": "Warm Up",
      "area": "Nagy Diófa u. 26",
      "desc": "No menu — describe what you feel like, they build it. Small; split into two rounds.",
-     "meta": "Daily till 02:00 · ~€11 a drink",
+     "meta": "~€11 a drink",
      "tags": [
       "cocktails",
       "small venue"
@@ -368,14 +376,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Wed 19:00–01:00 · Thu–Sat 19:00–02:00 · Sun 19:00–01:00"
     },
     {
      "id": "jardin",
      "name": "Jardín",
      "area": "Dob u. 16 · Gozsdu",
      "desc": "Garden cocktail bar inside the courtyard — the easy pre-anything meeting point.",
-     "meta": "Daily till 01:00–02:00",
+     "meta": "",
      "tags": [
       "cocktails",
       "courtyard"
@@ -407,14 +416,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Thu 18:00–01:00 · Fri–Sat 18:00–02:00 · Sun 18:00–01:00"
     },
     {
      "id": "eleszto",
      "name": "Élesztő",
      "area": "Tűzoltó u. 22 · District IX",
      "desc": "Craft beer courtyard in an old glassworks — 20+ taps, butcher-counter food. Best value in the city.",
-     "meta": "Daily 15:00 till 01:00–03:00",
+     "meta": "",
      "tags": [
       "craft beer",
       "value"
@@ -446,14 +456,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon 15:00–01:00 · Tue–Wed 15:00–02:00 · Thu–Sat 15:00–03:00 · Sun 15:00–01:00"
     },
     {
      "id": "hops",
      "name": "HOPS Beer Bar",
      "area": "Wesselényi u. 13",
      "desc": "The serious craft tap list in the bar district. Staging post between dinner and a club.",
-     "meta": "Daily till ~03:00",
+     "meta": "",
      "tags": [
       "craft beer"
      ],
@@ -484,14 +495,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Tue 14:30–01:00 · Wed–Thu 14:30–02:00 · Fri–Sat 14:30–03:00 · Sun 14:30–00:00"
     },
     {
      "id": "bar360",
      "name": "360 Bar",
      "area": "Andrássy út 39",
      "desc": "Rooftop terrace with the whole of Pest below. Queue at sunset.",
-     "meta": "Daily till 00:00–02:00 · ~€12 a drink",
+     "meta": "~€12 a drink",
      "tags": [
       "rooftop",
       "view"
@@ -523,14 +535,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Tue 17:00–00:00 · Wed 14:00–00:00 · Thu–Sat 14:00–02:00 · Sun 14:00–00:00"
     },
     {
      "id": "ankert",
      "name": "Anker't",
      "area": "Paulay Ede u. 33",
      "desc": "A bare concrete courtyard the size of a car park, strung with lights. The ruin bar with room to breathe.",
-     "meta": "Daily till late in season · beer ~€3",
+     "meta": "beer ~€3",
      "tags": [
       "ruin bar",
       "courtyard",
@@ -564,14 +577,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily till late in season · hours vary"
     },
     {
      "id": "kisuzem",
      "name": "Kisüzem",
      "area": "Kis Diófa u. 2",
      "desc": "Small, scruffy and local — the corner bar the neighbourhood actually drinks in.",
-     "meta": "Daily till ~02:00 · cheap · food till late",
+     "meta": "cheap",
      "tags": [
       "local",
       "small",
@@ -605,14 +619,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Mon–Wed 12:00–01:00 · Thu–Sat 12:00–02:00 · Sun 12:00–01:00"
     },
     {
      "id": "mikativadar",
      "name": "Mika Tivadar Mulató",
      "area": "Kazinczy u. 47",
      "desc": "Two floors and a garden at the quiet end of Kazinczy, a minute from the noise.",
-     "meta": "Daily till ~02:00 · garden in season",
+     "meta": "garden in season",
      "tags": [
       "courtyard",
       "cocktails"
@@ -645,14 +660,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily till ~02:00 · opening time not published"
     },
     {
      "id": "highnote",
      "name": "High Note SkyBar",
      "area": "Hercegprímás u. 5",
      "desc": "Rooftop level with the dome of St Stephen's Basilica, close enough to read the stonework.",
-     "meta": "Daily till ~00:00 · smart-ish · book for sunset · ~€13 a drink",
+     "meta": "smart-ish · book for sunset · ~€13 a drink",
      "tags": [
       "rooftop",
       "view",
@@ -686,14 +702,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Mon–Thu 16:00–00:00 · Fri–Sun 14:00–00:00"
     },
     {
      "id": "csendes",
      "name": "Csendes Létterem",
      "area": "Ferenczy István u. 5",
      "desc": "Junk-shop décor floor to ceiling, university crowd, no attempt at a concept.",
-     "meta": "Mon–Sat till ~00:00 · cheap",
+     "meta": "cheap",
      "tags": [
       "quirky",
       "cheap"
@@ -726,7 +743,8 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily 18:00–00:00"
     }
    ],
    "short": "Bars"
@@ -741,7 +759,7 @@
      "name": "Sparty",
      "area": "Széchenyi Baths · Állatkerti krt. 9–11",
      "desc": "Nightclub inside a 1913 thermal bath palace — DJs, lasers, projections on the facade, a thousand people in 38°C water until 2am.",
-     "meta": "Sat 21:30–02:00, last entry ~01:00 · basic ~€60–65, premium ~€81 (4 drinks + 19:00 Pavilion Garden warm-up) · 18+, bring ID · book official, sells out",
+     "meta": "18+, bring ID · book official, sells out",
      "tags": [
       "headline",
       "saturday only",
@@ -776,14 +794,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Thu 07:00–20:00 · Fri 07:00–22:00 · Sat–Sun 08:00–20:00"
     },
     {
      "id": "fogas",
      "name": "Instant-Fogas",
      "area": "Akácfa u. 51",
      "desc": "Club complex across seven rooms, a different genre in each. The reliable late-late option every night.",
-     "meta": "Daily 18:00–06:00 · usually free entry",
+     "meta": "usually free entry",
      "tags": [
       "club",
       "open daily"
@@ -815,14 +834,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Daily 18:00–06:00"
     },
     {
      "id": "a38",
      "name": "A38",
      "area": "Petőfi Bridge, Buda side",
      "desc": "Club and concert hall inside a converted Ukrainian cargo ship on the Danube.",
-     "meta": "Fri–Sat late · check the programme",
+     "meta": "check the programme",
      "tags": [
       "club",
       "boat",
@@ -855,14 +875,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Fri 10:00–22:00 · Sat 16:00–22:00 · closed Sun"
     },
     {
      "id": "boatparty",
      "name": "Budapest Boat Party",
      "area": "Akadémia Dock 2",
      "desc": "Two-hour party cruise past a lit-up Parliament — open-bar option, then most nights roll into a club after.",
-     "meta": "Fri–Sat evenings · from ~€30, open bar extra",
+     "meta": "",
      "tags": [
       "boat",
       "party"
@@ -894,14 +915,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Fri–Sat evenings · by sailing time"
     },
     {
      "id": "doboz",
      "name": "Doboz",
      "area": "Klauzál u. 10",
      "desc": "Ruin-bar courtyard turned proper club — two dancefloors around a giant tree sculpture.",
-     "meta": "Wed–Sat 18:00–06:00 · closed Sun–Mon · free entry",
+     "meta": "free entry",
      "tags": [
       "club"
      ],
@@ -932,14 +954,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "closed Mon–Tue · Wed 18:00–00:00 · Thu–Sat 18:00–06:00 · Sun 00:00–06:00"
     },
     {
      "id": "bppark",
      "name": "Budapest Park",
      "area": "Fábián Juli tér 1",
      "desc": "Open-air festival-sized venue on the Pest riverside.",
-     "meta": "Gates ~17:00 · ticketed · outdoor",
+     "meta": "ticketed · outdoor",
      "tags": [
       "outdoor",
       "ticketed"
@@ -981,14 +1004,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "closed Mon–Wed · Thu 18:00–02:00 · Fri–Sat 18:00–04:00 · closed Sun"
     },
     {
      "id": "akvarium",
      "name": "Akvárium Klub",
      "area": "Erzsébet tér 12",
      "desc": "Two halls and a huge terrace under the pool at Deák tér — concerts early, club late.",
-     "meta": "Thu–Sat late · terrace daily",
+     "meta": "",
      "tags": [
       "live music",
       "terrace"
@@ -1020,14 +1044,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Terrace daily · club nights Thu–Sat"
     },
     {
      "id": "corvinteto",
      "name": "Corvintető",
      "area": "Blaha Lujza tér 1–2",
      "desc": "Club on the roof of a socialist department store, with the whole of Pest laid out behind the dancefloor.",
-     "meta": "Thu–Sat late · rooftop in season",
+     "meta": "",
      "tags": [
       "rooftop",
       "club",
@@ -1061,14 +1086,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Thu–Sat, late · rooftop in season"
     },
     {
      "id": "otkert",
      "name": "Ötkert",
      "area": "Zrínyi u. 4",
      "desc": "Garden club behind the Basilica — commercial, busy, and the easiest night out to organise.",
-     "meta": "Thu–Sat late · door can be picky · dress up a little",
+     "meta": "door can be picky · dress up a little",
      "tags": [
       "club",
       "garden"
@@ -1101,14 +1127,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "closed Mon–Tue · Wed–Sat 23:00–05:00 · closed Sun"
     },
     {
      "id": "toldi",
      "name": "Toldi Klub",
      "area": "Bajcsy-Zsilinszky út 36–38",
      "desc": "An art-house cinema that turns into a club after the last screening. Better music than most.",
-     "meta": "Fri–Sat late · check the programme",
+     "meta": "check the programme",
      "tags": [
       "club",
       "live music"
@@ -1141,14 +1168,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Mon–Thu 12:00–00:00 · Fri–Sat 14:00–18:00 · Sun 14:00–00:00"
     },
     {
      "id": "morrisons",
      "name": "Morrison's 2",
      "area": "Szent István krt 11",
      "desc": "A warren of rooms under the Grand Boulevard, each with a different genre and its own bar — one of them is a karaoke room.",
-     "meta": "Tue–Sat till ~05:00 · cheap entry · very busy",
+     "meta": "cheap entry · very busy",
      "tags": [
       "club",
       "big",
@@ -1182,7 +1210,8 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Mon–Sat 18:00–05:00 · closed Sun"
     }
    ],
    "short": "Clubs"
@@ -1197,7 +1226,7 @@
      "name": "Széchenyi by day",
      "area": "Állatkerti krt. 9–11",
      "desc": "The big one sober: 15 indoor pools, 3 outdoor, chess boards floating in the hot crescent pool.",
-     "meta": "Daily 07:00–20:00 · ~€30–40 · take a cabin, not a locker",
+     "meta": "~€30–40 · take a cabin, not a locker",
      "tags": [
       "thermal bath",
       "landmark"
@@ -1229,14 +1258,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Thu 07:00–20:00 · Fri 07:00–22:00 · Sat–Sun 08:00–20:00"
     },
     {
      "id": "rudas",
      "name": "Rudas Baths",
      "area": "Döbrentei tér 9 · Buda",
      "desc": "Ottoman dome from 1566 plus a modern wing and a rooftop tub facing Elizabeth Bridge.",
-     "meta": "Daily 06:00–20:00 · ~€30 · night session Fri 22:00–03:00 (online tickets only)",
+     "meta": "~€30",
      "tags": [
       "thermal bath",
       "rooftop",
@@ -1270,14 +1300,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon 06:00–22:00 · Tue–Thu 06:00–20:00 · Fri–Sat 06:00–20:00, 22:00–03:00 · Sun 06:00–20:00"
     },
     {
      "id": "beerspa",
      "name": "Thermal Beer Spa",
      "area": "Széchenyi, Gate 1",
      "desc": "45 minutes in a wooden tub of warm hops with an unlimited beer tap at arm's reach.",
-     "meta": "Daily 10:00–19:00 · ~€45–60 pp · book a private tub room",
+     "meta": "~€45–60 pp · book a private tub room",
      "tags": [
       "novelty",
       "booking required"
@@ -1309,14 +1340,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Daily 10:00–19:00"
     },
     {
      "id": "lukacs",
      "name": "Lukács Baths",
      "area": "Frankel Leó út 25–29 · Buda",
      "desc": "The locals' bath — faintly 1960s, half the price, no queue.",
-     "meta": "Daily 07:00–19:00 · ~€17.5 · swim cap mandatory for outdoor lap pools",
+     "meta": "~€17.5 · swim cap mandatory for outdoor lap pools",
      "tags": [
       "thermal bath",
       "value",
@@ -1358,14 +1390,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon 07:00–19:00 · Tue 07:00–22:00 · Wed–Sun 07:00–19:00"
     },
     {
      "id": "palatinus",
      "name": "Palatinus Strand",
      "area": "Margaret Island",
      "desc": "Open-air lido: thermal pools, wave pool, slides, lawns.",
-     "meta": "Daily ~09:00–19:00 in season · ~€15",
+     "meta": "~€15",
      "tags": [
       "outdoor",
       "summer only"
@@ -1406,14 +1439,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Daily 09:00–19:00"
     },
     {
      "id": "gellert",
      "name": "Gellért Baths",
      "area": "Kelenhegyi út 4 · Buda",
      "desc": "The art nouveau one — stained glass, mosaic columns, a vaulted indoor hall that looks like a cathedral.",
-     "meta": "Daily 09:00–19:00 · ~€17.5 · take a cabin",
+     "meta": "~€17.5 · take a cabin",
      "tags": [
       "thermal bath",
       "landmark",
@@ -1447,14 +1481,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily 09:00–19:00"
     },
     {
      "id": "kiraly",
      "name": "Király Baths",
      "area": "Fő u. 84 · Buda",
      "desc": "1565 Ottoman dome with shafts of light through the roof. Small, dim and completely unlike the big ones.",
-     "meta": "Daily 09:00–21:00 · ~€11.5 · no outdoor pools",
+     "meta": "~€11.5 · no outdoor pools",
      "tags": [
       "thermal bath",
       "historic",
@@ -1497,14 +1532,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily 09:00–21:00"
     },
     {
      "id": "velibej",
      "name": "Veli Bej",
      "area": "Árpád fejedelem útja 7 · Buda",
      "desc": "The Ottoman bath the tour groups miss — five pools under a restored dome, capped numbers, calm.",
-     "meta": "Daily 06:00–12:00 and 15:00–21:00 · ~€12.5 · book ahead",
+     "meta": "~€12.5 · book ahead",
      "tags": [
       "thermal bath",
       "historic",
@@ -1547,14 +1583,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily 06:00–12:00 and 15:00–21:00"
     },
     {
      "id": "dandar",
      "name": "Dandár Baths",
      "area": "Dandár u. 5–7 · District IX",
      "desc": "A small neighbourhood bath in Ferencváros. No queue, no spectacle, half the price.",
-     "meta": "Daily 06:00–21:00 · ~€9",
+     "meta": "~€9",
      "tags": [
       "thermal bath",
       "value",
@@ -1588,7 +1625,8 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Mon–Wed 09:00–19:00 · Thu 09:00–22:00 · Fri–Sun 09:00–19:00"
     }
    ],
    "short": "Baths"
@@ -1603,7 +1641,7 @@
      "name": "Gettó Gulyás",
      "area": "Wesselényi u. 18",
      "desc": "Hungarian stews done properly — goulash, veal paprikash, stuffed cabbage. The one to book.",
-     "meta": "Daily till 23:00 · ~€20 a head · booking essential",
+     "meta": "~€20 a head · booking essential",
      "tags": [
       "hungarian",
       "booking required"
@@ -1635,14 +1673,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Daily 12:00–23:00"
     },
     {
      "id": "fatmama",
      "name": "Fat Mama",
      "area": "Kazinczy u. 24",
      "desc": "Ribs, BBQ and paprikash mid-bar-strip, live music most nights. Seats six without drama.",
-     "meta": "Daily 09:00–24:00 · book weekends",
+     "meta": "book weekends",
      "tags": [
       "group friendly",
       "live music"
@@ -1674,14 +1713,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Thu 17:00–22:45 · Fri–Sat 17:00–23:45 · Sun 17:00–22:45"
     },
     {
      "id": "vakvarju",
      "name": "VakVarjú",
      "area": "Paulay Ede u. 7",
      "desc": "Big portions, Hungarian classics, live pianist. The easy big-table option.",
-     "meta": "Daily till 23:30",
+     "meta": "",
      "tags": [
       "hungarian",
       "group friendly"
@@ -1713,14 +1753,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Daily 11:30–23:30"
     },
     {
      "id": "aranybastya",
      "name": "Aranybástya",
      "area": "Buda Castle bastion",
      "desc": "Terrace on the castle wall with the whole city below — the one fancy dinner.",
-     "meta": "Daily 12:00–22:00 · mains ~€30+ · sunset 19:40, book a sunset table",
+     "meta": "mains ~€30+",
      "tags": [
       "fine dining",
       "view",
@@ -1753,14 +1794,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "closed Mon · Tue–Thu 12:00–22:00 · closed Fri–Sat · Sun 12:00–22:00"
     },
     {
      "id": "market",
      "name": "Central Market Hall",
      "area": "Vámház krt. 1–3",
      "desc": "1897 iron-and-tile hall — paprika downstairs, lángos with sour cream and cheese upstairs.",
-     "meta": "Sat till 16:00 · Mon till 18:00 · closed Sunday",
+     "meta": "",
      "tags": [
       "market",
       "daytime"
@@ -1793,14 +1835,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Fri 06:00–18:00 · Sat 06:00–16:00 · Sun 10:00–16:00"
     },
     {
      "id": "menza",
      "name": "Menza",
      "area": "Liszt Ferenc tér 2",
      "desc": "Sixties-canteen styling, Hungarian classics done well, tables outside on the square.",
-     "meta": "Daily till 24:00 · mains ~€12 · book at weekends",
+     "meta": "mains ~€12 · book at weekends",
      "tags": [
       "hungarian",
       "group friendly",
@@ -1834,14 +1877,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily 11:30–22:30"
     },
     {
      "id": "koleves",
      "name": "Kőleves Vendéglő",
      "area": "Kazinczy u. 41",
      "desc": "Jewish-Hungarian cooking in the middle of the bar strip, with a garden next door.",
-     "meta": "Daily till 23:00 · mains ~€13 · book weekends",
+     "meta": "mains ~€13 · book weekends",
      "tags": [
       "hungarian",
       "garden",
@@ -1875,14 +1919,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "closed Mon · Tue–Wed 11:00–22:00 · Thu–Sat 11:00–23:00 · Sun 11:00–22:00"
     },
     {
      "id": "rosenstein",
      "name": "Rosenstein",
      "area": "Mosonyi u. 3",
      "desc": "Family-run Hungarian-Jewish kitchen behind Keleti. Unfashionable street, seriously good food.",
-     "meta": "Mon–Sat till 23:00 · mains ~€18 · booking essential",
+     "meta": "mains ~€18 · booking essential",
      "tags": [
       "hungarian",
       "booking required"
@@ -1915,14 +1960,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Mon–Sat, evenings · opening time not published"
     },
     {
      "id": "pestidiszno",
      "name": "Pesti Disznó",
      "area": "Nagymező u. 19",
      "desc": "Pork, mostly, on the theatre street. Loud, cheerful, and open when the shows come out.",
-     "meta": "Daily till 24:00 · mains ~€14",
+     "meta": "mains ~€14",
      "tags": [
       "hungarian",
       "late"
@@ -1955,14 +2001,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily till 24:00 · opening time not published"
     },
     {
      "id": "bors",
      "name": "Bors GasztroBár",
      "area": "Kazinczy u. 10",
      "desc": "A hatch in the wall doing soups and hot baguettes. Six euros, eaten standing, absurdly good.",
-     "meta": "Daily till ~21:00 · ~€6 · no seats to speak of",
+     "meta": "~€6 · no seats to speak of",
      "tags": [
       "cheap",
       "quick",
@@ -1996,7 +2043,8 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Mon–Thu 11:30–21:00 · Fri–Sat 11:30–22:00 · Sun 11:30–21:00"
     }
    ],
    "short": "Food"
@@ -2011,7 +2059,7 @@
      "name": "Shooting range",
      "area": "Churchill · Holló u. 6",
      "desc": "Pistols to AK-47s with range masters walking you through it. District VII.",
-     "meta": "Daily 10:00–19:00 · packages ~€80 · book a group slot",
+     "meta": "packages ~€80 · book a group slot",
      "tags": [
       "booking required",
       "group"
@@ -2043,14 +2091,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Daily 10:00–19:00"
     },
     {
      "id": "karting",
      "name": "FlashKart",
      "area": "Blaha Lujza tér, level −5",
      "desc": "Indoor electric karts under a downtown square — race heats, live timing, a podium to argue about.",
-     "meta": "Fri 15–22 · Sat 10–22 · Sun 10–21 · ~€15 for 3 heats · book",
+     "meta": "~€15 for 3 heats · book",
      "tags": [
       "booking required",
       "group",
@@ -2083,14 +2132,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Fri 15:00–22:00 · Sat 10:00–22:00 · Sun 10:00–21:00"
     },
     {
      "id": "escape",
      "name": "Escape room",
      "area": "Mystique Room · Szent István krt. 9",
      "desc": "Top-rated rooms in the city, built for teams up to six. One hour, one locked door.",
-     "meta": "Daily 09:00–21:00 · ~€15 pp · book a slot",
+     "meta": "~€15 pp · book a slot",
      "tags": [
       "booking required",
       "group",
@@ -2123,7 +2173,8 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Daily 09:00–21:00"
     },
     {
      "id": "bastion",
@@ -2163,7 +2214,8 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Open all the time"
     },
     {
      "id": "margaret",
@@ -2212,7 +2264,8 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Open all the time"
     },
     {
      "id": "heroes",
@@ -2251,14 +2304,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Open all the time"
     },
     {
      "id": "axe",
      "name": "Axe throwing",
      "area": "Balta Dobálás · Dohány u. 30/a",
      "desc": "Lanes, hatchets, and someone who shows you how so nobody loses a finger.",
-     "meta": "Daily 12:00–20:00, till 22:00 Fri–Sat · ~€12 pp an hour · book a lane",
+     "meta": "~€12 pp an hour · book a lane",
      "tags": [
       "booking required",
       "group",
@@ -2292,14 +2346,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Mon–Tue 12:00–20:00 · Wed–Sat 12:00–22:00 · Sun 12:00–20:00"
     },
     {
      "id": "pinball",
      "name": "Pinball Museum",
      "area": "Radnóti Miklós u. 18",
      "desc": "A basement of 130-odd working machines from the 1880s onward. One entry fee, then everything plays free.",
-     "meta": "Wed–Sun afternoons till late · ~€8 · free play all night",
+     "meta": "~€8 · free play all night",
      "tags": [
       "indoor",
       "value",
@@ -2333,14 +2388,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "closed Mon–Tue · Wed–Fri 16:00–00:00 · Sat 13:00–00:00 · Sun 11:00–22:00"
     },
     {
      "id": "labyrinth",
      "name": "Castle Labyrinth",
      "area": "Úri u. 9 · Buda Castle",
      "desc": "Caves under the castle hill, lit by oil lamps and deliberately disorienting.",
-     "meta": "Daily 10:00–19:00 · ~€10 · cold underground, bring a layer",
+     "meta": "~€10 · cold underground, bring a layer",
      "tags": [
       "indoor",
       "landmark"
@@ -2373,14 +2429,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily 11:00–18:00"
     },
     {
      "id": "illusions",
      "name": "Museum of Illusions",
      "area": "Paulay Ede u. 47",
      "desc": "Tilted rooms and forced perspective. Forty minutes of taking photographs of each other.",
-     "meta": "Daily 10:00–20:00 · ~€10 · about 40 minutes inside",
+     "meta": "~€10 · about 40 minutes inside",
      "tags": [
       "indoor",
       "quick",
@@ -2414,7 +2471,8 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Mon–Thu 10:00–19:00 · Fri–Sat 10:00–20:00 · Sun 10:00–19:00"
     }
    ],
    "short": "Daytime"
@@ -2429,7 +2487,7 @@
      "name": "NANA for Gents",
      "area": "Dob u. 16 · Gozsdu",
      "desc": "The strip club that keeps its rating: free entry, no compulsory drink, no minimum spend.",
-     "meta": "Nightly 22:00–04:00 · private dance ~€50 · beer at normal price",
+     "meta": "private dance ~€50 · beer at normal price",
      "tags": [
       "adult",
       "free entry"
@@ -2461,14 +2519,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Thu 22:00–04:00 · Fri–Sat 22:00–05:00 · Sun 22:00–04:00"
     },
     {
      "id": "mynt",
      "name": "Club Mynt",
      "area": "Király u. 13",
      "desc": "Same block, smaller. The backup if NANA is full.",
-     "meta": "Nightly 22:00–04:00 · 10% service charge on the bill",
+     "meta": "10% service charge on the bill",
      "tags": [
       "adult",
       "free entry"
@@ -2500,14 +2559,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Thu 22:00–04:00 · Fri–Sat 22:00–05:00 · Sun 22:00–04:00"
     },
     {
      "id": "bluebird",
      "name": "Blue Bird Karaoke",
      "area": "Dob u. 16 · Gozsdu",
      "desc": "Private KTV boxes — your own room, your own screen, nobody else listening.",
-     "meta": "Thu–Sun 18:00–04:00 · book the room · overrun bills as a full hour",
+     "meta": "book the room · overrun bills as a full hour",
      "tags": [
       "karaoke",
       "private room",
@@ -2541,14 +2601,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "closed Mon–Wed · Thu–Sun 18:00–04:00"
     },
     {
      "id": "lasiesta",
      "name": "La Siesta",
      "area": "Kazinczy u. 52/b",
      "desc": "Party bar — table dancing, fire shows behind the bar, free shots. The loud alternative.",
-     "meta": "Nightly ~20:00–05:00",
+     "meta": "",
      "tags": [
       "party bar"
      ],
@@ -2579,14 +2640,15 @@
         }
        ]
       }
-     }
+     },
+     "hours": "Mon–Wed 20:00–05:00 · Thu 19:00–05:00 · Fri–Sat 18:00–05:00 · Sun 20:00–05:00"
     },
     {
      "id": "viberooms",
      "name": "Vibe Rooms",
      "area": "Wesselényi u. 55",
      "desc": "Private karaoke boxes two minutes from the front door — 80,000 songs, wireless mics, nobody else listening.",
-     "meta": "Wed–Thu 18:00–24:00 · Fri–Sat 17:00–24:00 · closed Sun–Tue · ~€6.5 pp an hour",
+     "meta": "~€6.5 pp an hour",
      "tags": [
       "karaoke",
       "private room",
@@ -2600,14 +2662,15 @@
        "min": 2
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "closed Mon–Tue · Wed–Thu 18:00–00:00 · Fri–Sat 17:00–00:00 · closed Sun"
     },
     {
      "id": "stifler",
      "name": "Stifler House",
      "area": "Dob u. 19",
      "desc": "Karaoke on a proper stage, not in a booth — you sing to the whole room, which is either the point or the problem.",
-     "meta": "Open 17:00–06:00 · karaoke Thu–Sat · no booking, no room fee",
+     "meta": "karaoke Thu–Sat · no booking, no room fee",
      "tags": [
       "karaoke",
       "stage",
@@ -2641,14 +2704,15 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "Daily 16:00–04:00"
     },
     {
      "id": "kazinczykocsma",
      "name": "Kazinczy Kocsma",
      "area": "Kazinczy u. 5",
      "desc": "A basement pub that runs karaoke from ten. Cheap beer, locals, zero polish.",
-     "meta": "Karaoke Thu–Sat from 22:00 · cheap · basement, no queue",
+     "meta": "cheap · basement, no queue",
      "tags": [
       "karaoke",
       "cheap",
@@ -2682,7 +2746,8 @@
        ]
       }
      },
-     "isNew": true
+     "isNew": true,
+     "hours": "closed Mon–Tue · Wed–Thu 18:00–02:00 · Fri–Sat 18:00–04:00 · closed Sun"
     }
    ],
    "short": "Late & private"
