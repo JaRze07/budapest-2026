@@ -505,8 +505,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt6borb2").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt6borb2").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt6c5bgz").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt6c5bgz").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -844,7 +844,6 @@ window.BPmissing = function (img, label) {
       renderPicks();
     }
     renderMoney();
-    renderArrivals();
     renderHypeOthers();
     renderTransformation();
     renderUpload();
@@ -862,7 +861,6 @@ window.BPmissing = function (img, label) {
   function renderHome() {
     renderCountdown();
     renderTransformation();
-    renderArrivals();
     renderSchedule();
   }
 
@@ -1145,38 +1143,6 @@ window.BPmissing = function (img, label) {
   }
 
 
-  function renderArrivals() {
-    var people = (TRIP.people || []).slice();
-    var rows = people.map(function (p) {
-      var a = arrival(p), d = departure(p);
-      var tm, sub;
-      if (a) {
-        tm = '<div class="tm"><b>' + esc(a.time) + "</b><small>" + esc(dayName(a.date)) + " · from " + esc(a.from) + "</small></div>";
-        sub = d ? "out " + dayName(d.date) + " " + d.time : "";
-      } else if (p.status === "unconfirmed") {
-        tm = '<div class="tm tbd"><b>Maybe</b><small>no booking</small></div>';
-        sub = "Not confirmed";
-      } else {
-        tm = '<div class="tm tbd"><b>Counting down</b><small>flight pending</small></div>';
-        sub = "Flight not shared yet";
-      }
-      return '<div class="row' + (p.name === me ? " me-row" : "") + '">' +
-        '<div class="av">' + esc(p.initial) + "</div>" +
-        '<div class="nm"><b>' + esc(p.name) + "</b>" + (sub ? "<small>" + esc(sub) + "</small>" : "") + "</div>" +
-        tm + "</div>";
-    }).join("");
-
-    var missing = people.filter(function (p) { return p.flight_status !== "confirmed"; })
-                        .map(function (p) { return p.name; });
-
-    el("homeArrivals").innerHTML =
-      '<div class="sec-title">Who lands when</div>' +
-      (missing.length
-        ? '<p class="sec-note">Still waiting on ' + esc(missing.join(" and ")) +
-          ". Their rows fill in the moment the flights are shared.</p>"
-        : "") +
-      '<div class="board">' + rows + "</div>";
-  }
 
   function renderStaySummary() {
     var place = ourPlace();
