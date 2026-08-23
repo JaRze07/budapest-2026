@@ -1768,3 +1768,13 @@ button.ptag:hover::after { color: var(--brass); }
   line-height: 1; border: 1px solid var(--line); background: var(--paper); color: var(--slate);
 }
 .pmove button:hover { border-color: var(--brass); color: var(--brass); background: #FBF6E8; }
+
+/* an unfilled band — visible, but clearly nothing in it yet */
+.slot.band .st { color: var(--slate); }
+.sd.bandempty {
+  color: var(--slate); font-style: italic; font-size: 12.5px;
+}
+.sd.bandempty small {
+  display: block; font-style: normal; font-size: 11px; color: var(--brass-dim);
+  line-height: 1.45; margin-top: 2px;
+}

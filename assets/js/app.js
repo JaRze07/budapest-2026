@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt656jm6").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt656jm6").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt65dujz").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt65dujz").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1169,7 +1169,17 @@ window.BPmissing = function (img, label) {
 
       (TRIP.slots || []).filter(function (s) { return s.day === dayName; }).forEach(function (s) {
         var got = plannedIn(s.id);
-        if (!got.length) return;
+        /* An empty band still shows, so the shape of the day is visible before
+           anything is chosen — and so the meal slots are not invisible. */
+        if (!got.length) {
+          rows.push({
+            at: (toMin(s.from) === null ? 24 * 60 : toMin(s.from)) + 0.75,
+            html: '<div class="slot band"><div class="st">' + esc(s.when) + "</div>" +
+              '<div class="sd bandempty">Open' +
+                (s.note ? "<small>" + esc(s.note) + "</small>" : "") + "</div></div>"
+          });
+          return;
+        }
         rows.push({
           /* a hair behind anything fixed at the same time, so 10:00 checkout still leads */
           at: (toMin(s.from) === null ? 24 * 60 : toMin(s.from)) + 0.75,
