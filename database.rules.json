@@ -165,7 +165,10 @@
     "plan": {
       "$activity": {
         ".write": true,
-        ".validate": "newData.isString() && newData.val().matches(/^(fri-lunch|fri-pm|fri-eve|fri-dinner|fri-late|sat-am|sat-lunch|sat-pm|sat-dinner|sat-eve|sun-am|sun-lunch|sun-pm|sun-eve|sun-dinner|sun-late|mon|mon-lunch)?$/)"
+        ".validate": "!newData.exists() || newData.hasChildren()",
+        "$slot": {
+          ".validate": "newData.isBoolean() && $slot.matches(/^(fri-lunch|fri-pm|fri-eve|fri-dinner|fri-late|sat-am|sat-lunch|sat-pm|sat-dinner|sat-eve|sun-am|sun-lunch|sun-pm|sun-eve|sun-dinner|sun-late|mon|mon-lunch)$/)"
+        }
       }
     },
     "vetoes": {

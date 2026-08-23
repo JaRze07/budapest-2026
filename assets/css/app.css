@@ -1819,3 +1819,7 @@ button.ptag:hover::after { color: var(--brass); }
   font-size: 12.5px; font-weight: 700; margin: 10px 0 0; line-height: 1.5;
   color: var(--ink); border-left: 3px solid var(--brass); padding-left: 8px;
 }
+
+.slotoff { display: block; color: var(--warn); font-size: 11px; font-weight: 700; margin-top: 4px; }
+.slothint { font-size: 11.5px; color: var(--slate); line-height: 1.5; margin: 10px 0 0; }
+.rank .r .nm .slotted + .slotted { margin-top: 1px; }

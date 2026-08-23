@@ -456,8 +456,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt67iy7e").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt67iy7e").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt67q5zh").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt67q5zh").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -615,7 +615,11 @@ window.BPmissing = function (img, label) {
       if (pl) { openSlotPicker(pl.getAttribute("data-plan")); return; }
 
       var al = e.target.closest("[data-alt]");
-      if (al) { setAlt(al.getAttribute("data-for"), al.getAttribute("data-alt")); return; }
+      if (al) {
+        setAlt(al.getAttribute("data-for"), al.getAttribute("data-alt"),
+               al.getAttribute("data-slotfor"));
+        return;
+      }
 
       var sl = e.target.closest("[data-slot]");
       if (sl) { setSlot(sl.getAttribute("data-for"), sl.getAttribute("data-slot")); return; }
@@ -624,7 +628,11 @@ window.BPmissing = function (img, label) {
       if (jump) { scrollToCard(jump.getAttribute("data-jump")); return; }
 
       var mv = e.target.closest("[data-move]");
-      if (mv) { moveActivity(mv.getAttribute("data-for"), mv.getAttribute("data-move")); return; }
+      if (mv) {
+        moveActivity(mv.getAttribute("data-for"), mv.getAttribute("data-move"),
+                     mv.getAttribute("data-in"));
+        return;
+      }
 
       var g = e.target.closest("[data-goto]");
       if (g) { openSheet(g.getAttribute("data-goto")); return; }
@@ -1149,7 +1157,7 @@ window.BPmissing = function (img, label) {
     return (w === undefined ? 24 * 60 : w) + 0.5;
   }
 
-  function plannedItem(id) {
+  function plannedItem(id, slotId) {
     var v = byId[id] ? byId[id].item : customById(id);
     var w = v && v.fromBase && v.fromBase.walk;
     var t = v && v.fromBase && v.fromBase.transit;
@@ -1170,8 +1178,10 @@ window.BPmissing = function (img, label) {
       (open ? "</button>" : "</span>") +
       (canPlan()
         ? '<span class="pmove">' +
-            '<button type="button" data-move="up" data-for="' + esc(id) + '" title="Move up">▲</button>' +
-            '<button type="button" data-move="down" data-for="' + esc(id) + '" title="Move down">▼</button>' +
+            '<button type="button" data-move="up" data-for="' + esc(id) + '" data-in="' + esc(slotId) +
+              '" title="Move up">▲</button>' +
+            '<button type="button" data-move="down" data-for="' + esc(id) + '" data-in="' + esc(slotId) +
+              '" title="Move down">▼</button>' +
           "</span>"
         : "") +
     "</div>";
@@ -1241,8 +1251,9 @@ window.BPmissing = function (img, label) {
           html: '<div class="slot planned"><div class="st">' + esc(s.when) + whoInTag(s) + "</div>" +
             '<div class="sd">' + groupsIn(s.id).map(function (g) {
               return g.length === 1
-                ? plannedItem(g[0])
-                : '<div class="pgroup">' + g.map(plannedItem).join('<div class="por">or</div>') + "</div>";
+                ? plannedItem(g[0], s.id)
+                : '<div class="pgroup">' + g.map(function (x) { return plannedItem(x, s.id); })
+                    .join('<div class="por">or</div>') + "</div>";
             }).join("") + "</div></div>"
         });
       });
@@ -1731,7 +1742,7 @@ window.BPmissing = function (img, label) {
           return '<i class="' + cls + '" title="' + esc(n) + '"></i>';
         }).join("");
         var unan = voted.length > 1 && r.n === voted.length && !r.no.length;
-        var slot = slotById((store.state.plan || {})[r.id]);
+        var mine = slotsOf(r.id).map(slotById).filter(Boolean);
         return '<div class="rwrap">' +
           '<button type="button" class="r' + (unan ? " unan" : "") + (r.no.length ? " contested" : "") +
             '" data-jump="' + esc(r.id) + '">' +
@@ -1741,16 +1752,19 @@ window.BPmissing = function (img, label) {
               (r.what ? '<i class="what">' + esc(r.what) + "</i>" : "") +
               (byId[r.id] && byId[r.id].item.hours
                 ? '<i class="rhours">' + esc(byId[r.id].item.hours) + "</i>" : "") +
-              (slot ? '<i class="slotted">' + esc(slot.day) + " · " + esc(slot.when) +
-                esc(altSuffix(r.id, slot.id)) + "</i>" : "") +
+              mine.map(function (s) {
+                return '<i class="slotted">' + esc(s.day) + " · " + esc(s.when) +
+                  esc(altSuffix(r.id, s.id)) + "</i>";
+              }).join("") +
               "<small>" + esc(r.who.join(", ")) + "</small>" +
               (r.no.length ? '<small class="nos">✕ ' + esc(r.no.join(", ")) + "</small>" : "") +
               "</span>" +
             '<span class="bars">' + bars + "</span>" +
           "</button>" +
           (canPlan()
-            ? '<button type="button" class="slotadd' + (slot ? " on" : "") +
-              '" data-plan="' + esc(r.id) + '" title="Put this in a slot">' + (slot ? "✎" : "+") + "</button>"
+            ? '<button type="button" class="slotadd' + (mine.length ? " on" : "") +
+              '" data-plan="' + esc(r.id) + '" title="Put this in a slot">' +
+              (mine.length ? (mine.length > 1 ? String(mine.length) : "✎") : "+") + "</button>"
             : "") +
         "</div>";
       }).join("") + "</div></section>";
@@ -1817,7 +1831,13 @@ window.BPmissing = function (img, label) {
   /** Everything slotted into one band, in the order the tally ranks them. */
   function plannedIn(slotId) {
     var p = store.state.plan || {};
-    return Object.keys(p).filter(function (id) { return p[id] === slotId; }).sort(byOrd);
+    return Object.keys(p).filter(function (id) { return p[id] && p[id][slotId]; }).sort(byOrd);
+  }
+
+  /** Every band this activity sits in, in day order. */
+  function slotsOf(id) {
+    var set = (store.state.plan || {})[id] || {};
+    return (TRIP.slots || []).filter(function (s) { return set[s.id]; }).map(function (s) { return s.id; });
   }
 
   /** Slotted-in order. Anything from before this existed sorts last, alphabetically. */
@@ -1835,7 +1855,9 @@ window.BPmissing = function (img, label) {
   function canPlan() { return me === (CFG.planner || CFG.uploader); }
 
   function openSlotPicker(activityId) {
-    var cur = (store.state.plan || {})[activityId] || "";
+    var cur = {};
+    slotsOf(activityId).forEach(function (s) { cur[s] = true; });
+    var inAny = Object.keys(cur).length;
     var days = [];
     (TRIP.slots || []).forEach(function (s) {
       var d = days.filter(function (x) { return x.day === s.day; })[0];
@@ -1850,18 +1872,21 @@ window.BPmissing = function (img, label) {
         return '<div class="slotday"><div class="slotdayname">' + esc(d.day) + "</div>" +
           d.slots.map(function (s) {
             var here = plannedIn(s.id).filter(function (x) { return x !== activityId; });
-            return '<button type="button" class="slotbtn' + (cur === s.id ? " on" : "") +
+            return '<button type="button" class="slotbtn' + (cur[s.id] ? " on" : "") +
               '" data-slot="' + esc(s.id) + '" data-for="' + esc(activityId) + '">' +
               '<span class="slotwhen">' + esc(s.when) + "</span>" +
               (s.note ? '<span class="slotnote">' + esc(s.note) + "</span>" : "") +
+              (cur[s.id] ? '<span class="slotoff">tap to take it out of this one</span>' : "") +
               (here.length ? '<span class="slothas">already here: ' +
                 esc(here.map(nameOf).join(", ")) + "</span>" : "") +
             "</button>";
           }).join("") + "</div>";
       }).join("") +
       "</div>" + altPicker(activityId, cur) +
-      (cur ? '<button type="button" class="btn dim clearslot" data-slot="" data-for="' +
-        esc(activityId) + '">Take it off the plan</button>' : "");
+      '<p class="slothint">Tap any band to add it. Tap a lit one to take it out. ' +
+        'It can sit in as many as you like.</p>' +
+      (inAny ? '<button type="button" class="btn dim clearslot" data-slot="" data-for="' +
+        esc(activityId) + '">Take it off the plan entirely</button>' : "");
     el("sheet").hidden = false;
     document.body.style.overflow = "hidden";
   }
@@ -1885,7 +1910,7 @@ window.BPmissing = function (img, label) {
       '<p class="altnote">Group it with something already planned — you do one of them, not both.</p>' +
       options.map(function (o) {
         return '<button type="button" class="altbtn" data-alt="' + esc(o.anchor) +
-          '" data-for="' + esc(activityId) + '">' +
+          '" data-slotfor="' + esc(o.slot.id) + '" data-for="' + esc(activityId) + '">' +
           "<b>or " + esc(nameOf(o.anchor)) + "</b>" +
           '<span class="altwhen">' + esc(o.slot.day) + " · " + esc(o.slot.when) +
             (o.with.length ? " · already or " + esc(o.with.map(nameOf).join(", ")) : "") + "</span>" +
@@ -1899,11 +1924,11 @@ window.BPmissing = function (img, label) {
   }
 
   /** Make one activity an alternative to another, moving it into that slot. */
-  async function setAlt(activityId, anchorId) {
+  async function setAlt(activityId, anchorId, slotId) {
     if (anchorId) {
       var anchor = anchorOf(anchorId);
-      var slot = (store.state.plan || {})[anchor] || "";
-      await store.savePlan(activityId, slot);
+      var slot = slotId || slotsOf(anchor)[0] || "";
+      if (slot) await store.savePlan(activityId, slot, true);
       await store.saveAlt(activityId, anchor);
       if (ordOf(activityId) === Infinity) await store.saveOrd(activityId, nextOrd(slot));
     } else {
@@ -1925,10 +1950,8 @@ window.BPmissing = function (img, label) {
 
   /* Moving swaps positions with the neighbour in the same scope: inside its own
      "or" group if it is grouped, otherwise among the blocks of the band. */
-  async function moveActivity(id, dir) {
-    if (!canPlan()) return;
-    var slotId = (store.state.plan || {})[id];
-    if (!slotId) return;
+  async function moveActivity(id, dir, slotId) {
+    if (!canPlan() || !slotId) return;
     var anchor = anchorOf(id);
     var grouped = groupOf(anchor, slotId);
     /* The anchor represents its whole block, so moving it moves the block among
@@ -1954,22 +1977,47 @@ window.BPmissing = function (img, label) {
 
   async function setSlot(activityId, slotId) {
     var alt = store.state.alt || {};
-    if (alt[activityId]) await store.saveAlt(activityId, "");
-    var kids = Object.keys(alt).filter(function (x) { return alt[x] === activityId; });
-    if (kids.length) {
-      // promote the first one, and hang the rest off it
-      await store.saveAlt(kids[0], "");
-      for (var i = 1; i < kids.length; i++) await store.saveAlt(kids[i], kids[0]);
+    /* no slot id means the clear-all button */
+    if (!slotId) return clearFromPlan(activityId);
+    if ((store.state.plan || {})[activityId] && store.state.plan[activityId][slotId]) {
+      await store.savePlan(activityId, slotId, false);
+      if (!slotsOf(activityId).length) await detachAlt(activityId);
+      openSlotPicker(activityId);
+      renderSummary();
+      renderSchedule();
+      toast(nameOf(activityId) + " out of " + (slotById(slotId) || {}).when, 2600);
+      return;
     }
-    await store.savePlan(activityId, slotId);
+    if (alt[activityId]) await store.saveAlt(activityId, "");
+    await store.savePlan(activityId, slotId, true);
     /* newly slotted things go to the end of the band */
-    if (slotId) await store.saveOrd(activityId, nextOrd(slotId));
+    if (ordOf(activityId) === Infinity) await store.saveOrd(activityId, nextOrd(slotId));
+    openSlotPicker(activityId);                 /* stays open, so you can add another */
+    renderSummary();
+    renderSchedule();
+    toast(nameOf(activityId) + " → " + (slotById(slotId) || {}).day + ", " +
+      (slotById(slotId) || {}).when, 2600);
+  }
+
+  /** Off the plan altogether, from every band. */
+  async function clearFromPlan(activityId) {
+    await store.clearPlan(activityId);
+    await detachAlt(activityId);
     closeSheet();
     renderSummary();
     renderSchedule();
-    toast(slotId
-      ? nameOf(activityId) + " → " + (slotById(slotId) || {}).day + ", " + (slotById(slotId) || {}).when
-      : "Taken off the plan", 3000);
+    toast(nameOf(activityId) + " taken off the plan", 3000);
+  }
+
+  /* Leaving the plan must not strand alternatives that were hanging off it. */
+  async function detachAlt(activityId) {
+    var alt = store.state.alt || {};
+    if (alt[activityId]) await store.saveAlt(activityId, "");
+    var kids = Object.keys(alt).filter(function (x) { return alt[x] === activityId; });
+    if (kids.length) {
+      await store.saveAlt(kids[0], "");
+      for (var i = 1; i < kids.length; i++) await store.saveAlt(kids[i], kids[0]);
+    }
   }
 
   /** First sentence of a description, trimmed to something scannable. */

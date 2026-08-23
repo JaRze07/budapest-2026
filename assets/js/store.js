@@ -163,6 +163,13 @@ BP.store = (function () {
 
   /* ---------- writing ---------- */
 
+  async function del(path) {
+    try {
+      var r = await fetch(CFG.db + "/" + path + ".json", { method: "DELETE" });
+      return r.ok;
+    } catch (e) { return false; }
+  }
+
   async function put(path, body) {
     try {
       var r = await fetch(CFG.db + "/" + path + ".json", {
@@ -229,10 +236,24 @@ BP.store = (function () {
   }
 
   /** One slot per activity; a slot holds as many as you like. "" clears it. */
-  async function savePlan(activityId, slotId) {
-    state.plan[activityId] = slotId || "";
-    var ok = await put("plan/" + activityId, slotId || "");
+  /** Put an activity in a band, or take it out. An activity may be in several. */
+  async function savePlan(activityId, slotId, on) {
+    if (!slotId) return { synced: false };
+    var set = state.plan[activityId] || {};
+    if (on) set[slotId] = true; else delete set[slotId];
+    if (Object.keys(set).length) state.plan[activityId] = set;
+    else delete state.plan[activityId];
+
+    var ok;
+    if (on) ok = await put("plan/" + activityId + "/" + slotId, true);
+    else ok = await del("plan/" + activityId + "/" + slotId);
     return { synced: ok };
+  }
+
+  /** Take it off the plan entirely. */
+  async function clearPlan(activityId) {
+    delete state.plan[activityId];
+    return { synced: await del("plan/" + activityId) };
   }
 
   /** Group one activity under another as an alternative. "" makes it stand alone. */
@@ -303,6 +324,7 @@ BP.store = (function () {
     saveFinal: saveFinal,
     saveExpense: saveExpense,
     savePlan: savePlan,
+    clearPlan: clearPlan,
     saveAlt: saveAlt,
     saveOrd: saveOrd,
     deleteExpense: deleteExpense,
