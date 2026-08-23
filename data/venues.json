@@ -283,7 +283,8 @@
    ],
    "id": "breakfast",
    "title": "Breakfast & lunch",
-   "note": "Everything here is a short walk from Almássy tér — nobody is crossing the city before coffee."
+   "note": "Everything here is a short walk from Almássy tér — nobody is crossing the city before coffee.",
+   "short": "Breakfast & lunch"
   },
   {
    "id": "bars",
@@ -727,7 +728,8 @@
      },
      "isNew": true
     }
-   ]
+   ],
+   "short": "Bars"
   },
   {
    "id": "clubs",
@@ -1182,7 +1184,8 @@
      },
      "isNew": true
     }
-   ]
+   ],
+   "short": "Clubs"
   },
   {
    "id": "baths",
@@ -1587,7 +1590,8 @@
      },
      "isNew": true
     }
-   ]
+   ],
+   "short": "Baths"
   },
   {
    "id": "food",
@@ -1994,7 +1998,8 @@
      },
      "isNew": true
     }
-   ]
+   ],
+   "short": "Food"
   },
   {
    "id": "action",
@@ -2411,7 +2416,8 @@
      },
      "isNew": true
     }
-   ]
+   ],
+   "short": "Daytime"
   },
   {
    "id": "late",
@@ -2678,7 +2684,8 @@
      },
      "isNew": true
     }
-   ]
+   ],
+   "short": "Late & private"
   }
  ],
  "safety_notes": [

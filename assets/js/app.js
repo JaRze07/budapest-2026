@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt5tvtc9").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt5tvtc9").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt5u599k").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt5u599k").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1135,7 +1135,8 @@ window.BPmissing = function (img, label) {
     var open = v && v.lat;                  /* customs have no pin to open */
     return (open ? '<button type="button" class="ptag pitem" data-goto="' + esc(id) + '">'
                  : '<span class="ptag pitem plain">') +
-      "<b>" + esc(nameOf(id)) + "</b>" +
+      "<b>" + esc(nameOf(id)) +
+        (catOf(id) ? ' <i class="cat">(' + esc(catOf(id)) + ")</i>" : "") + "</b>" +
       (line ? "<small>" + esc(line) + "</small>" : "") +
       (how ? '<span class="phow">' + esc(how) + "</span>" : "") +
     (open ? "</button>" : "</span>");
@@ -1507,6 +1508,7 @@ window.BPmissing = function (img, label) {
             '" data-jump="' + esc(r.id) + '">' +
             '<span class="n">' + (i + 1) + "</span>" +
             '<span class="nm"><b>' + esc(r.name) + "</b>" +
+              (catOf(r.id) ? '<i class="cat">(' + esc(catOf(r.id)) + ")</i>" : "") +
               (r.what ? '<i class="what">' + esc(r.what) + "</i>" : "") +
               (slot ? '<i class="slotted">' + esc(slot.day) + " · " + esc(slot.when) +
                 esc(altSuffix(r.id, slot.id)) + "</i>" : "") +
@@ -1537,6 +1539,13 @@ window.BPmissing = function (img, label) {
   }
   function customById(id) {
     return store.state.customs.filter(function (c) { return c.id === id; })[0] || null;
+  }
+
+  /** "Bars", "Late & private", or "Proposed" for anything we put up ourselves. */
+  function catOf(id) {
+    if (!byId[id]) return store.state.customs.some(function (c) { return c.id === id; }) ? "Proposed" : "";
+    var c = (VENUES.categories || [])[byId[id].cat];
+    return c ? (c.short || c.title) : "";
   }
 
   function nameOf(id) {
