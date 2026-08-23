@@ -434,7 +434,7 @@
       "You're sleeping over the bar strip — it's loud at 2am"
      ],
      "suits": 4,
-     "checkin": "15:00, Fri 28 Aug",
+     "checkin": "14:00, Fri 28 Aug",
      "checkout": "10:00, Mon 31 Aug",
      "booking_ref": "6236545494"
     },
@@ -854,7 +854,7 @@
      "kind": "travel"
     },
     {
-     "time": "15:00",
+     "time": "14:00",
      "t": "Check in at Goldcentral, 17 Almássy tér",
      "kind": "fixed"
     },
@@ -1037,14 +1037,14 @@
    "id": "fri-lunch",
    "day": "Friday 28",
    "when": "Lunch · 12:00 → 13:30",
-   "note": "Jacek in since 09:05, Areeb since 11:20. Check-in is not until 15:00, so bags are still with you.",
+   "note": "Jacek in since 09:05, Areeb since 11:20. Check-in is not until 14:00, so bags are still with you.",
    "from": "12:00"
   },
   {
    "id": "fri-pm",
    "day": "Friday 28",
    "when": "13:30 → 17:40",
-   "note": "Check-in at 15:00 gets the bags off your hands.",
+   "note": "Check-in at 14:00 gets the bags off your hands.",
    "from": "13:30"
   },
   {
