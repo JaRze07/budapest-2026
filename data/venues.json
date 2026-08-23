@@ -119,7 +119,7 @@
        "min": 7
       }
      },
-     "hours": "Mon–Fri 09:00–15:30 · Sat 09:00–15:00 · closed Sun",
+     "hours": "Mon–Sat 09:00–16:00 · closed Sun",
      "shots": 5
     },
     {
@@ -205,7 +205,7 @@
        ]
       }
      },
-     "hours": "Daily 11:00–15:00",
+     "hours": "Daily 11:00–22:00",
      "shots": 5
     },
     {
@@ -248,7 +248,7 @@
        ]
       }
      },
-     "hours": "closed Mon · Tue–Sat 11:00–16:30 · closed Sun",
+     "hours": "closed Mon · Tue–Sat 08:30–17:00 · closed Sun",
      "shots": 5
     },
     {
@@ -896,7 +896,7 @@
        ]
       }
      },
-     "hours": "Mon–Fri 10:00–22:00 · Sat 16:00–22:00 · closed Sun",
+     "hours": "Mon–Wed 10:00–22:00 · Thu 10:00–22:30 · Fri 10:00–05:00 · Sat 10:00–06:48 · Sun 10:00–20:00",
      "shots": 5
     },
     {
@@ -1619,7 +1619,7 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 06:00–12:00 and 15:00–21:00",
+     "hours": "Google lists it as closed — ring before going",
      "shots": 5
     },
     {
@@ -1752,7 +1752,7 @@
        ]
       }
      },
-     "hours": "Mon–Thu 17:00–22:45 · Fri–Sat 17:00–23:45 · Sun 17:00–22:45",
+     "hours": "Daily 09:00–00:00",
      "shots": 5
     },
     {
@@ -1920,7 +1920,7 @@
       }
      },
      "isNew": true,
-     "hours": "Daily 11:30–22:30",
+     "hours": "Daily 11:30–00:00",
      "shots": 5
     },
     {

@@ -505,8 +505,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt6dxi8g").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt6dxi8g").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt6eox9w").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt6eox9w").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1803,7 +1803,7 @@ window.BPmissing = function (img, label) {
 
   /** " · or Blue Bird, Vibe Rooms" for a row that is one of several alternatives. */
   function altSuffix(id, slotId) {
-    var others = groupOf(anchorOf(id), slotId).filter(function (x) { return x !== id; });
+    var others = groupOf(anchorOf(id, slotId), slotId).filter(function (x) { return x !== id; });
     return others.length ? " · or " + others.map(nameOf).join(", ") : "";
   }
 
@@ -1830,8 +1830,8 @@ window.BPmissing = function (img, label) {
      alt[x] = y means "x is an alternative to y". y is always a real anchor:
      nothing points at something that itself points elsewhere. */
 
-  function anchorOf(id) {
-    var alt = store.state.alt || {};
+  function anchorOf(id, slotId) {
+    var alt = (store.state.alt || {})[slotId] || {};
     var seen = {}, cur = id;
     while (alt[cur] && !seen[cur]) { seen[cur] = 1; cur = alt[cur]; }
     return cur;
@@ -1839,7 +1839,7 @@ window.BPmissing = function (img, label) {
 
   /** Everything grouped with this one, anchor first, in plan order. */
   function groupOf(anchor, withinSlot) {
-    return plannedIn(withinSlot).filter(function (x) { return anchorOf(x) === anchor; })
+    return plannedIn(withinSlot).filter(function (x) { return anchorOf(x, withinSlot) === anchor; })
       .sort(function (x, y) { return (x === anchor ? -1 : 0) - (y === anchor ? -1 : 0); });
   }
 
@@ -1847,7 +1847,7 @@ window.BPmissing = function (img, label) {
   function groupsIn(slotId) {
     var out = [], seen = {};
     plannedIn(slotId).forEach(function (id) {
-      var k = anchorOf(id);
+      var k = anchorOf(id, slotId);
       if (seen[k]) return;
       seen[k] = 1;
       out.push(groupOf(k, slotId));
@@ -1931,34 +1931,29 @@ window.BPmissing = function (img, label) {
 
   /* Anything already planned can be the thing this is an alternative to.
      Pick one and you land in its slot, in its group. */
-  /** Every member of the group, whether or not it is currently planned. */
-  function groupMembers(id) {
-    var anchor = anchorOf(id);
-    return [anchor].concat(Object.keys(store.state.alt || {}).filter(function (x) {
-      return x !== anchor && anchorOf(x) === anchor;
-    }));
-  }
-
   /** Everything grouped with this one, wherever it is planned. */
-  function myGroup(activityId) {
-    var anchor = anchorOf(activityId);
-    var all = [anchor].concat(Object.keys(store.state.alt || {}).filter(function (x) {
-      return anchorOf(x) === anchor && x !== anchor;
-    }));
-    return all.filter(function (x) { return slotsOf(x).length; });
+  function myGroup(activityId, slotId) {
+    if (!slotId) return [];
+    return groupOf(anchorOf(activityId, slotId), slotId);
   }
 
   function altPicker(activityId, cur) {
-    var mine = anchorOf(activityId);
-    var group = myGroup(activityId);
-    var planned = slotsOf(activityId).length;
+    /* Group within one band. Prefer a band where it is actually grouped,
+       so an activity in two bands does not show an empty group from the other. */
+    var mySlots = slotsOf(activityId);
+    var here = mySlots.filter(function (s) {
+      return groupOf(anchorOf(activityId, s), s).length > 1;
+    })[0] || mySlots[0] || "";
+    var mine = anchorOf(activityId, here);
+    var group = myGroup(activityId, here);
+    var planned = !!here;
 
     /* other groups this one could join */
     var options = [];
     (TRIP.slots || []).forEach(function (s) {
       groupsIn(s.id).forEach(function (g) {
         if (g[0] === activityId) return;                   // not an alternative to itself
-        if (g[0] === mine) return;                         // already in this group
+        if (s.id === here && g[0] === mine) return;        // already in this group here
         options.push({ slot: s, anchor: g[0], with: g.slice(1) });
       });
     });
@@ -1986,20 +1981,20 @@ window.BPmissing = function (img, label) {
         '<p class="altnote">You are doing one of them, not all. Drop any with the ✕.</p>' +
         '<div class="altgroup">' + group.map(function (id) {
           return '<span class="altchip' + (id === mine ? " anchor" : "") + '">' + esc(nameOf(id)) +
-            (id === mine ? "" : '<button type="button" data-alt="" data-for="' + esc(id) +
-              '" title="Take it out of the group">✕</button>') + "</span>";
+            (id === mine ? "" : '<button type="button" data-alt="" data-slotfor="' + esc(here) +
+              '" data-for="' + esc(id) + '" title="Take it out of the group">✕</button>') + "</span>";
         }).join("") + "</div>";
     }
 
     if (candidates.length) {
       html += '<div class="altkick">Add another alternative</div>' +
         '<p class="altnote">As many as you like. They join ' + esc(nameOf(mine)) +
-          ' in ' + esc(slotsOf(mine).map(function (s) { return (slotById(s) || {}).when; }).join(" and ")) +
+          ' in ' + esc((slotById(here) || {}).when || "") +
           '.</p>' +
         '<input id="altFilter" class="altfilter" placeholder="Type to narrow the list">' +
         '<div class="altlist" id="altList">' + candidates.map(function (id) {
           return '<button type="button" class="altrow" data-alt="' + esc(mine) +
-            '" data-slotfor="' + esc(slotsOf(mine)[0] || "") + '" data-for="' + esc(id) +
+            '" data-slotfor="' + esc(here) + '" data-for="' + esc(id) +
             '" data-name="' + esc(nameOf(id).toLowerCase()) + '">' + esc(nameOf(id)) + "</button>";
         }).join("") + "</div>";
     }
@@ -2026,21 +2021,17 @@ window.BPmissing = function (img, label) {
   /** Make one activity an alternative to another, moving it into that slot. */
   async function setAlt(activityId, anchorId, slotId) {
     if (anchorId) {
-      var anchor = anchorOf(anchorId);
-      await store.saveAlt(activityId, anchor);
-      /* match the anchor exactly: every band it is in, and none it is not */
-      var want = slotsOf(anchor);
-      if (!want.length && slotId) want = [slotId];
-      var had = slotsOf(activityId);
-      for (var i2 = 0; i2 < had.length; i2++) {
-        if (want.indexOf(had[i2]) < 0) await store.savePlan(activityId, had[i2], false);
-      }
-      for (var j2 = 0; j2 < want.length; j2++) {
-        await store.savePlan(activityId, want[j2], true);
-        if (ordOf(activityId) === Infinity) await store.saveOrd(activityId, nextOrd(want[j2]));
-      }
+      var anchor = anchorOf(anchorId, slotId || slotsOf(anchorId)[0]);
+      /* grouping applies to this band and no other */
+      var slot = slotId || slotsOf(anchor)[0] || "";
+      if (!slot) return;
+      await store.savePlan(activityId, slot, true);
+      await store.saveAlt(slot, activityId, anchor);
+      if (ordOf(activityId) === Infinity) await store.saveOrd(activityId, nextOrd(slot));
+    } else if (slotId) {
+      await store.saveAlt(slotId, activityId, "");
     } else {
-      await store.saveAlt(activityId, "");
+      await detachAlt(activityId, null);
     }
     renderSummary();
     renderSchedule();
@@ -2048,7 +2039,7 @@ window.BPmissing = function (img, label) {
     if (sheetFor) openSlotPicker(sheetFor);
     else closeSheet();
     toast(anchorId
-      ? nameOf(activityId) + " or " + nameOf(anchorOf(anchorId)) + " — one of them"
+      ? nameOf(activityId) + " or " + nameOf(anchorId) + " — one of them"
       : nameOf(activityId) + " stands on its own", 2600);
   }
 
@@ -2062,7 +2053,7 @@ window.BPmissing = function (img, label) {
      "or" group if it is grouped, otherwise among the blocks of the band. */
   async function moveActivity(id, dir, slotId) {
     if (!canPlan() || !slotId) return;
-    var anchor = anchorOf(id);
+    var anchor = anchorOf(id, slotId);
     var grouped = groupOf(anchor, slotId);
     /* The anchor represents its whole block, so moving it moves the block among
        the other blocks. Moving one of its alternatives reorders inside the block. */
@@ -2088,10 +2079,9 @@ window.BPmissing = function (img, label) {
   async function setSlot(activityId, slotId) {
     /* no slot id means the clear-all button */
     if (!slotId) return clearFromPlan(activityId);
-    var team = groupMembers(activityId);
     if ((store.state.plan || {})[activityId] && store.state.plan[activityId][slotId]) {
-      for (var r = 0; r < team.length; r++) await store.savePlan(team[r], slotId, false);
-      if (!slotsOf(activityId).length) await detachAlt(activityId);
+      await store.savePlan(activityId, slotId, false);
+      await detachAlt(activityId, slotId);
       openSlotPicker(activityId);
       renderSummary();
       renderSchedule();
@@ -2101,11 +2091,8 @@ window.BPmissing = function (img, label) {
     /* Adding a band used to drop the activity out of its group. That was right
        when a thing could only be in one band; now it just means the group gains
        a band, so leave the grouping alone — "Stand on its own" is the way out. */
-    /* the group moves together, so it never appears split across bands */
-    for (var q = 0; q < team.length; q++) {
-      await store.savePlan(team[q], slotId, true);
-      if (ordOf(team[q]) === Infinity) await store.saveOrd(team[q], nextOrd(slotId));
-    }
+    await store.savePlan(activityId, slotId, true);
+    if (ordOf(activityId) === Infinity) await store.saveOrd(activityId, nextOrd(slotId));
     openSlotPicker(activityId);                 /* stays open, so you can add another */
     renderSummary();
     renderSchedule();
@@ -2116,21 +2103,24 @@ window.BPmissing = function (img, label) {
   /** Off the plan altogether, from every band. */
   async function clearFromPlan(activityId) {
     await store.clearPlan(activityId);
-    await detachAlt(activityId);
+    await detachAlt(activityId, null);
     closeSheet();
     renderSummary();
     renderSchedule();
     toast(nameOf(activityId) + " taken off the plan", 3000);
   }
 
-  /* Leaving the plan must not strand alternatives that were hanging off it. */
-  async function detachAlt(activityId) {
-    var alt = store.state.alt || {};
-    if (alt[activityId]) await store.saveAlt(activityId, "");
-    var kids = Object.keys(alt).filter(function (x) { return alt[x] === activityId; });
-    if (kids.length) {
-      await store.saveAlt(kids[0], "");
-      for (var i = 1; i < kids.length; i++) await store.saveAlt(kids[i], kids[0]);
+  /* Leaving a band must not strand the alternatives that hung off it there. */
+  async function detachAlt(activityId, slotId) {
+    var slots = slotId ? [slotId] : Object.keys(store.state.alt || {});
+    for (var s = 0; s < slots.length; s++) {
+      var sl = slots[s], alt = (store.state.alt || {})[sl] || {};
+      if (alt[activityId]) await store.saveAlt(sl, activityId, "");
+      var kids = Object.keys(alt).filter(function (x) { return alt[x] === activityId; });
+      if (kids.length) {
+        await store.saveAlt(sl, kids[0], "");
+        for (var i = 1; i < kids.length; i++) await store.saveAlt(sl, kids[i], kids[0]);
+      }
     }
   }
 

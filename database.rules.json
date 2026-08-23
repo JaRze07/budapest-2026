@@ -189,9 +189,11 @@
       }
     },
     "alt": {
-      "$activity": {
-        ".write": true,
-        ".validate": "newData.isString() && newData.val().length <= 24"
+      "$slot": {
+        ".write": "$slot.matches(/^(fri-lunch|fri-pm|fri-eve|fri-dinner|fri-late|sat-am|sat-lunch|sat-pm|sat-dinner|sat-eve|sun-am|sun-lunch|sun-pm|sun-eve|sun-dinner|sun-late|mon|mon-lunch)$/)",
+        "$activity": {
+          ".validate": "newData.isString() && newData.val().length <= 24"
+        }
       }
     },
     "ord": {

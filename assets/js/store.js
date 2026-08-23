@@ -257,9 +257,12 @@ BP.store = (function () {
   }
 
   /** Group one activity under another as an alternative. "" makes it stand alone. */
-  async function saveAlt(activityId, anchorId) {
-    state.alt[activityId] = anchorId || "";
-    var ok = await put("alt/" + activityId, anchorId || "");
+  async function saveAlt(slotId, activityId, anchorId) {
+    if (!slotId) return { synced: false };
+    var forSlot = state.alt[slotId] || (state.alt[slotId] = {});
+    var ok;
+    if (anchorId) { forSlot[activityId] = anchorId; ok = await put("alt/" + slotId + "/" + activityId, anchorId); }
+    else { delete forSlot[activityId]; ok = await del("alt/" + slotId + "/" + activityId); }
     return { synced: ok };
   }
 
