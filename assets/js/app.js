@@ -104,6 +104,26 @@ window.BPmissing = function (img, label) {
       esc(t.where) + "</span></div>";
   }
 
+  /** Who is in for this, and who has ruled it out. Empty for the stay options,
+      which are voted on somewhere else entirely. */
+  function whoWants(id) {
+    var ins = votersFor(id), nos = vetoedBy(id);
+    if (!ins.length && !nos.length) return "";
+    var chip = function (n, cls) {
+      return '<span class="' + cls + (n === me ? " me" : "") + '">' + esc(n) + "</span>";
+    };
+    return '<div class="sheetvotes">' +
+      (ins.length
+        ? '<div class="svrow"><b>In</b><span class="svchips">' +
+            ins.map(function (n) { return chip(n, "yes"); }).join("") + "</span></div>"
+        : '<div class="svrow"><b>In</b><span class="svnone">nobody yet</span></div>') +
+      (nos.length
+        ? '<div class="svrow"><b>Hard no</b><span class="svchips">' +
+            nos.map(function (n) { return chip(n, "no"); }).join("") + "</span></div>"
+        : "") +
+    "</div>";
+  }
+
   /** Two ways to reach anything: from where we sleep, and from wherever you are. */
   function openSheet(id) {
     var src = byId[id] ? byId[id].item
@@ -120,7 +140,8 @@ window.BPmissing = function (img, label) {
         (fb.walk ? " · " + fb.walk.min + " min walk" : "") + "</div>" +
       (src.desc ? '<p class="sheetdesc">' + esc(src.desc) + "</p>" : "") +
       (src.meta ? '<p class="sheetmeta">' + esc(src.meta) + "</p>" : "") +
-      (src.key_fact ? '<p class="keyfact">' + esc(src.key_fact) + "</p>" : "");
+      (src.key_fact ? '<p class="keyfact">' + esc(src.key_fact) + "</p>" : "") +
+      whoWants(id);
 
     if (place && place.id !== src.id) {
       html += fromBlock("From our place", place.name, to, pt(place)) + howToGetThere(src);
@@ -434,8 +455,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt65v5zm").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt65v5zm").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt661s0z").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt661s0z").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];

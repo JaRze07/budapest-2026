@@ -1786,3 +1786,21 @@ button.ptag:hover::after { color: var(--brass); }
   color: var(--brass-dim);
 }
 .swho.all { color: var(--laser-dim, #1E9E56); letter-spacing: .04em; text-transform: uppercase; }
+
+/* who is in for it, inside the Getting there sheet */
+.sheetvotes { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+.svrow { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.svrow:last-child { margin-bottom: 0; }
+.svrow b {
+  flex: 0 0 58px; font-size: 10px; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--brass-dim);
+}
+.svchips { display: flex; flex-wrap: wrap; gap: 4px; }
+.svchips span {
+  font-size: 11px; padding: 2px 9px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--paper);
+}
+.svchips span.yes { background: var(--laser); border-color: var(--laser); font-weight: 700; }
+.svchips span.no { background: transparent; border-color: var(--warn); color: var(--warn); font-weight: 700; }
+.svchips span.me { box-shadow: 0 0 0 2px var(--brass); }
+.svnone { font-size: 11.5px; color: var(--slate); font-style: italic; }
