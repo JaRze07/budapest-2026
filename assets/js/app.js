@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt5lcs6y").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt5lcs6y").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt5tvtc9").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt5tvtc9").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1464,65 +1464,55 @@ window.BPmissing = function (img, label) {
   function renderSummary() {
     var box = el("summary");
     if (!showResults) { box.innerHTML = ""; return; }
-    var voted = CFG.names.filter(function (n) { return store.state.picks[n]; });
+    var voted = CFG.names.filter(function (n) {
+      return store.state.picks[n] || store.state.vetoes[n];
+    });
+
+    /* Everything anyone has an opinion on, for or against. A hard no no longer
+       removes a row — it just paints one of the bars red, so it can still be
+       planned around whoever objected. */
     var rows = [];
+    function addRow(id, name, what) {
+      var ins = votersFor(id), nos = vetoedBy(id);
+      if (!ins.length && !nos.length) return;
+      rows.push({ id: id, name: name, what: what, n: ins.length, who: ins, no: nos });
+    }
     Object.keys(byId).forEach(function (id) {
-      var v = votersFor(id);
-      if (v.length) rows.push({
-        id: id, name: byId[id].item.name, what: gist(byId[id].item.desc),
-        n: v.length, who: v
-      });
+      addRow(id, byId[id].item.name, gist(byId[id].item.desc));
     });
     store.state.customs.forEach(function (c) {
-      var v = votersFor(c.id);
-      if (v.length) rows.push({ id: c.id, name: c.name, what: c.note || "Suggested by " + c.by, n: v.length, who: v });
+      addRow(c.id, c.name, c.note || "Suggested by " + c.by);
     });
-    /* One hard no is enough — it comes out of the ranking and goes in its own list. */
-    var dead = rows.filter(function (r) { return vetoedBy(r.id).length; })
-      .map(function (r) { return { id: r.id, name: r.name, by: vetoedBy(r.id) }; });
-    Object.keys(byId).concat(store.state.customs.map(function (c) { return c.id; }))
-      .forEach(function (id) {
-        if (dead.some(function (d) { return d.id === id; })) return;
-        var v = vetoedBy(id);
-        if (v.length) dead.push({ id: id, name: nameOf(id), by: v });
-      });
-    rows = rows.filter(function (r) { return !vetoedBy(r.id).length; });
-    rows.sort(function (a, b) { return b.n - a.n || a.name.localeCompare(b.name); });
 
-    var ruled = dead.length
-      ? "<section>" +
-        '<div class="cathead"><h3>Ruled out</h3><span>' + dead.length + " off the table</span></div>" +
-        '<p class="catnote">One hard no is enough. These are out of the tally — tap to change your mind.</p>' +
-        '<div class="dead">' + dead.sort(function (a, b) { return a.name.localeCompare(b.name); })
-          .map(function (d) {
-            return '<button type="button" class="deadrow" data-jump="' + esc(d.id) + '">' +
-              "<b>" + esc(d.name) + "</b><small>✕ " + esc(d.by.join(", ")) + "</small></button>";
-          }).join("") + "</div></section>"
-      : "";
+    /* Most wanted first; a clean run beats the same score with a no against it. */
+    rows.sort(function (x, y) {
+      return y.n - x.n || x.no.length - y.no.length || x.name.localeCompare(y.name);
+    });
 
-    if (!rows.length) {
-      box.innerHTML = ruled || '<p class="sec-note">No votes in yet.</p>';
-      return;
-    }
+    if (!rows.length) { box.innerHTML = '<p class="sec-note">No votes in yet.</p>'; return; }
 
     // Built like the other sections so it doesn't read as an orphan block.
     box.innerHTML = "<section>" +
-      '<div class="cathead"><h3>The tally</h3><span>' + rows.length + " still standing</span></div>" +
-      '<p class="catnote">★ = everyone who has voted so far picked it. Tap any row to jump to it.</p>' +
+      '<div class="cathead"><h3>The tally</h3><span>' + rows.length + " with votes</span></div>" +
+      '<p class="catnote">Green is in, red is a hard no. ★ = everyone who has voted wants it. Tap a row to jump to it.</p>' +
       '<div class="rank">' + rows.map(function (r, i) {
         var bars = CFG.names.map(function (n) {
-          return '<i class="' + (r.who.indexOf(n) > -1 ? "f" : "") + '"></i>';
+          var cls = r.who.indexOf(n) > -1 ? "f" : (r.no.indexOf(n) > -1 ? "x" : "");
+          return '<i class="' + cls + '" title="' + esc(n) + '"></i>';
         }).join("");
-        var unan = voted.length > 1 && r.n === voted.length;
+        var unan = voted.length > 1 && r.n === voted.length && !r.no.length;
         var slot = slotById((store.state.plan || {})[r.id]);
         return '<div class="rwrap">' +
-          '<button type="button" class="r' + (unan ? " unan" : "") + '" data-jump="' + esc(r.id) + '">' +
+          '<button type="button" class="r' + (unan ? " unan" : "") + (r.no.length ? " contested" : "") +
+            '" data-jump="' + esc(r.id) + '">' +
             '<span class="n">' + (i + 1) + "</span>" +
             '<span class="nm"><b>' + esc(r.name) + "</b>" +
               (r.what ? '<i class="what">' + esc(r.what) + "</i>" : "") +
               (slot ? '<i class="slotted">' + esc(slot.day) + " · " + esc(slot.when) +
                 esc(altSuffix(r.id, slot.id)) + "</i>" : "") +
-              "<small>" + esc(r.who.join(", ")) + "</small></span>" +
+              "<small>" + esc(r.who.join(", ")) + "</small>" +
+              (r.no.length ? '<small class="nos">✕ ' + esc(r.no.join(", ")) + "</small>" : "") +
+              "</span>" +
             '<span class="bars">' + bars + "</span>" +
           "</button>" +
           (canPlan()
@@ -1530,7 +1520,7 @@ window.BPmissing = function (img, label) {
               '" data-plan="' + esc(r.id) + '" title="Put this in a slot">' + (slot ? "✎" : "+") + "</button>"
             : "") +
         "</div>";
-      }).join("") + "</div></section>" + ruled;
+      }).join("") + "</div></section>";
   }
 
 

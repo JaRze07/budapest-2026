@@ -858,6 +858,9 @@ main {
 .rank .r .bars { display: flex; gap: 3px; flex: 0 0 auto; }
 .rank .r .bars i { width: 9px; height: 18px; background: var(--line); display: block; }
 .rank .r .bars i.f { background: var(--laser); }
+.rank .r .bars i.x { background: var(--warn); }
+.rank .r.contested { border-left: 3px solid var(--warn); }
+.rank .r .nm small.nos { color: var(--warn); font-weight: 700; display: block; }
 .rank .r.unan .nm b::after { content: " ★"; color: var(--brass); }
 
 /* ---------- info view ---------- */
