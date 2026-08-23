@@ -434,8 +434,8 @@ window.BPmissing = function (img, label) {
   async function boot() {
     try {
       var res = await Promise.all([
-        fetch("data/venues.json?v=mt65dujz").then(function (r) { return r.json(); }),
-        fetch("data/trip.json?v=mt65dujz").then(function (r) { return r.json(); })
+        fetch("data/venues.json?v=mt65v5zm").then(function (r) { return r.json(); }),
+        fetch("data/trip.json?v=mt65v5zm").then(function (r) { return r.json(); })
       ]);
       VENUES = res[0];
       TRIP = res[1];
@@ -1155,6 +1155,39 @@ window.BPmissing = function (img, label) {
     "</div>";
   }
 
+  /* Two hours at the airport plus 55 on the 100E — the same figures the
+     "leaves for the airport" rows use. */
+  var AIRPORT_LEAD = 175;
+
+  /** The people in town when a band starts. Landing counts, leaving does not. */
+  function whoIn(slot) {
+    var day = (TRIP.schedule || []).filter(function (d) {
+      return d.day + " " + parseInt(d.date.slice(8), 10) === slot.day;
+    })[0];
+    var at = toMin(slot.from);
+    if (!day || at === null) return [];
+    return (TRIP.people || []).filter(function (p) {
+      var arr = arrival(p), dep = departure(p);
+      if (!arr) return false;
+      if (arr.date > day.date) return false;                       // not here yet
+      if (arr.date === day.date && arr.min > at) return false;     // lands later today
+      if (dep) {
+        if (dep.date < day.date) return false;                     // already gone
+        if (dep.date === day.date && dep.min - AIRPORT_LEAD <= at) return false;
+      }
+      return true;
+    });
+  }
+
+  function whoInTag(slot) {
+    var who = whoIn(slot);
+    if (!who.length || who.length === (TRIP.people || []).length) {
+      return who.length ? '<span class="swho all">all four</span>' : "";
+    }
+    return '<span class="swho">' + esc(who.map(function (p) { return p.initial; }).join(", ")) +
+      '</span>';
+  }
+
   function renderSchedule() {
     var html = '<div class="sec-title">The shape of it</div>' +
       '<p class="sec-note">The fixed points, with whatever has been slotted in sitting where it falls in the day.</p>';
@@ -1174,7 +1207,7 @@ window.BPmissing = function (img, label) {
         if (!got.length) {
           rows.push({
             at: (toMin(s.from) === null ? 24 * 60 : toMin(s.from)) + 0.75,
-            html: '<div class="slot band"><div class="st">' + esc(s.when) + "</div>" +
+            html: '<div class="slot band"><div class="st">' + esc(s.when) + whoInTag(s) + "</div>" +
               '<div class="sd bandempty">Open' +
                 (s.note ? "<small>" + esc(s.note) + "</small>" : "") + "</div></div>"
           });
@@ -1183,7 +1216,7 @@ window.BPmissing = function (img, label) {
         rows.push({
           /* a hair behind anything fixed at the same time, so 10:00 checkout still leads */
           at: (toMin(s.from) === null ? 24 * 60 : toMin(s.from)) + 0.75,
-          html: '<div class="slot planned"><div class="st">' + esc(s.when) + "</div>" +
+          html: '<div class="slot planned"><div class="st">' + esc(s.when) + whoInTag(s) + "</div>" +
             '<div class="sd">' + groupsIn(s.id).map(function (g) {
               return g.length === 1
                 ? plannedItem(g[0])

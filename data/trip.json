@@ -859,11 +859,6 @@
      "kind": "fixed"
     },
     {
-     "time": "Evening",
-     "t": "To be determined",
-     "kind": "tbd"
-    },
-    {
      "time": "11:20",
      "t": "Areeb lands",
      "kind": "travel"
@@ -1063,29 +1058,36 @@
    "id": "fri-lunch",
    "day": "Friday 28",
    "when": "Lunch · 12:00 → 13:30",
-   "note": "Jacek is in from 09:05, Areeb from 11:20. Check-in is not until 15:00, so bags are still with you.",
+   "note": "Jacek in since 09:05, Areeb since 11:20. Check-in is not until 15:00, so bags are still with you.",
    "from": "12:00"
   },
   {
    "id": "fri-pm",
    "day": "Friday 28",
-   "when": "Noon → 17:40",
-   "note": "Jacek and Areeb are already in. Nhi lands at the end of this.",
-   "from": "12:00"
+   "when": "After lunch → 17:40",
+   "note": "Jacek and Areeb only. Check-in at 15:00 gets the bags off your hands.",
+   "from": "13:30"
   },
   {
    "id": "fri-eve",
    "day": "Friday 28",
-   "when": "17:40 → late",
-   "note": "Nhi is in at 17:40, Phuong at 19:25 — all four from then on.",
+   "when": "17:40 → 19:25",
+   "note": "Three of you. Phuong lands at 19:25, so keep this one near the flat.",
    "from": "17:40"
   },
   {
    "id": "fri-dinner",
    "day": "Friday 28",
    "when": "Dinner · 19:45 → late",
-   "note": "Late enough that Phuong is in — she lands 19:25. First meal with all four.",
+   "note": "Phuong is in at 19:25. First meal with everyone.",
    "from": "19:45"
+  },
+  {
+   "id": "fri-late",
+   "day": "Friday 28",
+   "when": "After dinner → late",
+   "from": "21:30",
+   "note": "First night, everyone in. Nothing starts before 22:00 anyway."
   },
   {
    "id": "sat-am",
@@ -1125,7 +1127,7 @@
   {
    "id": "sun-am",
    "day": "Sunday 30",
-   "when": "Morning — all four",
+   "when": "Morning",
    "note": "Last morning with everyone here.",
    "from": "09:00"
   },

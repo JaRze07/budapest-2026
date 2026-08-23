@@ -1778,3 +1778,11 @@ button.ptag:hover::after { color: var(--brass); }
   display: block; font-style: normal; font-size: 11px; color: var(--brass-dim);
   line-height: 1.45; margin-top: 2px;
 }
+
+/* who is in town for a band, under its time */
+.swho {
+  display: block; margin-top: 3px;
+  font-size: 10px; font-weight: 800; letter-spacing: .08em;
+  color: var(--brass-dim);
+}
+.swho.all { color: var(--laser-dim, #1E9E56); letter-spacing: .04em; text-transform: uppercase; }
