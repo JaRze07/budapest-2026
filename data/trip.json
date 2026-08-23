@@ -884,11 +884,6 @@
      "time": "Day",
      "t": "Open — baths, action, whatever wins the vote",
      "kind": "open"
-    },
-    {
-     "time": "Dinner",
-     "t": "Book it. District VII fills up on a Saturday.",
-     "kind": "todo"
     }
    ]
   },
@@ -1065,6 +1060,13 @@
  },
  "slots": [
   {
+   "id": "fri-lunch",
+   "day": "Friday 28",
+   "when": "Lunch · 12:00 → 13:30",
+   "note": "Jacek is in from 09:05, Areeb from 11:20. Check-in is not until 15:00, so bags are still with you.",
+   "from": "12:00"
+  },
+  {
    "id": "fri-pm",
    "day": "Friday 28",
    "when": "Noon → 17:40",
@@ -1079,6 +1081,13 @@
    "from": "17:40"
   },
   {
+   "id": "fri-dinner",
+   "day": "Friday 28",
+   "when": "Dinner · 19:45 → late",
+   "note": "Late enough that Phuong is in — she lands 19:25. First meal with all four.",
+   "from": "19:45"
+  },
+  {
    "id": "sat-am",
    "day": "Saturday 29",
    "when": "Before noon",
@@ -1086,11 +1095,25 @@
    "from": "09:00"
   },
   {
+   "id": "sat-lunch",
+   "day": "Saturday 29",
+   "when": "Lunch · 12:00 → 13:30",
+   "note": "",
+   "from": "12:00"
+  },
+  {
    "id": "sat-pm",
    "day": "Saturday 29",
    "when": "Noon → 18:00",
    "note": "",
    "from": "12:00"
+  },
+  {
+   "id": "sat-dinner",
+   "day": "Saturday 29",
+   "when": "Dinner · 18:00 → 19:30",
+   "note": "Book it. District VII fills up on a Saturday.",
+   "from": "18:00"
   },
   {
    "id": "sat-eve",
@@ -1107,6 +1130,13 @@
    "from": "09:00"
   },
   {
+   "id": "sun-lunch",
+   "day": "Sunday 30",
+   "when": "Lunch · 12:00 → 13:30",
+   "note": "The last meal with all four — Nhi leaves for the airport at 15:30.",
+   "from": "12:00"
+  },
+  {
    "id": "sun-pm",
    "day": "Sunday 30",
    "when": "Before Nhi leaves — till 15:30",
@@ -1121,11 +1151,25 @@
    "from": "15:30"
   },
   {
+   "id": "sun-dinner",
+   "day": "Sunday 30",
+   "when": "Dinner · 18:00 → 19:30",
+   "note": "Three of you; Nhi is wheels-up at 18:25.",
+   "from": "18:00"
+  },
+  {
    "id": "mon",
    "day": "Monday 31",
    "when": "10:00 → 14:30",
    "note": "Bags down, one last thing. Phuong has already gone at 09:45; Jacek leaves at 14:40.",
    "from": "10:00"
+  },
+  {
+   "id": "mon-lunch",
+   "day": "Monday 31",
+   "when": "Lunch · 12:00 → 13:30",
+   "note": "Jacek and Areeb only. Jacek leaves for the airport at 14:40.",
+   "from": "12:00"
   }
  ]
 }

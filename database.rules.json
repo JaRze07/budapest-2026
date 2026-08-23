@@ -165,7 +165,7 @@
     "plan": {
       "$activity": {
         ".write": true,
-        ".validate": "newData.isString() && newData.val().matches(/^(fri-pm|fri-eve|sat-am|sat-pm|sat-eve|sun-am|sun-pm|sun-eve|mon)?$/)"
+        ".validate": "newData.isString() && newData.val().matches(/^(fri-lunch|fri-pm|fri-eve|fri-dinner|sat-am|sat-lunch|sat-pm|sat-dinner|sat-eve|sun-am|sun-lunch|sun-pm|sun-eve|sun-dinner|mon|mon-lunch)?$/)"
       }
     },
     "vetoes": {
